@@ -1,0 +1,71 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
+  - libphonenumber_plugin (0.0.1):
+    - Flutter
+    - PhoneNumberKit
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - PhoneNumberKit (3.5.10):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.5.10)
+    - PhoneNumberKit/UIKit (= 3.5.10)
+  - PhoneNumberKit/PhoneNumberKitCore (3.5.10)
+  - PhoneNumberKit/UIKit (3.5.10):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - share_plus (0.0.1):
+    - Flutter
+  - smart_auth (0.0.1):
+    - Flutter
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - PhoneNumberKit/PhoneNumberKitCore (from `https://github.com/marmelroy/PhoneNumberKit`, tag `3.5.10`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
+  - smart_auth (from `.symlinks/plugins/smart_auth/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  libphonenumber_plugin:
+    :path: ".symlinks/plugins/libphonenumber_plugin/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  PhoneNumberKit:
+    :git: https://github.com/marmelroy/PhoneNumberKit
+    :tag: 3.5.10
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
+  smart_auth:
+    :path: ".symlinks/plugins/smart_auth/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
+
+CHECKOUT OPTIONS:
+  PhoneNumberKit:
+    :git: https://github.com/marmelroy/PhoneNumberKit
+    :tag: 3.5.10
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  PhoneNumberKit: 0e34a6e8a50e4624e96a4710bc4a7211464a934e
+  share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
+  smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
+  video_player_avfoundation: 8563f13d8fc8b2c29dc2d09e60b660e4e8128837
+
+PODFILE CHECKSUM: 6053bb49f8f5d9cd6795ed781b89c679afad4e2c
+
+COCOAPODS: 1.12.1

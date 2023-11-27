@@ -157,7 +157,7 @@ class IntroScreenOne extends StatelessWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.white,
+                                      color: Colors.white38,
                                     ),
                                   ),
                                 ),

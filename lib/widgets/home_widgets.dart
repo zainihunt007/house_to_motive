@@ -29,12 +29,12 @@ class _ButtonWidgetState extends State<ButtonWidget> {
                 height: screenHeight * 0.07,
                 width: Get.width,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     bottomLeft: Radius.circular(20),
                   ),
                   color: isSelectedContainer1.isTrue
-                      ? Color(0xff025B8F)
+                      ? const Color(0xff025B8F)
                       : Colors.white,
                 ),
                 child: Center(
@@ -57,12 +57,12 @@ class _ButtonWidgetState extends State<ButtonWidget> {
                     height: screenHeight * 0.07,
                 width: Get.width,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
                   color: isSelectedContainer2.isTrue
-                      ? Color(0xff025B8F)
+                      ? const Color(0xff025B8F)
                       : Colors.white,
                 ),
                 child: Center(

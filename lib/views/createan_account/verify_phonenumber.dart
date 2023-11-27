@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
 
+import '../screens/chat_screen.dart';
 import '../screens/navigation_bar/home_page.dart';
 
 class CreateaccVerifyNumberScreen extends StatelessWidget {
@@ -83,7 +84,7 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Get.bottomSheet(
-                      backgroundColor: Colors.red, BottomSheetDialog());
+                      BottomSheetDeletDialog());
                 },
                 child: const Text(
                   "Send Again",
@@ -93,100 +94,6 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class BottomSheetDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent, // Set the background color to transparent
-      child: Container(
-        height: Get.height / 2.6,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/svgs/bsicon.svg'),
-              const SizedBox(height: 7),
-              const Text(
-                'Code Verified',
-                style: TextStyle(
-                    color: Color(0xff010101),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 7),
-              const Text(
-                textAlign: TextAlign.center,
-                '6 digit code is verified, now can you login with your email / phone number and password!',
-                style: TextStyle(
-                  color: Color(0xff424B5A),
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 44,
-                    width: 140,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xff090808),
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Close',
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff090808),
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 44,
-                    width: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(0xff025B8F),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => HomePage());
-                      },
-                      child: const Center(
-                        child: Text(
-                          'Let me in',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

@@ -28,7 +28,6 @@ class CustomPasswordField extends StatelessWidget {
 
 class CustomEmailField extends StatelessWidget {
   TextEditingController textEditingController = TextEditingController();
-
   RxBool showTick = false.obs;
 
   @override

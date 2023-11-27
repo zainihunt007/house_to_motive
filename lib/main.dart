@@ -13,13 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xff025B8F);
     return ResponsiveSizer(
         builder: (context, orientation, deviceType) {
           return GetMaterialApp(
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primaryColor: primaryColor,
               colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff025B8F),),
               useMaterial3: true,
             ),

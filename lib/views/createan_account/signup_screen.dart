@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:house_to_motive/views/createan_account/signup_phonenumber.dart';
+import 'package:house_to_motive/views/login/loginwith_email.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../widgets/custom_field.dart';
@@ -123,7 +124,7 @@ class SignupScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => const SignupScreen());
+                        Get.to(() => const LoginWithEmailScreen());
                       },
                       child: const Text(
                         'Login',

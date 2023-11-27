@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:house_to_motive/views/login/loginwith_email.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../widgets/custom_field.dart';
@@ -41,7 +42,7 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                         top: 50,
                         child: InkWell(
                             onTap: () {
-                              // Get.back();
+                              Get.back();
                             },
                             child: Image.asset(
                               'assets/pngs/back_btn.png',
@@ -75,7 +76,9 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomButtonWithIcon(
-                      ontap: (){},
+                      ontap: (){
+                        Get.to(()=> LoginWithEmailScreen());
+                      },
                       title: 'Login With Email',
                       svg: "assets/svgs/social/Mail.svg",
                     ),

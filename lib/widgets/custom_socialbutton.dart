@@ -15,7 +15,7 @@ class CustomButtonWithIcon extends StatelessWidget {
     return GestureDetector(
       onTap: ontap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.070,
         width:MediaQuery.of(context).size.width / 2,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -52,7 +52,7 @@ class CustomSocialButton extends StatelessWidget {
     return GestureDetector(
       onTap: ontap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.070,
         width: MediaQuery.of(context).size.width * 0.13,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black26),

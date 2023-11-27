@@ -45,6 +45,11 @@ dependencies:
   video_player: ^2.8.1
   introduction_screen: ^3.1.12
   smooth_page_indicator: ^1.1.0
+  flutter_slidable: ^3.0.1
+  flutter_rating_bar: ^4.0.1
+  auto_size_text: ^3.0.0
+  share_plus: ^7.2.1
+  dotted_line: ^3.2.2
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +83,7 @@ flutter:
     - assets/svgs/home/
     - assets/images/
     - assets/svgs/navigation_bar/navigation_bar2/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

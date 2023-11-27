@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:house_to_motive/views/login/loginwith_email.dart';
 import 'package:house_to_motive/widgets/loginbutton.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AllowLocationScreen extends StatelessWidget {
   const AllowLocationScreen({super.key});
@@ -14,14 +15,15 @@ class AllowLocationScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: (){
-                      Get.to(()=> const LoginWithEmailScreen());
+                    onTap: () {
+                      Get.to(() => const LoginWithEmailScreen());
                     },
                     child: const Text(
                       'Skip',
@@ -33,17 +35,19 @@ class AllowLocationScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height / 7),
+              SizedBox(height: 15.h),
               SvgPicture.asset("assets/svgs/location.svg"),
-              SizedBox(height: MediaQuery.of(context).size.height / 17),
+              SizedBox(
+                height: 8.h,
+              ),
               const Text(
-                'Enable Your Loaction',
+                'Enable Your Location',
                 style: TextStyle(
-                    fontSize: 37,
+                    fontSize: 28,
                     fontWeight: FontWeight.w900,
                     color: Color(0xff025B8F)),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 2.h),
               const Text(
                 'Enable your location for optimize search so we can suggest best match for you',
                 textAlign: TextAlign.center,
