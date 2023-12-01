@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../mrg/screens/Favourites/newFav.dart';
+import 'notification_screen.dart';
+
 class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -63,34 +66,47 @@ class ExploreScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          SvgPicture.asset('assets/appbar/heart.svg'),
-          SizedBox(width: 10),
-          SvgPicture.asset('assets/appbar/Notification.svg'),
-          SizedBox(width: 10),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => FavList());
+              },
+              child: SvgPicture.asset('assets/appbar/heart.svg')),
+          const SizedBox(width: 10),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => NotificationScreen());
+              },
+              child: SvgPicture.asset('assets/appbar/Notification.svg')),
+          const SizedBox(width: 10),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Center(
-              child: Stack(children: [
+                child: Stack(
+              children: [
                 Container(
                   height: Get.height,
                   width: Get.width,
                   child: Image.asset(
                     'assets/pngs/Rectangle 2086.png',
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Positioned(
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: SizedBox(
-                        height: 7.h,
+                      height: 7.h,
                       child: TextFormField(
                         decoration: InputDecoration(
                           hintText: "Search what’s near me",
-                          hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w400,fontSize: 14,color: Color(0xff424B5A),),
+                          hintStyle: TextStyle(
+                          fontFamily: 'ProximaNova',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff424B5A),),
                           fillColor: Colors.white,
                           filled: true,
                           prefixIcon: Padding(
@@ -108,8 +124,8 @@ class ExploreScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],)
-            ),
+              ],
+            )),
           ],
         ),
       ),

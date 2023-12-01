@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_to_motive/views/screens/home_screens/video_playing_screen.dart';
+import 'package:house_to_motive/views/screens/video_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../mrg/ArcadeScreen.dart';
+import '../../../mrg/Sanzio_Restaurant.dart';
 import 'home_model.dart';
 
 class HomeScreen2 extends StatelessWidget {
@@ -17,7 +20,7 @@ class HomeScreen2 extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Column(
         children: [
           SizedBox(height: screenHeight * 0.03),
@@ -72,7 +75,11 @@ class HomeScreen2 extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                SvgPicture.asset('assets/svgs/home/Group 1171274839.svg'),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -95,7 +102,7 @@ class HomeScreen2 extends StatelessWidget {
                           backgroundImage: NetworkImage(userData.image),
                           maxRadius: 5.h,
                         ),
-                         SizedBox(height: 0.5.h),
+                        SizedBox(height: 0.5.h),
                         Text(
                           userData.username.length <= 8
                               ? userData.username
@@ -109,7 +116,9 @@ class HomeScreen2 extends StatelessWidget {
                         Text(
                           '(${userData.miles} miles)',
                           style: GoogleFonts.inter(
-                              fontSize: 10, fontWeight: FontWeight.w400),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff7390A1)),
                         ),
                       ],
                     ),
@@ -131,10 +140,11 @@ class HomeScreen2 extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -218,10 +228,11 @@ class HomeScreen2 extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -306,10 +317,11 @@ class HomeScreen2 extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -336,145 +348,147 @@ class HomeScreen2 extends StatelessWidget {
             // height: 250,
             child: Padding(
               padding: const EdgeInsets.only(left: 12),
-              child: GridView.builder(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                  childAspectRatio: 0.95,
-                ),
                 itemCount: foodnearby.length,
                 itemBuilder: (context, index) {
                   // VideoUrls vdourls = videoUrls[index];
                   return GestureDetector(
-                    onTap: () {},
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: screenHeight * 0.26,
-                          width: screenWidth / 1,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      foodnearby[index].city,
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$${foodnearby[index].price}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xff025B8F),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 0.3.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    GradientText(
-                                      text: "${foodnearby[index].mile} mile",
-                                      gradient: const LinearGradient(colors: [
-                                        Color(0xffFF0092),
-                                        Color(0xff216DFD),
-                                      ]),
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 0.3.h),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        'assets/svgs/home/map-pin.svg'),
-                                     SizedBox(width: 0.3.h),
-                                    Text(
-                                      foodnearby[index].location,
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w400,
-                                        color: const Color(0xff7390A1),
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                    onTap: () {
+                      Get.to(() => SanzioRestaurant());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: screenHeight * 0.26,
+                            width: Get.width / 1.8,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
                             ),
-                          ),
-                        ),
-                        Container(
-                          height: Get.height / 6,
-                          width: Get.width / 1,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(
-                                foodnearby[index].image,
-                              ),
-                            ),
-                            // color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 3.5.h,
-                                  width: 8.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: const Color(0xff80FFFFFF),
-                                      border: Border.all(color: Colors.white60)),
-                                  child: Row(
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // SizedBox(height: 1.h),
+                                  Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SvgPicture.asset(
-                                          'assets/svgs/home/Star 2.svg'),
                                       Text(
-                                        foodnearby[index].rating,
+                                        foodnearby[index].city,
                                         style: GoogleFonts.inter(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        '\$${foodnearby[index].price}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff025B8F),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 0.3.h),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      GradientText(
+                                        text: "${foodnearby[index].mile} mile",
+                                        gradient: const LinearGradient(colors: [
+                                          Color(0xffFF0092),
+                                          Color(0xff216DFD),
+                                        ]),
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 10,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: const Color(0xff80FFFFFF),
-                                  radius: 16,
-                                  child: SvgPicture.asset(
-                                      'assets/svgs/home/Vector.svg'),
-                                ),
-                              ],
+                                  SizedBox(height: 0.3.h),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/svgs/home/map-pin.svg'),
+                                      SizedBox(width: 0.3.h),
+                                      Text(
+                                        foodnearby[index].location,
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xff7390A1),
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            height: Get.height / 6,
+                            width: Get.width / 1.8,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(
+                                  foodnearby[index].image,
+                                ),
+                              ),
+                              // color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 3.5.h,
+                                    width: 8.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: const Color(0xff80FFFFFF),
+                                        border:
+                                            Border.all(color: Colors.white60)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/svgs/home/Star 2.svg'),
+                                        Text(
+                                          foodnearby[index].rating,
+                                          style: GoogleFonts.inter(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: const Color(0xff80FFFFFF),
+                                    radius: 16,
+                                    child: SvgPicture.asset(
+                                        'assets/svgs/home/Vector.svg'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -494,10 +508,11 @@ class HomeScreen2 extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -519,175 +534,181 @@ class HomeScreen2 extends StatelessWidget {
             ),
           ),
           SizedBox(height: screenHeight * 0.03),
-          Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12),
-            child: Column(
-              children: itemList.map((item) {
-                return Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Container(
-                        height: screenHeight * 0.32,
-                        width: screenWidth / 1,
+          GestureDetector(
+            onTap: () {
+              Get.to(() => ArcadeScreen());
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12, right: 12),
+              child: Column(
+                children: itemList.map((item) {
+                  return Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Container(
+                          height: screenHeight * 0.32,
+                          width: screenWidth / 1,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item['title']!,
+                                      style: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 0.3.h),
+                                    Row(
+                                      children: [
+                                        GradientText(
+                                          text: "+200 Going",
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              Color(0xffFF0092),
+                                              Color(0xff216DFD),
+                                            ],
+                                          ),
+                                          style: GoogleFonts.inter(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 0.3.h),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/svgs/home/map-pin.svg'),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          item['description']!,
+                                          style: GoogleFonts.inter(
+                                            fontWeight: FontWeight.w400,
+                                            color: const Color(0xff7390A1),
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(),
+                                    const Spacer(),
+                                    Row(
+                                      children: [
+                                        Image.asset('assets/pngs/Vector.png'),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          'Trending',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            color: const Color(0xff025B8F),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Image.asset(
+                                            'assets/pngs/material-symbols_upcoming-outline.png'),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          'Trending',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            color: const Color(0xff025B8F),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 1.h),
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                            'assets/pngs/majesticons_music.png'),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          'Hip-hop',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            color: const Color(0xff025B8F),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Image.asset(
+                                            'assets/pngs/majesticons_music-line.png'),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          'Hot',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            color: const Color(0xff025B8F),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 1.h),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: screenHeight * 0.25,
+                        width: Get.width / 1,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Colors.white,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                              // foodnearby[index].image,
+                              item['image']!,
+                            ),
+                          ),
+                          // color: Colors.white,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.all(12),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['title']!,
-                                    style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  SizedBox(height: 0.3.h),
-                                  Row(
-                                    children: [
-                                      GradientText(
-                                        text: "+200 Going",
-                                        gradient: const LinearGradient(
-                                          colors: [
-                                            Color(0xffFF0092),
-                                            Color(0xff216DFD),
-                                          ],
-                                        ),
-                                        style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 0.3.h),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                          'assets/svgs/home/map-pin.svg'),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        item['description']!,
-                                        style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff7390A1),
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(),
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      Image.asset('assets/pngs/Vector.png'),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        'Trending',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10,
-                                          color: const Color(0xff025B8F),
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Image.asset(
-                                          'assets/pngs/material-symbols_upcoming-outline.png'),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        'Trending',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10,
-                                          color: const Color(0xff025B8F),
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 1.h),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                          'assets/pngs/majesticons_music.png'),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        'Hip-hop',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10,
-                                          color: const Color(0xff025B8F),
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Image.asset(
-                                          'assets/pngs/majesticons_music-line.png'),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        'Hot',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10,
-                                          color: const Color(0xff025B8F),
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 1.h),
-                                ],
+                              CircleAvatar(
+                                backgroundColor: const Color(0xff80FFFFFF),
+                                radius: 16,
+                                child: SvgPicture.asset(
+                                    'assets/svgs/home/Vector.svg'),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      height: screenHeight * 0.25,
-                      width: Get.width / 1,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                            // foodnearby[index].image,
-                            item['image']!,
-                          ),
-                        ),
-                        // color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: const Color(0xff80FFFFFF),
-                              radius: 16,
-                              child:
-                                  SvgPicture.asset('assets/svgs/home/Vector.svg'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
           ),
           SizedBox(

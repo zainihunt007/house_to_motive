@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_to_motive/widgets/custom_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-
 import '../../widgets/loginbutton.dart';
 import 'notification_screen.dart';
 
@@ -74,13 +73,13 @@ class EditProfileScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-            CustomEmailField(),
-            CustomEmailField(),
+            CustomEmailField(title: 'User name'),
+            CustomEmailField(title: 'Email'),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.074,
+              height: MediaQuery.of(context).size.height * 0.068,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black38),
+                  border: Border.all(color: Color(0xffD9D9D9)),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
@@ -94,20 +93,25 @@ class EditProfileScreen extends StatelessWidget {
 
                       print(value);
                     },
-                    selectorConfig: SelectorConfig(
+                    selectorConfig: const SelectorConfig(
                       selectorType: PhoneInputSelectorType.DIALOG,
                     ),
                     ignoreBlank: false,
                     autoValidateMode: AutovalidateMode.onUserInteraction,
-                    selectorTextStyle: TextStyle(color: Colors.black),
+                    selectorTextStyle: const TextStyle(color: Colors.black),
                     // initialValue: _phoneNumber,
                     textFieldController: TextEditingController(),
                     formatInput: false,
-                    keyboardType: TextInputType.numberWithOptions(
+                    keyboardType: const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
-                    inputDecoration: InputDecoration(
+                    inputDecoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Phone Number',
+                      labelStyle: TextStyle(
+                        fontFamily: 'ProximaNova',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff7390A1),),
                       // border: OutlineInputBorder(
                       //   borderSide: BorderSide(),
                       // ),
@@ -116,11 +120,11 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             CustomButton(
               title: "Login",
               ontap: () {
-                Get.to(() => NotificationScreen());
+
               },
             ),
           ],

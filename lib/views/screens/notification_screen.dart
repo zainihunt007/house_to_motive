@@ -42,22 +42,22 @@ class NotificationScreen extends StatelessWidget {
             SvgPicture.asset('assets/svgs/notification.svg'),
             SizedBox(height: MediaQuery.of(context).size.height * 0.14),
             Text(
-              'No Notifications ',
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w900,
-                fontSize: 28,
-                color: Color(0xff025B8F),
-              ),
+              'Enable Notifications',
+              style: TextStyle(
+                  fontFamily: 'Mont',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xff025B8F),),
             ),
             SizedBox(height: 10),
             Text(
               textAlign: TextAlign.center,
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor',
-              style: GoogleFonts.inter(
+              style: TextStyle(
+                fontFamily: 'ProximaNova',
                 fontSize: 14,
-                color: Color(0xff424B5A),
                 fontWeight: FontWeight.w400,
-              ),
+                color: Color(0xff424B5A),),
             )
           ],
         ),

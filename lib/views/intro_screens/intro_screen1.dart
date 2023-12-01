@@ -149,7 +149,7 @@ class IntroScreenOne extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Get.to(() => const LoginWithEmailScreen());
+                                    Get.to(() =>  LoginWithEmailScreen());
                                   },
                                   child: Text(
                                     textAlign: TextAlign.center,

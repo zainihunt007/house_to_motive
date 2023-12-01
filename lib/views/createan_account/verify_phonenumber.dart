@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
-
 import '../screens/chat_screen.dart';
-import '../screens/navigation_bar/home_page.dart';
 
 class CreateaccVerifyNumberScreen extends StatelessWidget {
   const CreateaccVerifyNumberScreen({super.key});
@@ -51,6 +48,7 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
               const Text(
                 '00:36',
                 style: TextStyle(
+                  fontFamily: 'Mont',
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
                   color: Color(0xff025B8F),
@@ -61,9 +59,10 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 "Type the verification code  we’ve sent youat +923484812310",
                 style: TextStyle(
-                  color: Color(0xff424B5A),
+                  fontFamily: 'ProximaNova',
                   fontSize: 14,
-                ),
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff424B5A),),
               ),
               SizedBox(height: screenHeight * 0.01),
               Pinput(
@@ -89,10 +88,10 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
                 child: const Text(
                   "Send Again",
                   style: TextStyle(
+                    fontFamily: 'ProximaNova',
                     fontSize: 14,
-                    color: Color(0xff025B8F),
                     fontWeight: FontWeight.w600,
-                  ),
+                    color: Color(0xff025B8F),),
                 ),
               ),
             ],

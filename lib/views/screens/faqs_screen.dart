@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +8,8 @@ class FAQSScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RxBool isExpand = false.obs;
+    final List<RxBool> isExpandedList = List.generate(10, (index) => false.obs);
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -53,27 +52,28 @@ class FAQSScreen extends StatelessWidget {
                       ),
                       child: ExpansionTile(
                         trailing: Icon(
-                          isExpand.value ? Icons.remove : Icons.add,
+                          isExpandedList[index].value ? Icons.remove : Icons.add,
                           color: Color(0xff025B8F),
                         ),
                         childrenPadding: EdgeInsets.symmetric(vertical: 4),
                         title: Text(
                           'Lorem ipsum dolor sit amet, consectetur.',
                           style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: Color(0xff3F2D20)),
+                            fontFamily: 'ProximaNova',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff7390A1),
+                          ),
                         ),
                         children: <Widget>[
                           SingleChildScrollView(
                             child: Container(
-                              // height: 15.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                 child: Column(
                                   children: [
                                     MySeparator(),
@@ -81,6 +81,7 @@ class FAQSScreen extends StatelessWidget {
                                     Text(
                                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                                       style: TextStyle(
+                                        fontFamily: 'ProximaNova',
                                         fontSize: 10,
                                         fontWeight: FontWeight.w400,
                                         color: Color(0xff7390A1),
@@ -93,7 +94,7 @@ class FAQSScreen extends StatelessWidget {
                           ),
                         ],
                         onExpansionChanged: (bool expanded) {
-                          isExpand.value = expanded;
+                          isExpandedList[index].value = expanded;
                         },
                       ),
                     ),

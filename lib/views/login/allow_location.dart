@@ -23,7 +23,7 @@ class AllowLocationScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Get.to(() => const LoginWithEmailScreen());
+                      Get.to(() =>  LoginWithEmailScreen());
                     },
                     child: const Text(
                       'Skip',
@@ -43,6 +43,7 @@ class AllowLocationScreen extends StatelessWidget {
               const Text(
                 'Enable Your Location',
                 style: TextStyle(
+                    fontFamily: 'Mont',
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
                     color: Color(0xff025B8F)),
@@ -51,12 +52,17 @@ class AllowLocationScreen extends StatelessWidget {
               const Text(
                 'Enable your location for optimize search so we can suggest best match for you',
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff424B5A),),
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 6),
               CustomButton(
                 title: 'Enable Location',
                 ontap: () {
-                  Get.to(() => LoginWithEmailScreen());
+                  Get.to(() =>  LoginWithEmailScreen());
                 },
               ),
             ],

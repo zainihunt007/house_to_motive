@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/mrg/screens/Favourites/newFav.dart';
 import 'package:house_to_motive/views/screens/edit_profile_screen.dart';
+import 'package:house_to_motive/views/screens/following_screen.dart';
 import 'package:house_to_motive/views/screens/privacy_policy_screen.dart';
 import 'package:house_to_motive/views/screens/settings_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../mrg/Sanzio_Restaurant.dart';
+import '../../mrg/screens/Calender/MyCalander.dart';
+import '../../mrg/screens/Ticket.dart';
 import '../../widgets/profile_widget.dart';
-import 'chat_screen.dart';
 import 'contactus_screen.dart';
 import 'create_event.dart';
 import 'faqs_screen.dart';
+import 'followers_screen.dart';
+import 'notification_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -26,7 +30,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
         centerTitle: true,
         backgroundColor: const Color(0xff025B8F),
         leading: Padding(
@@ -43,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 9,
                   width: 9,
                 ),
-                 SizedBox(width: 1.h),
+                SizedBox(width: 1.h),
                 const Text(
                   'My Location',
                   style: TextStyle(
@@ -58,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   SizedBox(width: 1.h),
+                  SizedBox(width: 1.h),
                   const Text(
                     '73 Newport Road, Carnbo',
                     style: TextStyle(
@@ -78,10 +81,18 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          SvgPicture.asset('assets/appbar/heart.svg'),
-          SizedBox(width: 1.h),
-          SvgPicture.asset('assets/appbar/Notification.svg'),
-          SizedBox(width: 1.h),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => FavList());
+              },
+              child: SvgPicture.asset('assets/appbar/heart.svg')),
+          const SizedBox(width: 10),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => NotificationScreen());
+              },
+              child: SvgPicture.asset('assets/appbar/Notification.svg')),
+          const SizedBox(width: 10),
         ],
       ),
       body: SingleChildScrollView(
@@ -102,58 +113,68 @@ class ProfileScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 35,
                           backgroundImage: AssetImage('assets/images/1.jpg'),
                         ),
-                        Container(
-                          height: 80,
-                          width: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Followers',
-                                style: GoogleFonts.inter(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff7390A1),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => const FllowersScreen());
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Followers',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff7390A1),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '745',
-                                style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff025B8F),
+                                Text(
+                                  '745',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff025B8F),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        Container(
-                          height: 80,
-                          width: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Followings',
-                                style: GoogleFonts.inter(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff7390A1),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => const FollowingScreen());
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Followings',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff7390A1),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '839',
-                                style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff025B8F),
+                                Text(
+                                  '839',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff025B8F),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         Container(
@@ -167,7 +188,7 @@ class ProfileScreen extends StatelessWidget {
                                 style: GoogleFonts.inter(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
-                                  color: Color(0xff7390A1),
+                                  color: const Color(0xff7390A1),
                                 ),
                               ),
                               Text(
@@ -175,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                                 style: GoogleFonts.inter(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xff025B8F),
+                                  color: const Color(0xff025B8F),
                                 ),
                               ),
                             ],
@@ -204,7 +225,7 @@ class ProfileScreen extends StatelessWidget {
                             style: GoogleFonts.inter(
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff7390A1),
+                              color: const Color(0xff7390A1),
                             ),
                           ),
                         ),
@@ -225,22 +246,41 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 0.7.h),
-                    ProfileWidget(title: 'Edit Profile',onTap: (){
-                      Get.to(() => EditProfileScreen());
-                    }),
-                    ProfileWidget(title: 'My Tickets',onTap: (){
-                      Get.to(SanzioRestaurant());
-                    }),
-                    ProfileWidget(title: "Favorite's",onTap: (){}),
-                    ProfileWidget(title: 'My Dates',onTap: (){}),
-                    ProfileWidget(title: 'Create Event',onTap: (){
-                      Get.to(() => CreateEventScreen());
-                    }),
                     ProfileWidget(
-                      title: 'Create Reel',
-                      isDevider: false,
-                        onTap: (){}
-                    ),
+                        svg: 'assets/svgs/userr.svg',
+                        title: 'Edit Profile',
+                        onTap: () {
+                          Get.to(() => const EditProfileScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/Ticket 22.svg',
+                        title: 'My Tickets',
+                        onTap: () {
+                          Get.to(() => ticketScreens());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/Heart 1.svg',
+                        title: "Favorite's",
+                        onTap: () {
+                          Get.to(() => FavList());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/calendar1.svg',
+                        title: 'My Dates',
+                        onTap: () {
+                          Get.to(() => const CalenderScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/carbon_intent-request-create.svg',
+                        title: 'Create Event',
+                        onTap: () {
+                          Get.to(() => const CreateEventScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/Play Circle.svg',
+                        title: 'Create Reel',
+                        isDevider: false,
+                        onTap: () {}),
                     SizedBox(height: 0.7.h),
                   ],
                 ),
@@ -257,22 +297,31 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 0.7.h),
-                    ProfileWidget(title: 'FAQs',onTap: (){
-                      Get.to(() => FAQSScreen());
-                    }),
-                    ProfileWidget(title: 'Settings',onTap: (){
-                      Get.to(()=> SettingScreen());
-                    }),
-                    ProfileWidget(title: "Privacy Policy",onTap: (){
-                      Get.to(() => PrivacyPolicyScreen());
-                    }),
                     ProfileWidget(
-                      title: 'Invite People',
-                      isDevider: false,
-                        onTap: (){
+                        svg: 'assets/svgs/faqs.svg',
+                        title: 'FAQs',
+                        onTap: () {
+                          Get.to(() => const FAQSScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/Settings.svg',
+                        title: 'Settings',
+                        onTap: () {
+                          Get.to(() => const SettingScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/privacy.svg',
+                        title: "Privacy Policy",
+                        onTap: () {
+                          Get.to(() => const PrivacyPolicyScreen());
+                        }),
+                    ProfileWidget(
+                        svg: 'assets/svgs/ph_share-fill.svg',
+                        title: 'Invite People',
+                        isDevider: false,
+                        onTap: () {
                           _shareContent();
-                        }
-                    ),
+                        }),
                     SizedBox(height: 0.7.h),
                   ],
                 ),
@@ -289,23 +338,26 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 0.7.h),
-                    ProfileWidget(title: 'Contact Us',onTap: (){
-                      Get.to(()=> ContactUSScreen());
-                    }),
                     ProfileWidget(
-                      onTap: (){
-                        Get.bottomSheet(
-                            BottomSheetLogoutDialog());
+                        svg: 'assets/svgs/contact.svg',
+                        title: 'Contact Us',
+                        onTap: () {
+                          Get.to(() => const ContactUSScreen());
+                        }),
+                    ProfileWidget(
+                      svg: 'assets/svgs/Sign Outt.svg',
+                      onTap: () {
+                        Get.bottomSheet(BottomSheetLogoutDialog());
                       },
                       title: 'Log Out',
                       isDevider: false,
                       red: true,
                     ),
-                    SizedBox(height: 0.7),
+                    const SizedBox(height: 0.7),
                   ],
                 ),
               ),
-              SizedBox(height:9.h),
+              SizedBox(height: 9.h),
             ],
           ),
         ),
@@ -335,55 +387,55 @@ class BottomSheetLogoutDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/svgs/Sign Out.svg'),
-              const SizedBox(height: 17),
-               Text(
+              SizedBox(height: 1.7.h),
+              Text(
                 'Log Out',
                 style: GoogleFonts.inter(
-                    color: Color(0xff010101),
+                    color: const Color(0xff010101),
                     fontSize: 18,
                     fontWeight: FontWeight.w700),
               ),
-              const SizedBox(height: 17),
+              SizedBox(height: 1.7.h),
               Text(
                 textAlign: TextAlign.center,
                 'Are you sure you want to logout from HouseToMotive?',
                 style: GoogleFonts.inter(
-                  color: Color(0xff424B5A),
+                  color: const Color(0xff424B5A),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 2.5.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Get.back();
                     },
                     child: Container(
-                      height: 44,
-                      width: 140,
+                      height: 5.5.h,
+                      width: 40.w,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xff090808),
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child:  Center(
+                      child: Center(
                         child: Text(
                           'Cancel',
                           style: GoogleFonts.inter(
                               fontSize: 16,
-                              color: Color(0xff090808),
+                              color: const Color(0xff090808),
                               fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
                   ),
                   Container(
-                    height: 44,
-                    width: 140,
+                    height: 5.5.h,
+                    width: 40.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: const Color(0xff025B8F),
@@ -392,7 +444,7 @@ class BottomSheetLogoutDialog extends StatelessWidget {
                       onTap: () {
                         // Get.to(() => HomePage());
                       },
-                      child:  Center(
+                      child: Center(
                         child: Text(
                           'Logout',
                           style: GoogleFonts.inter(

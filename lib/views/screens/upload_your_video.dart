@@ -52,6 +52,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                         const Text(
                           'Create more informative content when you go into greater detail with 4000 characters.',
                           style: TextStyle(
+                            fontFamily: 'ProximaNova',
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                             color: Color(0xff7390A1),
@@ -81,6 +82,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                                             child: Text(
                                               '# Hashtags',
                                               style: TextStyle(
+                                                  fontFamily: 'ProximaNova',
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
                                                   color: Color(0xff7390A1)),
@@ -128,6 +130,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                               child: Text(
                             'Choose Cover',
                             style: TextStyle(
+                              fontFamily: 'ProximaNova',
                               fontWeight: FontWeight.w400,
                               fontSize: 10,
                               color: Color(0xffF6F9FF),
@@ -150,6 +153,7 @@ class UploadYourViedoScreen extends StatelessWidget {
               title: const Text(
                 'Tag People',
                 style: TextStyle(
+                  fontFamily: 'ProximaNova',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff424B5A),
@@ -168,6 +172,7 @@ class UploadYourViedoScreen extends StatelessWidget {
               title: const Text(
                 'Location',
                 style: TextStyle(
+                  fontFamily: 'ProximaNova',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff424B5A),
@@ -203,6 +208,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                                 child: Text(
                                   '# Hashtags',
                                   style: TextStyle(
+                                      fontFamily: 'ProximaNova',
                                       fontSize: 10,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xff7390A1)),
@@ -229,6 +235,7 @@ class UploadYourViedoScreen extends StatelessWidget {
               title: const Text(
                 'Content Disclosure',
                 style: TextStyle(
+                  fontFamily: 'ProximaNova',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff424B5A),
@@ -247,6 +254,7 @@ class UploadYourViedoScreen extends StatelessWidget {
               title: const Text(
                 'Add Link',
                 style: TextStyle(
+                  fontFamily: 'ProximaNova',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff424B5A),
@@ -265,6 +273,7 @@ class UploadYourViedoScreen extends StatelessWidget {
               title: const Text(
                 'Everyone Can View This Post',
                 style: TextStyle(
+                  fontFamily: 'ProximaNova',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff424B5A),
@@ -283,6 +292,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                 title: const Text(
                   'Allow Comments',
                   style: TextStyle(
+                    fontFamily: 'ProximaNova',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff424B5A),
@@ -307,6 +317,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                 Text(
                   'Automatically share to:',
                   style: TextStyle(
+                    fontFamily: 'ProximaNova',
                     fontSize: 10,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff424B5A),

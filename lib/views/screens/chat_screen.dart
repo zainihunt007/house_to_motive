@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../mrg/screens/Favourites/newFav.dart';
 import 'home_screens/home_model.dart';
+import 'notification_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -12,10 +14,8 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
         centerTitle: true,
         backgroundColor: const Color(0xff025B8F),
         leading: Padding(
@@ -67,9 +67,17 @@ class ChatScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          SvgPicture.asset('assets/appbar/heart.svg'),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => FavList());
+              },
+              child: SvgPicture.asset('assets/appbar/heart.svg')),
           const SizedBox(width: 10),
-          SvgPicture.asset('assets/appbar/Notification.svg'),
+          GestureDetector(
+              onTap: (){
+                Get.to(() => NotificationScreen());
+              },
+              child: SvgPicture.asset('assets/appbar/Notification.svg')),
           const SizedBox(width: 10),
         ],
       ),
@@ -184,49 +192,54 @@ class ChatScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/3.jpg'),
                           ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
+                          title: Text(
+                            'Ariana Sime',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff161616),
                             ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Image.asset('assets/pngs/export.png'),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Hey bro, do you want...',
+                                style: GoogleFonts.nunito(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xff575757),
                                 ),
                               ),
-                            )
-                          ],
+                            ],
+                          ),
+                          trailing: const Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('5:35 PM'),
+                              CircleAvatar(
+                                radius: 8,
+                                backgroundColor: Color(0xff025B8F),
+                                child: Center(
+                                  child: Text(
+                                    '8',
+                                    style:
+                                    TextStyle(color: Colors.white, fontSize: 10),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -742,7 +755,7 @@ class BottomSheetDeletDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/svgs/akar-icons_chat-error.svg'),
-              const SizedBox(height: 17),
+              SizedBox(height: 1.7.h),
               Text(
                 'Delete Ariana Conversation?',
                 style: GoogleFonts.inter(
@@ -750,17 +763,17 @@ class BottomSheetDeletDialog extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w700),
               ),
-              const SizedBox(height: 17),
+              SizedBox(height: 1.7.h),
               Text(
                 textAlign: TextAlign.center,
                 'Do you really want to delete this conversation?',
                 style: GoogleFonts.inter(
                   color: const Color(0xff424B5A),
-                  fontSize: 14,
+                  fontSize: 14.px,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 3.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -769,8 +782,8 @@ class BottomSheetDeletDialog extends StatelessWidget {
                       Get.back();
                     },
                     child: Container(
-                      height: 44,
-                      width: 140,
+                      height: 5.5.h,
+                      width: 40.w,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xff090808),
@@ -789,8 +802,8 @@ class BottomSheetDeletDialog extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 44,
-                    width: 140,
+                    height: 5.5.h,
+                    width: 40.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: const Color(0xff025B8F),
@@ -820,3 +833,33 @@ class BottomSheetDeletDialog extends StatelessWidget {
     );
   }
 }
+
+
+class DataModel {
+  final String imageUrl;
+  final String title;
+  final String subtitle;
+  final int number;
+
+  DataModel({
+    required this.imageUrl,
+    required this.title,
+    required this.subtitle,
+    required this.number,
+  });
+}
+
+  final List<DataModel> data = [
+    DataModel(
+      imageUrl: 'https://example.com/image1.jpg',
+      title: 'Item 1',
+      subtitle: 'Description 1',
+      number: 42,
+    ),
+    DataModel(
+      imageUrl: 'https://example.com/image2.jpg',
+      title: 'Item 2',
+      subtitle: 'Description 2',
+      number: 17,
+    ),
+  ];

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:house_to_motive/mrg/writeReview.dart';
+
+import '../views/screens/video_screen.dart';
 
 class ReviewScreen extends StatefulWidget {
   const ReviewScreen({Key? key}) : super(key: key);
@@ -48,7 +53,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  children: <InlineSpan>[
+                  children: const <InlineSpan>[
                     TextSpan(
                       text: '3 Reviews  ( ',
                       style: TextStyle(
@@ -73,30 +78,20 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
               Row(
                 children: [
-                  ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return const LinearGradient(
-                        colors: [Color(0xffFF0092), Color(0xff216DFD)],
-                      ).createShader(bounds);
-                    },
-                    child: const Text(
-                      "See All",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: size.width / 20),
-                  ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return const LinearGradient(
-                        colors: [Color(0xffFF0092), Color(0xff216DFD)],
-                      ).createShader(bounds);
-                    },
-                    child: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 12),
-                  ),
+                  InkWell(
+                      onTap: (){
+                        _showBottomSheetSlider(context);
+                      },
+                      child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
+                  // SizedBox(width: size.width / 20),
+                  // ShaderMask(
+                  //   shaderCallback: (Rect bounds) {
+                  //     return const LinearGradient(
+                  //       colors: [Color(0xffFF0092), Color(0xff216DFD)],
+                  //     ).createShader(bounds);
+                  //   },
+                  //   child: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 12),
+                  // ),
                 ],
               ),
             ],
@@ -105,6 +100,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
             child: ListView.builder(
               itemCount: data.length,
               // padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 double rate = double.parse(data[index]['rate']);
                 return InkWell(
@@ -115,7 +112,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     // builder: (context) => ProfileChatScreen(userId: '',)),
                     // );
                   },
-                  child: GestureDetector( onTap: () {
+                  child: GestureDetector(
+                    onTap: () {
                     _showBottomSheetSlider(context);
                   },
                     child: ListTile(
@@ -125,7 +123,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       ),
                       title: Text(
                         data[index]['name'],
-                        style: TextStyle(fontSize: 14, color: Color(0xff8A8B8F), fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 14, color: Color(0xff8A8B8F), fontWeight: FontWeight.bold),
                       ),
 
                       subtitle: Column(
@@ -133,12 +131,12 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         children: [SizedBox(height: size.height/90,),
                           Text(
                             data[index]['description'],
-                            style: TextStyle(color: Colors.black, fontSize: 14),
+                            style: const TextStyle(color: Colors.black, fontSize: 14),
                           ),
                           SizedBox(height: size.height/80,),
                           Text(
                             data[index]['time'],
-                            style: TextStyle(color: Color(0xff8A8B8F), fontSize: 12),
+                            style: const TextStyle(color: Color(0xff8A8B8F), fontSize: 12),
                           ),
                         ],
                       ),
@@ -148,10 +146,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.star, color: Color(0xffFFB600), size: 13),
+                            const Icon(Icons.star, color: Color(0xffFFB600), size: 13),
                             Text(
                               data[index]['rate'],
-                              style: TextStyle(color: Colors.black, fontSize: 13),
+                              style: const TextStyle(color: Colors.black, fontSize: 13),
                             ),
                           ],
                         ),
@@ -172,16 +170,16 @@ class _ReviewScreenState extends State<ReviewScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.65,
-          padding: EdgeInsets.all(16.0),
-          child: Column(
+          padding: const EdgeInsets.all(16.0),
+          child: const Column(
             children: [
-              const Expanded(child: writeReview()),
+              Expanded(child: writeReview()),
               // Add your content here
             ],
           ),

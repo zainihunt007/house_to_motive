@@ -31,7 +31,11 @@ class CustomButtonWithIcon extends StatelessWidget {
                 SizedBox(width: 15),
                 Text(
                   title,
-                  style: TextStyle(fontSize: 14, color: Colors.white),
+                  style: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,),
                 ),
               ],
             ),

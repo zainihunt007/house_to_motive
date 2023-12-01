@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -47,7 +46,7 @@ class CreateEvent3Screen extends StatelessWidget {
                 'Date',
                 style: GoogleFonts.inter(
                   fontSize: 17,
-                  color: Color(0xff025B8F),
+                  color: const Color(0xff025B8F),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -55,10 +54,15 @@ class CreateEvent3Screen extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Enter event name',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff090808),),
                   isCollapsed: true,
                   contentPadding: EdgeInsets.symmetric(horizontal: 2.h,vertical: 1.5.h),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black12),
+                    borderSide: const BorderSide(color: Colors.black12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   border: OutlineInputBorder(
@@ -71,7 +75,7 @@ class CreateEvent3Screen extends StatelessWidget {
                 'Description',
                 style: GoogleFonts.inter(
                   fontSize: 17,
-                  color: Color(0xff025B8F),
+                  color: const Color(0xff025B8F),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -80,10 +84,15 @@ class CreateEvent3Screen extends StatelessWidget {
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: 'Enter your event description',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff090808),),
                   isCollapsed: true,
                   contentPadding: EdgeInsets.symmetric(horizontal: 2.h,vertical: 1.5.h),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black12),
+                    borderSide: const BorderSide(color: Colors.black12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   border: OutlineInputBorder(
@@ -96,7 +105,7 @@ class CreateEvent3Screen extends StatelessWidget {
                 'Categories',
                 style: GoogleFonts.inter(
                   fontSize: 17,
-                  color: Color(0xff025B8F),
+                  color: const Color(0xff025B8F),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -113,12 +122,13 @@ class CreateEvent3Screen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Art & Music',
                         style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.black),
+                          fontFamily: 'ProximaNova',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff090808),),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -144,16 +154,17 @@ class CreateEvent3Screen extends StatelessWidget {
                     children: [
                       SvgPicture.asset('assets/svgs/Document Upload 4.svg'),
                       SizedBox(width: 2.h),
-                      GradientText(
+                      const GradientText(
                         text: "Upload Photos",
-                        gradient: const LinearGradient(colors: [
+                        gradient: LinearGradient(colors: [
                           Color(0xffFF0092),
                           Color(0xff216DFD),
                         ]),
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w400,
+                        style: TextStyle(
+                          fontFamily: 'ProximaNova',
                           fontSize: 18,
-                        ),
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff424B5A),),
                       ),
                     ],
                   ),
@@ -241,7 +252,7 @@ class BottomSheetEventDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/svgs/Ticket 2.svg'),
-              const SizedBox(height: 17),
+              SizedBox(height: 1.7.h),
                Text(
                 'Event Created Successfully !',
                 style: GoogleFonts.inter(
@@ -250,20 +261,20 @@ class BottomSheetEventDialog extends StatelessWidget {
                   color: Colors.black,
                 )
               ),
-              const SizedBox(height: 17),
+              SizedBox(height: 1.7.h),
               Text(
                 textAlign: TextAlign.center,
                 'Waiting for the HouseToMotive to approve this event.',
                 style: GoogleFonts.inter(
-                  color: Color(0xff424B5A),
+                  color: const Color(0xff424B5A),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 3.h),
               Container(
-                height: 44,
-                width: 50.w,
+                height: 5.5.h,
+                width: 40.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color(0xff025B8F),

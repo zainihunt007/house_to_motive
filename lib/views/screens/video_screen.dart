@@ -44,6 +44,7 @@ class VideoScreen extends StatelessWidget {
                       const Text(
                         'What’s near me ',
                         style: TextStyle(
+                            fontFamily: 'ProximaNova',
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
                             color: Colors.white),
@@ -51,6 +52,7 @@ class VideoScreen extends StatelessWidget {
                       const Text(
                         '|',
                         style: TextStyle(
+                            fontFamily: 'ProximaNova',
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
                             color: Color(0xffDADADA)),
@@ -58,6 +60,7 @@ class VideoScreen extends StatelessWidget {
                       const Text(
                         'Based on Likes',
                         style: TextStyle(
+                            fontFamily: 'ProximaNova',
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
                             color: Color(0xffDADADA)),

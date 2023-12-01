@@ -32,6 +32,13 @@ class _writeReviewState extends State<writeReview> {
       'rate': "(4.9)",
       'time': '10/12/2022',
     },
+    {
+      'image': 'assets/model1.jpg',
+      'name': 'Zeeshan',
+      'description': "Great! Thank you soo much",
+      'rate': "(4.9)",
+      'time': '10/12/2022',
+    },
 
   ];
 
@@ -46,7 +53,7 @@ class _writeReviewState extends State<writeReview> {
             RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: <InlineSpan>[
+                children: const <InlineSpan>[
                   TextSpan(
                     text: '3 Reviews',
                     style: TextStyle(
@@ -159,8 +166,8 @@ SizedBox(height: 20,width: 20,)
           height: MediaQuery.of(context).size.height * 0.65,
           padding: EdgeInsets.all(16.0),
           child: Column(
-            children: [
-              const Expanded(child: ratingstarScreen()),
+            children: const [
+              Expanded(child: ratingstarScreen()),
               // Add your content here
             ],
           ),

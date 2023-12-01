@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       Duration(seconds: 4), // Adjust the duration as needed
           () {
-        Get.to(() =>IntroScreenOne());
+        Get.offAll(() =>IntroScreenOne());
       },
     );
   }

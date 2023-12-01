@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,12 +9,14 @@ class ProfileWidget extends StatelessWidget {
   final bool red;
   final String title;
   final VoidCallback? onTap;
+  final String svg;
   const ProfileWidget(
       {super.key,
       required this.title,
       this.isDevider = true,
       this.red = false,
-      required this.onTap
+      required this.onTap,
+        required this.svg,
       });
 
   @override
@@ -36,10 +39,7 @@ class ProfileWidget extends StatelessWidget {
                       color: red ? Colors.red : Color(0xff025B8F),
                     ),
                     child: Center(
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
+                      child: SvgPicture.asset(svg),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -61,6 +61,7 @@ class ProfileWidget extends StatelessWidget {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: Color(0xff3C3C434D),
+                          size: 15,
                         ),
                       ],
                     ),

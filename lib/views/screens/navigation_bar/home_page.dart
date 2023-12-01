@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:house_to_motive/views/screens/navigation_bar/text_style.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../mrg/screens/Favourites/newFav.dart';
 import '../explore_screen.dart';
 import '../chat_screen.dart';
 import '../home_screens/home_screen.dart';
+import '../notification_screen.dart';
 import '../profile_screen.dart';
 import '../search.dart';
 import 'color.dart';
@@ -28,9 +32,6 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-                systemOverlayStyle: const SystemUiOverlayStyle(
-                    statusBarColor:Colors.green,
-                    statusBarIconBrightness: Brightness.light),
           toolbarHeight: 80,
                 centerTitle: true,
                 backgroundColor: const Color(0xff025B8F),
@@ -83,9 +84,17 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 actions: [
-                  SvgPicture.asset('assets/appbar/heart.svg'),
+                  GestureDetector(
+                      onTap: (){
+                        Get.to(() => FavList());
+                      },
+                      child: SvgPicture.asset('assets/appbar/heart.svg')),
                   const SizedBox(width: 10),
-                  SvgPicture.asset('assets/appbar/Notification.svg'),
+                  GestureDetector(
+                      onTap: (){
+                        Get.to(() => NotificationScreen());
+                      },
+                      child: SvgPicture.asset('assets/appbar/Notification.svg')),
                   const SizedBox(width: 10),
                 ],
               ),

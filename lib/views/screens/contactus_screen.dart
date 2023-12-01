@@ -28,7 +28,7 @@ class ContactUSScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: const Color(0xff025B8F),
         title: Text(
-          'Settings',
+          'Contact Us',
           style: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -44,11 +44,19 @@ class ContactUSScreen extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
+                  ),
+                  hintStyle: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff3F2D20),),
                   contentPadding: EdgeInsets.all(10),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
                   ),
                 ),
               ),
@@ -58,11 +66,19 @@ class ContactUSScreen extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Emain address",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
+                  ),
+                  hintStyle: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff3F2D20),),
                   contentPadding: EdgeInsets.all(10),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
                   ),
                 ),
               ),
@@ -72,11 +88,19 @@ class ContactUSScreen extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Select Subject",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
+                  ),
+                  hintStyle: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff3F2D20),),
                   contentPadding: EdgeInsets.all(10),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
                   ),
                   suffixIcon: CircleAvatar(
                     backgroundColor: Colors.transparent,
@@ -93,12 +117,20 @@ class ContactUSScreen extends StatelessWidget {
               TextFormField(
                 maxLines: 5,
                 decoration: InputDecoration(
-                  hintText: "Write your message here",
+                  hintText: "Write your message here...",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
+                  ),
+                  hintStyle: TextStyle(
+                    fontFamily: 'ProximaNova',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff3F2D20),),
                   contentPadding: EdgeInsets.all(10),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:  BorderSide(color: Color(0xffD9D9D9),),
                   ),
                 ),
               ),

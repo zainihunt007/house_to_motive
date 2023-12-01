@@ -66,7 +66,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
               'Date',
               style: GoogleFonts.inter(
                 fontSize: 17,
-                color: Color(0xff025B8F),
+                color: const Color(0xff025B8F),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -83,12 +83,13 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       '12/17/2023',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: Colors.black),
+                        fontFamily: 'ProximaNova',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff090808),),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -112,7 +113,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                   'Start',
                   style: GoogleFonts.inter(
                     fontSize: 17,
-                    color: Color(0xff025B8F),
+                    color: const Color(0xff025B8F),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -121,7 +122,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                   'End',
                   style: GoogleFonts.inter(
                     fontSize: 17,
-                    color: Color(0xff025B8F),
+                    color: const Color(0xff025B8F),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -145,10 +146,11 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                         children: [
                           Text(
                             '${selectedTime.format(context)}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.black),
+                            style: const TextStyle(
+                              fontFamily: 'ProximaNova',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff090808),),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -177,10 +179,11 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                         children: [
                           Text(
                             '${selectedTime.format(context)}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.black),
+                            style: const TextStyle(
+                              fontFamily: 'ProximaNova',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff090808),),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -200,7 +203,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
               'Location',
               style: GoogleFonts.inter(
                 fontSize: 17,
-                color: Color(0xff025B8F),
+                color: const Color(0xff025B8F),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -215,17 +218,18 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                       border: Border.all(color: Colors.black12),
                       // color: Colors.blue,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Machester Road London',
+                            '540 Machester Road London',
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.black),
+                              fontFamily: 'ProximaNova',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff090808),),
                           ),
                         ],
                       ),
@@ -252,11 +256,11 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
             ListTile(
               dense: true,
               title: Text(
-                'Machester Road London',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Colors.black),
+                'Make this event private',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff090808),),
               ),
               trailing: Obx(
                     () => Switch(
@@ -271,11 +275,11 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
             ListTile(
               dense: true,
               title: Text(
-                'Machester Road London',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Colors.black),
+                'Disable Comments',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff090808),),
               ),
               trailing: Obx(
                     () => Switch(
@@ -287,7 +291,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Row(
               children: [
                 Expanded(
@@ -315,7 +319,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Get.to(() => CreateEvent3Screen());
+                      Get.to(() => const CreateEvent3Screen());
                     },
                     child: Container(
                       height: 5.5.h,
@@ -353,14 +357,14 @@ class CustomDialog extends StatelessWidget {
       child: Container(
         height: 40.h,
         decoration: BoxDecoration(
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage("assets/images/Date&Time Picker.png"),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: EdgeInsets.all(20),
-        child: Column(
+        padding: const EdgeInsets.all(20),
+        child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text("Your Dialog Content Here",

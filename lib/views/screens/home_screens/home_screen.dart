@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/views/screens/notification_screen.dart';
+import '../../../mrg/screens/Favourites/newFav.dart';
 import '../upload_your_video.dart';
 import 'events_nearme.dart';
 import 'things_todo.dart';
@@ -79,9 +81,17 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           actions: [
-            SvgPicture.asset('assets/appbar/heart.svg'),
+            GestureDetector(
+                onTap: (){
+                  Get.to(() => FavList());
+                },
+                child: SvgPicture.asset('assets/appbar/heart.svg')),
             const SizedBox(width: 10),
-            SvgPicture.asset('assets/appbar/Notification.svg'),
+            GestureDetector(
+                onTap: (){
+                  Get.to(() => NotificationScreen());
+                },
+                child: SvgPicture.asset('assets/appbar/Notification.svg')),
             const SizedBox(width: 10),
           ],
         ),
@@ -117,14 +127,16 @@ class HomeScreen extends StatelessWidget {
                               child: isSelected.value
                                   ? Text(
                                       '🎉  Things to Do',
-                                      style: GoogleFonts.inter(
+                                      style: TextStyle(
+                                        fontFamily: 'arial',
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12,
                                           color: Colors.white),
                                     )
                                   : Text(
                                       '🎉 Things to Do',
-                                      style: GoogleFonts.inter(
+                                      style: TextStyle(
+                                          fontFamily: 'arial',
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12,
                                           color: Color(0xff025B8F)),
@@ -156,14 +168,16 @@ class HomeScreen extends StatelessWidget {
                               child: !isSelected.value
                                   ? Text(
                                 '🗓️  Events Near Me',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(
+                                    fontFamily: 'arial',
                                     fontWeight: FontWeight.w400,
                                     fontSize: 12,
                                     color: Colors.white),
                               )
                                   : Text(
                                 '🗓️  Events Near Me',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(
+                                    fontFamily: 'arial',
                                     fontWeight: FontWeight.w400,
                                     fontSize: 12,
                                     color: Color(0xff025B8F)),

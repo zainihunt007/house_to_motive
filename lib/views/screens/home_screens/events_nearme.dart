@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../video_screen.dart';
 import 'home_model.dart';
 
 class EventsNearmeScreen extends StatelessWidget {
@@ -30,10 +31,11 @@ class EventsNearmeScreen extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),
@@ -238,10 +240,11 @@ class EventsNearmeScreen extends StatelessWidget {
                       color: Colors.black),
                 ),
                 const Spacer(),
-                GestureDetector(
-                    onTap: () {},
-                    child: SvgPicture.asset(
-                        'assets/svgs/home/Group 1171274839.svg')),
+                InkWell(
+                    onTap: (){
+                      Get.to(() => VideoScreen());
+                    },
+                    child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
             ),
           ),

@@ -51,6 +51,7 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
               const Text(
                 'Enter Phone Number',
                 style: TextStyle(
+                  fontFamily: 'Mont',
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
                   color: Color(0xff025B8F),
@@ -61,43 +62,45 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 'Please enter your valid phone number. We will send you a 6-digit code to verify your account. ',
                 style: TextStyle(
-                  color: Color(0xff424B5A),
+                  fontFamily: 'ProximaNova',
                   fontSize: 14,
-                ),
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff424B5A),),
               ),
               SizedBox(height: screenHeight * 0.03),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.074,
+                height: MediaQuery.of(context).size.height * 0.068,
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black38),
+                    border: Border.all(color: Color(0xffD9D9D9),),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8, left: 8),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(
-                            number.phoneNumber); // Prints the entered phone number
                       },
                       onInputValidated: (bool value) {
-                        // Callback when the phone number is validated or not
-                        print(value);
                       },
-                      selectorConfig: SelectorConfig(
+                      selectorConfig: const SelectorConfig(
                         selectorType: PhoneInputSelectorType.DIALOG,
                       ),
                       ignoreBlank: false,
                       autoValidateMode: AutovalidateMode.onUserInteraction,
-                      selectorTextStyle: TextStyle(color: Colors.black),
+                      selectorTextStyle: const TextStyle(color: Colors.black),
                       // initialValue: _phoneNumber,
                       textFieldController: TextEditingController(),
                       formatInput: false,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
-                      inputDecoration: InputDecoration(
+                      inputDecoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Phone Number',
+                        labelStyle: TextStyle(
+                          fontFamily: 'ProximaNova',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff7390A1),),
                         // border: OutlineInputBorder(
                         //   borderSide: BorderSide(),
                         // ),
@@ -118,21 +121,22 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                   const Text(
                     'Didn’t get the code? ',
                     style: TextStyle(
-                      color: Color(0xff424B5A),
+                      fontFamily: 'ProximaNova',
                       fontSize: 14,
-                    ),
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff424B5A),),
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => CreateaccVerifyNumberScreen());
+                      Get.to(() => const CreateaccVerifyNumberScreen());
                     },
                     child: const Text(
                       ' Resend Again',
                       style: TextStyle(
-                        color: Color(0xff025B8F),
+                        fontFamily: 'ProximaNova',
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff025B8F),),
                     ),
                   ),
                 ],

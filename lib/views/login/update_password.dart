@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:house_to_motive/views/createan_account/signup_screen.dart';
-import 'package:house_to_motive/widgets/custom_socialbutton.dart';
-
 import '../../widgets/custom_field.dart';
 import '../../widgets/loginbutton.dart';
 
@@ -51,6 +49,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                 const Text(
                   'Update Password',
                   style: TextStyle(
+                    fontFamily: 'Mont',
                     fontSize: 24,
                     fontWeight: FontWeight.w900,
                     color: Color(0xff025B8F),
@@ -61,14 +60,15 @@ class UpdatePasswordScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   "Password must have 8 digits mix of characters, numbers and symbols.",
                   style: TextStyle(
-                    color: Color(0xff424B5A),
+                    fontFamily: 'ProximaNova',
                     fontSize: 14,
-                  ),
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff424B5A),),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                CustomEmailField(),
+                const CustomPasswordField(title: 'Enter password'),
                 SizedBox(height: screenHeight * 0.01),
-                const CustomPasswordField(),
+                const CustomPasswordField(title: 'Confirm password',),
                 SizedBox(height: screenHeight * 0.03),
                 CustomButton(
                   title: "Update Password",

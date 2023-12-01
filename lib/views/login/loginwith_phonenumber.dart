@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:house_to_motive/views/login/loginwith_email.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../widgets/custom_field.dart';
 import '../../widgets/custom_socialbutton.dart';
 import '../../widgets/loginbutton.dart';
@@ -51,9 +49,10 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
+                const Text(
                   'Login To Continue',
                   style: TextStyle(
+                    fontFamily: 'Mont',
                     fontSize: 24,
                     fontWeight: FontWeight.w900,
                     color: Color(0xff025B8F),
@@ -62,12 +61,13 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                 SizedBox(
                   height: screenHeight * 0.01
                 ),
-                Text(
+                const Text(
                   'Welcome back to HouseToMotive!',
                   style: TextStyle(
-                    color: Color(0xff424B5A),
+                    fontFamily: 'ProximaNova',
                     fontSize: 14,
-                  ),
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff424B5A),),
                 ),
                 SizedBox(
                     height: screenHeight * 0.03
@@ -77,9 +77,9 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                   children: [
                     CustomButtonWithIcon(
                       ontap: (){
-                        Get.to(()=> LoginWithEmailScreen());
+                        Get.to(()=>  LoginWithEmailScreen());
                       },
-                      title: 'Login With Email',
+                      title: 'With Email',
                       svg: "assets/svgs/social/Mail.svg",
                     ),
                     CustomSocialButton(svg: "assets/svgs/social/google.svg",ontap: (){},),
@@ -87,22 +87,23 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.03),
-                Text(
-                  'Or with Email',
+                const Text(
+                  'Or with Email Phone Number',
                   style: TextStyle(
-                    color: Color(0xff424B5A),
+                    fontFamily: 'ProximaNova',
                     fontSize: 14,
-                  ),
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff424B5A),),
                 ),
                 SizedBox(
                   height: screenHeight * 0.02
                 ),
                 // CheckDotComWidget(),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.074,
+                  height: MediaQuery.of(context).size.height * 0.068,
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black38),
+                      border: Border.all(color: Color(0xffD9D9D9)),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Padding(
@@ -116,20 +117,25 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                           // Callback when the phone number is validated or not
                           print(value);
                         },
-                        selectorConfig: SelectorConfig(
+                        selectorConfig: const SelectorConfig(
                           selectorType: PhoneInputSelectorType.DIALOG,
                         ),
                         ignoreBlank: false,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
-                        selectorTextStyle: TextStyle(color: Colors.black),
+                        selectorTextStyle: const TextStyle(color: Colors.black),
                         // initialValue: _phoneNumber,
                         textFieldController: TextEditingController(),
                         formatInput: false,
-                        keyboardType: TextInputType.numberWithOptions(
+                        keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),
-                        inputDecoration: InputDecoration(
+                        inputDecoration: const InputDecoration(
                           border: InputBorder.none,
                           labelText: 'Phone Number',
+                          labelStyle: TextStyle(
+                            fontFamily: 'ProximaNova',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff7390A1),),
                           // border: OutlineInputBorder(
                           //   borderSide: BorderSide(),
                           // ),
@@ -139,7 +145,7 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                CustomPasswordField(),
+                const CustomPasswordField(title: 'Enter password'),
                 SizedBox(height: screenHeight * 0.03),
                 CustomButton(
                   title: "Login",
@@ -149,24 +155,25 @@ class LoginWithPhoneNumberScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'New User?',
                       style: TextStyle(
-                        color: Color(0xff424B5A),
+                        fontFamily: 'ProximaNova',
                         fontSize: 14,
-                      ),
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff424B5A),),
                     ),
                     GestureDetector(
                       onTap: () {
                         Get.to(()=> ForgotPasswordScreen());
                       },
-                      child: Text(
+                      child: const Text(
                         ' Sign Up',
                         style: TextStyle(
-                          color: Color(0xff025B8F),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontFamily: 'ProximaNova',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff025B8F),),
                       ),
                     ),
                   ],
