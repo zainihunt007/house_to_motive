@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
+import 'package:house_to_motive/views/screens/navigation_bar/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../intro_screens/intro_screen1.dart';
-import '../intro_screens/onboard_2.dart';
-import 'loginwith_email.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,12 +17,23 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(
-      Duration(seconds: 4), // Adjust the duration as needed
-          () {
-        Get.offAll(() =>IntroScreenOne());
+      const Duration(seconds: 4), // Adjust the duration as needed
+      () {
+        nextScreen();
       },
     );
   }
+
+  nextScreen() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.getBool('isLogin') == false ||
+        preferences.getBool('isLogin') == null) {
+      Get.offAll(() => const IntroScreenOne());
+    } else {
+      Get.offAll(() => const HomePage());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

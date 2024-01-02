@@ -529,7 +529,6 @@ class _FavListState extends State<FavList> {
                         setState(() {
                           flag = 1;
                         });
-
                         //Navigator.push(context, MaterialPageRoute(builder: (context)=>FavVideos()));
                       },
                       child: Container(

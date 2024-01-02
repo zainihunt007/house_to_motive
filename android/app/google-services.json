@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "798838309350",
-    "project_id": "housetomotive-5ada2",
-    "storage_bucket": "housetomotive-5ada2.appspot.com"
+    "project_number": "1040213504277",
+    "project_id": "house-to-motive",
+    "storage_bucket": "house-to-motive.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:798838309350:android:25475fb0b8172465125627",
+        "mobilesdk_app_id": "1:1040213504277:android:06a919feefc70ad979f91c",
         "android_client_info": {
           "package_name": "com.example.house_to_motive"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDX7Hke7sKP9kPCr1tiBT4VzCFsvb4BAPg"
+          "current_key": "AIzaSyAeA1Qh7gkR_SBYm8SA36M_RfG0lKhJioI"
         }
       ],
       "services": {

@@ -59,6 +59,21 @@ dependencies:
   cloud_firestore: ^4.13.3
   fluttertoast: ^8.2.4
   google_sign_in: ^6.1.6
+  flutter_facebook_auth: ^6.0.3
+  shared_preferences: ^2.2.2
+  http: ^1.1.0
+  image_picker: ^1.0.4
+  permission_handler: ^11.0.1
+  intl: ^0.18.1
+  google_maps_flutter: ^2.5.0
+  flutter_chat_ui: ^1.6.10
+  file_picker: ^6.1.1
+  open_filex: ^4.3.4
+  geolocator: ^10.1.0
+  location: ^5.0.3
+  firebase_database: ^10.3.8
+  path: ^1.8.3
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:

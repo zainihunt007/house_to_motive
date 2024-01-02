@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../mrg/screens/Favourites/newFav.dart';
+import 'chat_ui.dart';
 import 'home_screens/home_model.dart';
 import 'notification_screen.dart';
 
@@ -194,7 +195,7 @@ class ChatScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-
+                          Get.to(() =>  const ChatPage());
                         },
                         child: ListTile(
                           leading: const CircleAvatar(

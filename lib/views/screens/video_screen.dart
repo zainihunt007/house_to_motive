@@ -1,28 +1,70 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatelessWidget {
-  const VideoScreen({super.key});
+  VideoScreen({super.key});
   void _shareContent() {
     Share.share('house_to_motive');
   }
+
+  final RxBool isLiked = false.obs;
+
+  final CollectionReference videosCollection =
+      FirebaseFirestore.instance.collection('videos');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(
-            'assets/images/pic.png',
-            fit: BoxFit.fill,
-            width: MediaQuery.of(context).size.width,
+          SizedBox(
             height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: FutureBuilder<QuerySnapshot>(
+              future: videosCollection.get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error fetching videos'));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No videos found'));
+                }
+
+                List<DocumentSnapshot> videoDocs = snapshot.data!.docs;
+
+                return PageView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: videoDocs.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> data =
+                        videoDocs[index].data() as Map<String, dynamic>;
+
+                    return VideoPlayerScreen(videoUrl: data['videoUrl']);
+                  },
+                );
+              },
+            ),
           ),
-          SafeArea(
+          // Image.asset(
+          //   'assets/images/pic.png',
+          //   fit: BoxFit.fill,
+          //   width: MediaQuery.of(context).size.width,
+          //   height: MediaQuery.of(context).size.height,
+          // ),
+          Obx(() => SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -144,7 +186,7 @@ class VideoScreen extends StatelessWidget {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                              MediaQuery.of(context).size.height * 0.02),
                         ],
                       ),
                       Column(
@@ -159,7 +201,7 @@ class VideoScreen extends StatelessWidget {
                                   radius: 20,
                                   backgroundColor: Colors.black,
                                   backgroundImage:
-                                      AssetImage('assets/images/3.jpg'),
+                                  AssetImage('assets/images/3.jpg'),
                                 ),
                               ),
                               Positioned(
@@ -181,7 +223,15 @@ class VideoScreen extends StatelessWidget {
                             // color: Colors.red,
                             child: Column(
                               children: [
-                                SvgPicture.asset('assets/svgs/Like icon.svg'),
+                                InkWell(
+                                  onTap: () => isLiked.toggle(),
+                                  child: SvgPicture.asset(
+                                    'assets/svgs/Like icon.svg',
+                                    color: isLiked.value
+                                        ? Colors.red
+                                        : Colors.white,
+                                  ),
+                                ),
                                 Text(
                                   '256',
                                   style: GoogleFonts.inter(
@@ -243,8 +293,115 @@ class VideoScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          ),),
         ],
+      ),
+    );
+  }
+}
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:video_player/video_player.dart';
+// class VideoScreen extends StatelessWidget {
+//   final CollectionReference videosCollection =
+//   FirebaseFirestore.instance.collection('videos');
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Videos')),
+//       body: FutureBuilder<QuerySnapshot>(
+//         future: videosCollection.get(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           }
+//
+//           if (snapshot.hasError) {
+//             return Center(child: Text('Error fetching videos'));
+//           }
+//
+//           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//             return Center(child: Text('No videos found'));
+//           }
+//
+//           List<DocumentSnapshot> videoDocs = snapshot.data!.docs;
+//
+//           return PageView.builder(
+//             scrollDirection: Axis.vertical,
+//             itemCount: videoDocs.length,
+//             itemBuilder: (context, index) {
+//               Map<String, dynamic> data =
+//               videoDocs[index].data() as Map<String, dynamic>;
+//
+//               return VideoPlayerScreen(videoUrl: data['videoUrl']);
+//             },
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+class VideoPlayerScreen extends StatefulWidget {
+  final String videoUrl;
+
+  VideoPlayerScreen({Key? key, required this.videoUrl}) : super(key: key);
+
+  @override
+  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+}
+
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.videoUrl);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
+    _controller.play();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: _initializeVideoPlayerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (_controller.value.isPlaying) {
+                    _controller.pause();
+                  } else {
+                    _controller.play();
+                  }
+                });
+              },
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                ),
+              ),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

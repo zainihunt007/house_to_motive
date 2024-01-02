@@ -1,18 +1,53 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:house_to_motive/views/screens/video_screen.dart';
+import 'package:path/path.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class UploadYourViedoScreen extends StatelessWidget {
   const UploadYourViedoScreen({super.key});
+
+  // Future<File?> pickVideo() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.video,
+  //   );
+  //
+  //   if (result != null) {
+  //     File file = File(result.files.single.path!);
+  //     return file;
+  //   } else {
+  //     // User canceled the picker
+  //     return null;
+  //   }
+  // }
+  //
+  //
+  // Future<void> uploadVideo(File file) async {
+  //   try {
+  //     String fileName = basename(file.path);
+  //     Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('videos/$fileName');
+  //     await firebaseStorageRef.putFile(file);
+  //     // You can also get the download URL after uploading
+  //     // String downloadURL = await firebaseStorageRef.getDownloadURL();
+  //   } on FirebaseException catch (e) {
+  //     // Handle any errors
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final VideoController videoController = Get.put(VideoController());
     RxBool light0 = true.obs;
     return Scaffold(
       appBar: AppBar(
@@ -78,15 +113,13 @@ class UploadYourViedoScreen extends StatelessWidget {
                                         Padding(
                                           padding:
                                           EdgeInsets.symmetric(horizontal: 4.0),
-                                          child: Expanded(
-                                            child: Text(
-                                              '# Hashtags',
-                                              style: TextStyle(
-                                                  fontFamily: 'ProximaNova',
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(0xff7390A1)),
-                                            ),
+                                          child: Text(
+                                            '# Hashtags',
+                                            style: TextStyle(
+                                                fontFamily: 'ProximaNova',
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xff7390A1)),
                                           ),
                                         ),
                                       ],
@@ -102,19 +135,66 @@ class UploadYourViedoScreen extends StatelessWidget {
                   ),
                   Stack(
                     children: [
-                      Container(
-                        height: 17.h,
-                        width: 32.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.orange,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.asset('assets/images/4.jpg',
-                              fit: BoxFit.fill),
-                        ),
-                      ),
+                      Obx(() {
+                        if (videoController.isUploading.value) {
+                          return Container(
+                            height: 17.h,
+                            width: 32.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.orange,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Center(
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.network(
+                                      videoController.thumbnailUrl.value!,
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                      height: MediaQuery.of(context).size.height,
+                                    ),
+                                    CircularProgressIndicator(value: videoController.uploadProgress.value / 100),
+                                    Text("${videoController.uploadProgress.value.toStringAsFixed(0)}%"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );// Show loading indicator
+                        } else {
+                          return Container(
+                            height: 17.h,
+                            width: 32.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.orange,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child:  Obx(() {
+                                if (videoController.thumbnailUrl.value !=
+                                    null) {
+                                  return Container(
+                                    width:
+                                    128, // Set the width based on your requirements
+                                    height:
+                                    128, // Set the height based on your requirements
+                                    child: Image.network(
+                                      videoController.thumbnailUrl.value!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                } else {
+                                  return Image.asset(
+                                      'assets/pngs/upload_icon.png');
+                                }
+                              }),
+                            ),
+                          ); // Show nothing when not uploading
+                        }
+                      }),
                       Positioned(
                         bottom: 0,
                         child: Container(
@@ -126,16 +206,21 @@ class UploadYourViedoScreen extends StatelessWidget {
                             ),
                             color: const Color(0xff025B8F).withOpacity(0.7),
                           ),
-                          child: const Center(
-                              child: Text(
-                            'Choose Cover',
-                            style: TextStyle(
-                              fontFamily: 'ProximaNova',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 10,
-                              color: Color(0xffF6F9FF),
-                            ),
-                          )),
+                          child: InkWell(
+                            onTap: (){
+                              videoController.pickVideo();
+                            },
+                            child: const Center(
+                                child: Text(
+                              'Choose Cover',
+                              style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 10,
+                                color: Color(0xffF6F9FF),
+                              ),
+                            )),
+                          ),
                         ),
                       ),
                     ],
@@ -204,15 +289,13 @@ class UploadYourViedoScreen extends StatelessWidget {
                             Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: 4.0),
-                              child: Expanded(
-                                child: Text(
-                                  '# Hashtags',
-                                  style: TextStyle(
-                                      fontFamily: 'ProximaNova',
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff7390A1)),
-                                ),
+                              child: Text(
+                                '# Hashtags',
+                                style: TextStyle(
+                                    fontFamily: 'ProximaNova',
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff7390A1)),
                               ),
                             ),
                           ],
@@ -414,7 +497,10 @@ class UploadYourViedoScreen extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: (){
-                        Get.to(() => VideoScreen());
+                        // Get.to(() => VideoScreen());
+                      videoController.uploadVideo().then((value) {
+                        Get.snackbar('Status', 'video uploaded');
+                      });
                     },
                     child: Container(
                       height: 5.5.h,
@@ -435,7 +521,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -444,9 +530,114 @@ class UploadYourViedoScreen extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
+
+
+
+
+class VideoController extends GetxController {
+  var videoFile = Rxn<File>();
+  var isUploading = false.obs;
+  var thumbnailUrl = Rxn<String>();
+  var uploadProgress = 0.0.obs;
+  // var thumbnail = Rxn<Image>();
+
+  Future<void> pickVideo() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.video,
+    );
+
+    if (result != null) {
+      videoFile.value = File(result.files.single.path!);
+      await generateThumbnail(videoFile.value!); // Generate thumbnail
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  // Future<void> generateThumbnaill(File video) async {
+  //   final uint8list = await VideoThumbnail.thumbnailData(
+  //     video: video.path,
+  //     imageFormat: ImageFormat.JPEG,
+  //     maxWidth: 128, // Specify the width of the thumbnail
+  //     quality: 25,
+  //   );
+  //
+  //   if (uint8list != null) {
+  //     thumbnail.value = Image.memory(uint8list);
+  //   }
+  // }
+
+  // Function to generate a thumbnail from a video file
+  Future<void> generateThumbnail(File video) async {
+    final uint8list = await VideoThumbnail.thumbnailData(
+      video: video.path,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 128, // Specify the width of the thumbnail
+      quality: 50,
+    );
+
+    if (uint8list != null) {
+      // Upload thumbnail to Firebase Storage
+      String thumbnailFileName = 'thumbnail_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      Reference thumbnailStorageRef = FirebaseStorage.instance.ref().child('thumbnails/$thumbnailFileName');
+      UploadTask thumbnailUploadTask = thumbnailStorageRef.putData(uint8list);
+
+      // Wait for the thumbnail upload to complete
+      await thumbnailUploadTask;
+
+      // Get the download URL of the uploaded thumbnail
+      thumbnailUrl.value = await thumbnailStorageRef.getDownloadURL();
+    }
+  }
+
+  Future<void> uploadVideo() async {
+    if (videoFile.value == null || thumbnailUrl.value == null) {
+      // Handle the case where no file or thumbnail is selected
+      return;
+    }
+
+    try {
+      isUploading.value = true;
+
+      // Get the current user's unique ID
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? 'anonymous';
+
+      String fileName = basename(videoFile.value!.path);
+
+      // Upload the video to Firebase Storage
+      Reference videoStorageRef = FirebaseStorage.instance.ref().child('user_videos/$userId/$fileName');
+      UploadTask videoUploadTask = videoStorageRef.putFile(videoFile.value!);
+
+      // Listen for changes in upload progress
+      videoUploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        uploadProgress.value = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      });
+
+      // Wait for the video upload to complete
+      await videoUploadTask;
+
+      // Get the download URL of the uploaded video
+      String videoDownloadUrl = await videoStorageRef.getDownloadURL();
+
+      // Add the video metadata to Firestore
+      await FirebaseFirestore.instance.collection('videos').add({
+        'userId': userId,
+        'videoUrl': videoDownloadUrl,
+        'thumbnailUrl': thumbnailUrl.value,
+        'timestamp': FieldValue.serverTimestamp(), // Optional: Add timestamp
+      });
+    } on FirebaseException catch (e) {
+      // Handle any errors
+      print('Error uploading video: $e');
+    } finally {
+      isUploading.value = false;
+    }
+  }
+}
+

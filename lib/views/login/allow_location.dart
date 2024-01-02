@@ -58,7 +58,7 @@ class AllowLocationScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Color(0xff424B5A),),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height / 6),
+              SizedBox(height: MediaQuery.of(context).size.height / 6.4),
               CustomButton(
                 title: 'Enable Location',
                 ontap: () {

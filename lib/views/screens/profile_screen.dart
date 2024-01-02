@@ -1,15 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_to_motive/mrg/screens/Favourites/newFav.dart';
+import 'package:house_to_motive/utils/utils.dart';
+import 'package:house_to_motive/views/login/loginwith_email.dart';
 import 'package:house_to_motive/views/screens/edit_profile_screen.dart';
 import 'package:house_to_motive/views/screens/following_screen.dart';
 import 'package:house_to_motive/views/screens/privacy_policy_screen.dart';
 import 'package:house_to_motive/views/screens/settings_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../mrg/Sanzio_Restaurant.dart';
 import '../../mrg/screens/Calender/MyCalander.dart';
 import '../../mrg/screens/Ticket.dart';
 import '../../widgets/profile_widget.dart';
@@ -20,11 +23,30 @@ import 'followers_screen.dart';
 import 'notification_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   void _shareContent() {
     Share.share('house_to_motive');
   }
+
+  Future<DocumentSnapshot> getUserDetails(String userId) async {
+    return FirebaseFirestore.instance.collection('users').doc(userId).get();
+  }
+  Future<Map<String, dynamic>?> fetchUserData() async {
+    try {
+      var userDocument = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .get();
+
+      return userDocument.data();
+    } catch (e) {
+      print("Error fetching user data: $e");
+      return null;
+    }
+  }
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +104,14 @@ class ProfileScreen extends StatelessWidget {
         ),
         actions: [
           GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.to(() => FavList());
               },
               child: SvgPicture.asset('assets/appbar/heart.svg')),
           const SizedBox(width: 10),
           GestureDetector(
-              onTap: (){
-                Get.to(() => NotificationScreen());
+              onTap: () {
+                Get.to(() => const NotificationScreen());
               },
               child: SvgPicture.asset('assets/appbar/Notification.svg')),
           const SizedBox(width: 10),
@@ -113,15 +135,40 @@ class ProfileScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const CircleAvatar(
-                          radius: 35,
-                          backgroundImage: AssetImage('assets/images/1.jpg'),
+
+                        FutureBuilder(
+                          future: fetchUserData(),
+                          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else if (snapshot.hasData) {
+                              String? profilePicUrl = snapshot.data?['profilePic'];
+                              return profilePicUrl != null
+                                  ? CircleAvatar(
+                                    radius: 35,
+                                    backgroundColor: Colors.black,
+                                    backgroundImage: NetworkImage(profilePicUrl),
+                                  ) : CircleAvatar(
+                                radius: 35,
+                                backgroundColor: Colors.white,
+                                backgroundImage: AssetImage('assets/pngs/user_profile.png'),
+                              );
+                            } else {
+                              return Text("No user data available");
+                            }
+                          },
                         ),
+                        // CircleAvatar(
+                        //   radius: 35,
+                        //   backgroundImage: AssetImage('assets/images/1.jpg'),
+                        // ),
                         GestureDetector(
                           onTap: () {
                             Get.to(() => const FllowersScreen());
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: 80,
                             width: 80,
                             child: Column(
@@ -151,7 +198,7 @@ class ProfileScreen extends StatelessWidget {
                           onTap: () {
                             Get.to(() => const FollowingScreen());
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: 80,
                             width: 80,
                             child: Column(
@@ -177,7 +224,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 80,
                           width: 80,
                           child: Column(
@@ -206,12 +253,31 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Oyinola Agoro',
-                          style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                        FutureBuilder<DocumentSnapshot>(
+                          future: getUserDetails(auth.currentUser!.uid),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text("User not found");
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              Map<String, dynamic> data =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              return Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15.0),
+                                    child: Text(
+                                        data['User Name'],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return const Text("Loading...");
+                          },
                         ),
                       ],
                     ),
@@ -250,13 +316,13 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/userr.svg',
                         title: 'Edit Profile',
                         onTap: () {
-                          Get.to(() => const EditProfileScreen());
+                          Get.to(() => EditProfileScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Ticket 22.svg',
                         title: 'My Tickets',
                         onTap: () {
-                          Get.to(() => ticketScreens());
+                          Get.to(() => const ticketScreens());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Heart 1.svg',
@@ -343,11 +409,12 @@ class ProfileScreen extends StatelessWidget {
                         title: 'Contact Us',
                         onTap: () {
                           Get.to(() => const ContactUSScreen());
+                          // Get.to(() => const MapsScreen());
                         }),
                     ProfileWidget(
                       svg: 'assets/svgs/Sign Outt.svg',
                       onTap: () {
-                        Get.bottomSheet(BottomSheetLogoutDialog());
+                        Get.bottomSheet(const BottomSheetLogoutDialog());
                       },
                       title: 'Log Out',
                       isDevider: false,
@@ -367,6 +434,8 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class BottomSheetLogoutDialog extends StatelessWidget {
+  const BottomSheetLogoutDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -443,6 +512,7 @@ class BottomSheetLogoutDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         // Get.to(() => HomePage());
+                        _signOut();
                       },
                       child: Center(
                         child: Text(
@@ -464,4 +534,14 @@ class BottomSheetLogoutDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+void _signOut() {
+  FirebaseAuth.instance.signOut().then((value) {
+    Get.to(() => LoginWithEmailScreen());
+    Utils().ToastMessage('Sign Out');
+  }).onError((error, stackTrace) {
+    Utils().ToastMessage(error.toString());
+  });
+  FirebaseAuth.instance.currentUser;
 }

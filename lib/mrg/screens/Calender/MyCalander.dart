@@ -17,7 +17,11 @@ class CalenderScreen extends StatefulWidget {
 
 class _CalenderScreenState extends State<CalenderScreen> {
   DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
+  void _onDaySelected(DateTime day,DateTime focusedDay){
+    setState(() {
+      _selectedDay = day;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +67,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
             TableCalendar(
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: DateTime.now(),
+              focusedDay: _selectedDay,
               calendarStyle: CalendarStyle(
                 defaultTextStyle: TextStyle(
                   color: Color(0xff7390A1),
@@ -102,17 +106,12 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   fontWeight: FontWeight.w100,
                 ),
               ),
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-              },
+              selectedDayPredicate: (day)
+                => isSameDay(_selectedDay, day),
+              onDaySelected: _onDaySelected
             ),
             SizedBox(height: 2.h,),
+            Text(""+ _selectedDay.toString().split(" ")[0]),
             Expanded(
               child: ListView.builder(
                 itemCount: 3,
@@ -127,7 +126,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
               },
               ),
             )
-
           ],
         ),
       ),

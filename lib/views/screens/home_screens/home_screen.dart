@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(width: 10),
             GestureDetector(
                 onTap: (){
-                  Get.to(() => NotificationScreen());
+                  Get.to(() => const NotificationScreen());
                 },
                 child: SvgPicture.asset('assets/appbar/Notification.svg')),
             const SizedBox(width: 10),
@@ -125,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             child: Center(
                               child: isSelected.value
-                                  ? Text(
+                                  ? const Text(
                                       '🎉  Things to Do',
                                       style: TextStyle(
                                         fontFamily: 'arial',
@@ -133,7 +133,7 @@ class HomeScreen extends StatelessWidget {
                                           fontSize: 12,
                                           color: Colors.white),
                                     )
-                                  : Text(
+                                  : const Text(
                                       '🎉 Things to Do',
                                       style: TextStyle(
                                           fontFamily: 'arial',
@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             child: Center(
                               child: !isSelected.value
-                                  ? Text(
+                                  ? const Text(
                                 '🗓️  Events Near Me',
                                 style: TextStyle(
                                     fontFamily: 'arial',
@@ -174,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 12,
                                     color: Colors.white),
                               )
-                                  : Text(
+                                  : const Text(
                                 '🗓️  Events Near Me',
                                 style: TextStyle(
                                     fontFamily: 'arial',
@@ -190,7 +190,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 isSelected.value
-                    ? const HomeScreen2()
+                    ?  HomeScreen2()
                     : const EventsNearmeScreen(),
               ],
             ),

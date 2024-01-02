@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'ArcadeScreen.dart';
@@ -21,7 +19,7 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
     return Scaffold(
         body: SingleChildScrollView(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height*1.5,
+        height: MediaQuery.of(context).size.height * 1.5,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width / 600,
@@ -81,10 +79,19 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) =>
-                                                const ArcadeScreen()));
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const ArcadeScreen(
+                                          description: '',
+                                          photoURL: '',
+                                          startTime: '',
+                                          endTime: '',
+                                          eventName: '',
+                                          location: '',
+                                          date: '',
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: const Center(
                                     child: Text(
@@ -256,7 +263,8 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                               ),
                               CircleAvatar(
                                 radius: 20,
-                                backgroundImage: AssetImage("assets/model2.jpg"),
+                                backgroundImage:
+                                    AssetImage("assets/model2.jpg"),
                               ),
                             ],
                           ),
@@ -307,7 +315,8 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                 ),
               ),
               const Expanded(
-                  child: ReviewScreen(),),
+                child: ReviewScreen(),
+              ),
             ],
           ),
         ),

@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:house_to_motive/utils/utils.dart';
 import 'package:house_to_motive/widgets/custom_socialbutton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/loginbutton.dart';
 import '../../widgets/custom_field.dart';
@@ -24,11 +29,15 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final passwordController = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
+  AuthenticationController authenticationController = Get.put(AuthenticationController());
 
-  void Login(){
+  void Login() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     auth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text).then((value){
+      prefs.setBool('isLogin', true);
       Get.to(() => HomePage());
       Utils().ToastMessage('Login Successfully');
     }).onError((error, stackTrace) {
@@ -116,11 +125,13 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                           svg: "assets/svgs/social/Call.svg"),
                       CustomSocialButton(
                           svg: "assets/svgs/social/google.svg", ontap: () {
-                            AuthService().signInWithGoogle();
+                        authenticationController.signInWithGoogle();
                       }),
                       CustomSocialButton(
                         svg: "assets/svgs/social/fb.svg",
-                        ontap: () {},
+                        ontap: () {
+                          signInWithFacebook();
+                        },
                       ),
                     ],
                   ),
@@ -192,16 +203,78 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
 }
 
 
-class AuthService{
-  signInWithGoogle() async {
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+class AuthenticationController extends GetxController{
+  Future<User?> signInWithGoogle() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
 
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
 
-    final crediential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
-    return await FirebaseAuth.instance.signInWithCredential(crediential);
+      try {
+        final UserCredential userCredential =
+        await auth.signInWithPopup(authProvider);
+
+        user = userCredential.user;
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      final GoogleSignInAccount? googleSignInAccount =
+      await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        try {
+          final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+          Get.to(()=> const HomePage());
+          user = userCredential.user;
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'account-exists-with-different-credential') {
+            log('Account exists with different credential');
+          } else if (e.code == 'invalid-credential') {
+            log('Invalid Credential');
+          }
+        } catch (e) {
+          log(e.toString());
+        }
+      }
+    }
+
+    return user;
   }
+
+  Future<void> signOut() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    try {
+      if (!kIsWeb) {
+        await googleSignIn.signOut();
+      }
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+}
+
+Future<UserCredential> signInWithFacebook() async {
+  // Trigger the sign-in flow
+  final LoginResult loginResult = await FacebookAuth.instance.login();
+
+  // Create a credential from the access token
+  final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+  // Once signed in, return the UserCredential
+  return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 }
