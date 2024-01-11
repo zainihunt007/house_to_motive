@@ -29,14 +29,16 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final passwordController = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
-  AuthenticationController authenticationController = Get.put(AuthenticationController());
+  AuthenticationController authenticationController =
+      Get.put(AuthenticationController());
 
-  void Login() async{
+  void Login() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    auth.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text).then((value){
+    auth
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
       prefs.setBool('isLogin', true);
       Get.to(() => HomePage());
       Utils().ToastMessage('Login Successfully');
@@ -60,115 +62,54 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-            child: Form(
-              key: loginFormKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.31,
-                    child: Stack(
-                      children: [
-                        Image.asset('assets/pngs/htmimage.png'),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Image.asset(
-                            'assets/pngs/htmlogo.png',
-                          ),
-                        ),
-                        Positioned(
-                          left: 10,
-                          top: 50,
-                          child: InkWell(
-                              onTap: () {
-                                // Get.back();
-                              },
-                              child: Image.asset(
-                                'assets/pngs/back_btn.png',
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Text(
-                    'Login To Continue',
-                    style: TextStyle(
-                      fontFamily: 'Mont',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xff025B8F),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.01),
-                  const Text(
-                    'Welcome back to HouseToMotive!',
-                    style: TextStyle(
-                      fontFamily: 'ProximaNova',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff424B5A),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.03),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Form(
+            key: loginFormKey,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.31,
+                  child: Stack(
                     children: [
-                      CustomButtonWithIcon(
-                          ontap: () {
-                            Get.to(() => const LoginWithPhoneNumberScreen());
-                          },
-                          title: 'Phone Number',
-                          svg: "assets/svgs/social/Call.svg"),
-                      CustomSocialButton(
-                          svg: "assets/svgs/social/google.svg", ontap: () {
-                        authenticationController.signInWithGoogle();
-                      }),
-                      CustomSocialButton(
-                        svg: "assets/svgs/social/fb.svg",
-                        ontap: () {
-                          signInWithFacebook();
-                        },
+                      Image.asset('assets/pngs/htmimage.png'),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Image.asset(
+                          'assets/pngs/htmlogo.png',
+                        ),
+                      ),
+                      Positioned(
+                        left: 10,
+                        top: 50,
+                        child: InkWell(
+                            onTap: () {
+                              // Get.back();
+                            },
+                            child: Image.asset(
+                              'assets/pngs/back_btn.png',
+                            )),
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.03),
-                  const Text(
-                    'Or with Email',
-                    style: TextStyle(
-                      fontFamily: 'ProximaNova',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff424B5A),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  CustomEmailField(
-                    textEditingController: emailController,
-                    title: 'Email',
-                  ),
-                  SizedBox(height: screenHeight * 0.01),
-                  CustomPasswordField(
-                      title: 'Enter password',
-                      textEditingController: passwordController),
-                  SizedBox(height: screenHeight * 0.03),
-                  CustomButton(
-                    title: "Login",
-                    ontap: () {
-                      if(loginFormKey.currentState!.validate()){
-                        Login();
-                      }
-                    },
-                  ),
-                  SizedBox(height: screenHeight * 0.03),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Column(
                     children: [
                       const Text(
-                        'New User?',
+                        'Login To Continue',
+                        style: TextStyle(
+                          fontFamily: 'Mont',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xff025B8F),
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
+                      const Text(
+                        'Welcome back to HouseToMotive!',
                         style: TextStyle(
                           fontFamily: 'ProximaNova',
                           fontSize: 14,
@@ -176,24 +117,91 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                           color: Color(0xff424B5A),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(() => SignupScreen());
-                        },
-                        child: const Text(
-                          ' Sign Up',
-                          style: TextStyle(
-                            fontFamily: 'ProximaNova',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff025B8F),
+                      SizedBox(height: screenHeight * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CustomButtonWithIcon(
+                              ontap: () {
+                                Get.to(
+                                    () => const LoginWithPhoneNumberScreen());
+                              },
+                              title: 'Phone Number',
+                              svg: "assets/svgs/social/Call.svg"),
+                          CustomSocialButton(
+                              svg: "assets/svgs/social/google.svg",
+                              ontap: () {
+                                authenticationController.signInWithGoogle();
+                              }),
+                          CustomSocialButton(
+                            svg: "assets/svgs/social/fb.svg",
+                            ontap: () {
+                              signInWithFacebook();
+                            },
                           ),
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      const Text(
+                        'Or with Email',
+                        style: TextStyle(
+                          fontFamily: 'ProximaNova',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff424B5A),
                         ),
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                      CustomEmailField(
+                        textEditingController: emailController,
+                        title: 'Email',
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
+                      CustomPasswordField(
+                          title: 'Enter password',
+                          textEditingController: passwordController),
+                      SizedBox(height: screenHeight * 0.03),
+                      CustomButton(
+                        title: "Login",
+                        ontap: () {
+                          if (loginFormKey.currentState!.validate()) {
+                            Login();
+                          }
+                        },
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'New User?',
+                            style: TextStyle(
+                              fontFamily: 'ProximaNova',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff424B5A),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => SignupScreen());
+                            },
+                            child: const Text(
+                              ' Sign Up',
+                              style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff025B8F),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),
@@ -202,8 +210,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   }
 }
 
-
-class AuthenticationController extends GetxController{
+class AuthenticationController extends GetxController {
   Future<User?> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
@@ -213,7 +220,7 @@ class AuthenticationController extends GetxController{
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithPopup(authProvider);
+            await auth.signInWithPopup(authProvider);
 
         user = userCredential.user;
       } catch (e) {
@@ -223,11 +230,11 @@ class AuthenticationController extends GetxController{
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       final GoogleSignInAccount? googleSignInAccount =
-      await googleSignIn.signIn();
+          await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -236,8 +243,8 @@ class AuthenticationController extends GetxController{
 
         try {
           final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
-          Get.to(()=> const HomePage());
+              await auth.signInWithCredential(credential);
+          Get.to(() => const HomePage());
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
           if (e.code == 'account-exists-with-different-credential') {
@@ -273,7 +280,8 @@ Future<UserCredential> signInWithFacebook() async {
   final LoginResult loginResult = await FacebookAuth.instance.login();
 
   // Create a credential from the access token
-  final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+  final OAuthCredential facebookAuthCredential =
+      FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
   // Once signed in, return the UserCredential
   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);

@@ -308,8 +308,8 @@ class HomeScreen2 extends StatelessWidget {
 
                   // Iterate through the documents and extract thumbnail URLs
                   for (var doc in documents) {
-                    // Check if the document has a 'thumbnailUrl' field
-                    if (doc.data().containsKey('thumbnailUrl')) {
+                    // Check if the document has a thumbnailUrl field
+                    if (doc['thumbnailUrl'] != null) {
                       randomVideosUrls.add(doc['thumbnailUrl']);
                     }
                   }
@@ -378,7 +378,7 @@ class HomeScreen2 extends StatelessWidget {
           ),
           SizedBox(height: screenHeight * 0.01),
           Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 12),
+            padding: const EdgeInsets.only(left: 12, right: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -395,7 +395,7 @@ class HomeScreen2 extends StatelessWidget {
           ),
           SizedBox(height: screenHeight * 0.02),
           SizedBox(
-            height: screenHeight * 0.25,
+            height: 26.h,
             // height: 250,
             child: Padding(
               padding: const EdgeInsets.only(left: 12),

@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../controller/event_controller.dart';
+import 'explore_screen.dart';
 
 
 class CreateEvent2Screen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
     final TicketController ticketController = Get.put(TicketController());
     DateTime selectedDate = ticketController.getSelectedDay().value;
     String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+    final placeApiController = Get.put(PlacesApi());
     final screenWidth = MediaQuery.of(context).size.width;
     return Obx(
       () => Scaffold(
@@ -208,42 +210,59 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                   ),
                 ),
                 SizedBox(height: 1.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 6.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black12),
-                          // color: Colors.blue,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: TextFormField(
-                            controller: ticketController.locationController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) async {
+                    if (textEditingValue.text == '') {
+                      return const Iterable<String>.empty();
+                    }
+                    return placeApiController.getSuggestions(textEditingValue.text);
+                  },
+                  onSelected: (String selection) {
+                    placeApiController.searchPlaces(selection);
+                    placeApiController.eventLocationController.text = selection;
+
+                  },
+                  fieldViewBuilder: (BuildContext context, eventLocationController,  fieldFocusNode,  onFieldSubmitted) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 6.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.black12),
+                              // color: Colors.blue,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: TextFormField(
+                                // controller: fieldTextEditingController,
+                                focusNode: fieldFocusNode,
+                                controller: eventLocationController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(width: 1.h),
-                    Container(
-                      height: 6.h,
-                      width: 6.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.black12),
-                        // color: Colors.red,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                            'assets/svgs/teenyicons_location-solid.svg'),
-                      ),
-                    ),
-                  ],
+                        SizedBox(width: 1.h),
+                        Container(
+                          height: 6.h,
+                          width: 6.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.black12),
+                            // color: Colors.red,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                                'assets/svgs/teenyicons_location-solid.svg'),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 SizedBox(height: 2.h),
                 ListTile(

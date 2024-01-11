@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAeA1Qh7gkR_SBYm8SA36M_RfG0lKhJioI',
-    appId: '1:1040213504277:android:06a919feefc70ad979f91c',
-    messagingSenderId: '1040213504277',
-    projectId: 'house-to-motive',
-    storageBucket: 'house-to-motive.appspot.com',
+    apiKey: 'AIzaSyCEcBrseOuWH46pjrQw8K2WUjKRn-4FXSE',
+    appId: '1:697945399042:android:85de92872e529a0bd96c1b',
+    messagingSenderId: '697945399042',
+    projectId: 'house-to-motive-cee37',
+    storageBucket: 'house-to-motive-cee37.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAYHuy3g0SW8R61OcnpAFmsqfBNmA9SpEk',
-    appId: '1:1040213504277:ios:6306dd0b61ebd36e79f91c',
-    messagingSenderId: '1040213504277',
-    projectId: 'house-to-motive',
-    storageBucket: 'house-to-motive.appspot.com',
+    apiKey: 'AIzaSyC_7T4WJP85LefrpQU9qLI6OuYkIIs_eaw',
+    appId: '1:697945399042:ios:322dd9b231145ab6d96c1b',
+    messagingSenderId: '697945399042',
+    projectId: 'house-to-motive-cee37',
+    storageBucket: 'house-to-motive-cee37.appspot.com',
     iosBundleId: 'com.example.houseToMotive',
   );
 }

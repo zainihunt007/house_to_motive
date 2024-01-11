@@ -18,6 +18,7 @@ import '../../mrg/screens/Ticket.dart';
 import '../../widgets/profile_widget.dart';
 import 'contactus_screen.dart';
 import 'create_event.dart';
+import 'custom_marker.dart';
 import 'faqs_screen.dart';
 import 'followers_screen.dart';
 import 'notification_screen.dart';
@@ -373,7 +374,8 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/Settings.svg',
                         title: 'Settings',
                         onTap: () {
-                          Get.to(() => const SettingScreen());
+                          // Get.to(() => const SettingScreen());
+                          Get.to(() => MapSample());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/privacy.svg',

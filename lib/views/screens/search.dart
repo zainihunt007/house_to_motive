@@ -85,9 +85,9 @@ class SearchScreen extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              SizedBox(height: 1.6.w),
-              SizedBox(
-                height: 7.h,
+              // SizedBox(height: 1.6.w),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: "Search what’s near me",
@@ -95,7 +95,10 @@ class SearchScreen extends StatelessWidget {
                       fontFamily: 'ProximaNova',
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff424B5A),),
+                      color: Color(0xff424B5A),
+                    ),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     fillColor: Colors.white,
                     filled: true,
                     prefixIcon: Padding(

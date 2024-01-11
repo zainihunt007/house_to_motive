@@ -15,10 +15,22 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // GetLocationByApi getLocationByApi = Get.put(GetLocationByApi(),tag: 'getLocationByApi');
+
+// @override
+//   void initState() {
+//     super.initState();
+//     getLocationByApi.getLocationData();
+//   }
+
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xff025B8F);
@@ -30,9 +42,10 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primaryColor: primaryColor,
               // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff025B8F),),
+              scaffoldBackgroundColor: const Color(0xFFE3F1FF),
               useMaterial3: true,
             ),
-            home:SplashScreen(),
+            home: const SplashScreen(),
           );
         }
     );

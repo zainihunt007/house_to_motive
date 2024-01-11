@@ -63,27 +63,27 @@ List<RandomVideos> randomVideosUrls = [
 final List<Map<String, String>> itemList = [
   {
     'title': 'Item 1',
-    'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D', // Replace with the path to your image
+    'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
     'description': 'Description for Item 1',
   },
   {
     'title': 'Item 2',
-    'image': 'https://elmomento.pk/wp-content/uploads/2023/07/elmomento-islamabad-ambiance-min.jpg', // Replace with the path to your image
+    'image': 'https://elmomento.pk/wp-content/uploads/2023/07/elmomento-islamabad-ambiance-min.jpg',
     'description': 'Description for Item 2',
   },
   {
     'title': 'Item 3',
-    'image': 'https://d4t7t8y8xqo0t.cloudfront.net/app/eazymedia/restaurant%2F672810%2Frestaurant120210115104413.jpg', // Replace with the path to your image
+    'image': 'https://d4t7t8y8xqo0t.cloudfront.net/app/eazymedia/restaurant%2F672810%2Frestaurant120210115104413.jpg',
     'description': 'Description for Item 2',
   },
   {
     'title': 'Item 4',
-    'image': 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A1f658361-23be-4b7e-bb0b-dbeb5bab1acb?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1', // Replace with the path to your image
+    'image': 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A1f658361-23be-4b7e-bb0b-dbeb5bab1acb?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1',
     'description': 'Description for Item 2',
   },
   {
     'title': 'Item 5',
-    'image': 'https://lh4.googleusercontent.com/EmHgJqogJ9b9EIp4TjR-g14YEdOJpDqA5XSf_mfJLW2828nUogjP-tdz-3-T-j6eNugQesMY-cqc5oDhZKIHQbk_owXLINvxe2CGcTORSTfd7ryGwMH5yjNXl6vgbjAzqM4WlTeQYtDOoSnCeWNOJs0', // Replace with the path to your image
+    'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
     'description': 'Description for Item 2',
   },
   // Add more items as needed
@@ -124,7 +124,7 @@ List<FoodNearby> foodnearby = [
       rating: '91 (5.0)'),
   FoodNearby(
       image:
-      'https://lh4.googleusercontent.com/EmHgJqogJ9b9EIp4TjR-g14YEdOJpDqA5XSf_mfJLW2828nUogjP-tdz-3-T-j6eNugQesMY-cqc5oDhZKIHQbk_owXLINvxe2CGcTORSTfd7ryGwMH5yjNXl6vgbjAzqM4WlTeQYtDOoSnCeWNOJs0',
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
       city: 'Sanizo',
       price: '34',
       mile: '5',
