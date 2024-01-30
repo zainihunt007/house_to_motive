@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -135,9 +135,9 @@ class _ChatPageState extends State<ChatPage> {
       if (message.uri.startsWith('http')) {
         try {
           final index =
-          _messages.indexWhere((element) => element.id == message.id);
+              _messages.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
+              (_messages[index] as types.FileMessage).copyWith(
             isLoading: true,
           );
 
@@ -157,9 +157,9 @@ class _ChatPageState extends State<ChatPage> {
           }
         } finally {
           final index =
-          _messages.indexWhere((element) => element.id == message.id);
+              _messages.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
+              (_messages[index] as types.FileMessage).copyWith(
             isLoading: null,
           );
 
@@ -174,9 +174,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
     final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
       previewData: previewData,
@@ -211,15 +211,109 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: Chat(
-      messages: _messages,
-      onAttachmentPressed: _handleAttachmentPressed,
-      onMessageTap: _handleMessageTap,
-      onPreviewDataFetched: _handlePreviewDataFetched,
-      onSendPressed: _handleSendPressed,
-      showUserAvatars: true,
-      showUserNames: true,
-      user: _user,
+        appBar: AppBar(
+            backgroundColor: const Color(0xff025B8F),
+            leadingWidth: 20,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.white,
+                size: 14,
+              ),
+            ),
+            title: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 14,
+                  backgroundImage: AssetImage('assets/images/2.jpg'),
+                ),
+                const SizedBox(width: 11),
+                Text(
+                  'Jame',
+                  style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+              ],
+            ),
+            actions: [
+              const SizedBox(width: 11),
+              Image.asset(
+                'assets/pngs/Video Call.png',
+                width: 18,
+                height: 18,
+              ),
+              const SizedBox(width: 11),
+              Image.asset(
+                'assets/pngs/Call.png',
+                width: 18,
+                height: 18,
+              ),
+              const SizedBox(width: 11),
+              Image.asset(
+                'assets/pngs/More Square.png',
+                width: 18,
+                height: 18,
+              ),
+              const SizedBox(width: 11),
+            ]),
+        body: Column(
+          children: [
+            Expanded(
+              child: Chat(
+                messages: _messages,
+                onAttachmentPressed: _handleAttachmentPressed,
+                onMessageTap: _handleMessageTap,
+                onPreviewDataFetched: _handlePreviewDataFetched,
+                onSendPressed: _handleSendPressed,
+                showUserAvatars: true,
+                showUserNames: true,
+                user: _user,
+                theme:  const DefaultChatTheme(
+                  receivedMessageBodyTextStyle: TextStyle(color: Colors.white),
+                  backgroundColor: Color(0xffE3F1FF),
+                  primaryColor: Color(0xff025B8F),
+                ),
+              ),
+            ),
+            // _buildCustomInputField(), // Your custom input field widget
+          ],
+        ),
+      );
+}
+
+Widget _buildCustomInputField() {
+  return SizedBox(
+    height: 44,
+    child: Row(
+      children: [
+        SizedBox(width: 10),
+        Expanded(
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.6),
+              borderSide: BorderSide.none,
+              ),
+              isDense: true,
+              hintText: "Send a message",
+              filled: true,
+              fillColor: Colors.grey.shade400,
+              hintStyle:
+                  GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w400),
+              suffix: Image.asset('assets/pngs/Emoji icon COM.png',height: 24,width: 24,),
+            ),
+          ),
+        ),
+        SizedBox(width: 10),
+        Image.asset(
+          'assets/pngs/Private Message icon.png',
+          height: 33,
+          width: 33,
+        ),
+      ],
     ),
   );
 }

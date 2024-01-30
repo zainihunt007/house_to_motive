@@ -80,7 +80,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 children: [
                   InkWell(
                       onTap: (){
-                        _showBottomSheetSlider(context);
+                        showBottomSheetSlider(context);
                       },
                       child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
                   // SizedBox(width: size.width / 20),
@@ -114,7 +114,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   },
                   child: GestureDetector(
                     onTap: () {
-                    _showBottomSheetSlider(context);
+                    showBottomSheetSlider(context);
                   },
                     child: ListTile(
                       leading: CircleAvatar(
@@ -165,26 +165,27 @@ class _ReviewScreenState extends State<ReviewScreen> {
       ),
     );
   }
+}
 
-  void _showBottomSheetSlider(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.65,
-          padding: const EdgeInsets.all(16.0),
-          child: const Column(
-            children: [
-              Expanded(child: writeReview()),
-              // Add your content here
-            ],
-          ),
-        );
-      },
-    );
-  }
+
+void showBottomSheetSlider(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+    ),
+    builder: (BuildContext context) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.65,
+        padding: const EdgeInsets.all(16.0),
+        child: const Column(
+          children: [
+            Expanded(child: writeReview()),
+            // Add your content here
+          ],
+        ),
+      );
+    },
+  );
 }

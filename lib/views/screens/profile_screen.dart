@@ -13,15 +13,19 @@ import 'package:house_to_motive/views/screens/privacy_policy_screen.dart';
 import 'package:house_to_motive/views/screens/settings_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../mrg/screens/Calender/MyCalander.dart';
 import '../../mrg/screens/Ticket.dart';
+import '../../widgets/appbar_location.dart';
 import '../../widgets/profile_widget.dart';
 import 'contactus_screen.dart';
 import 'create_event.dart';
-import 'custom_marker.dart';
 import 'faqs_screen.dart';
 import 'followers_screen.dart';
-import 'notification_screen.dart';
+
+String? profilePicUrl;
+Map<String, dynamic>? data;
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
@@ -52,72 +56,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color(0xff025B8F),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Image.asset('assets/pngs/htmlogo.png'),
-        ),
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/appbar/Vector@2x.png',
-                  height: 9,
-                  width: 9,
-                ),
-                SizedBox(width: 1.h),
-                const Text(
-                  'My Location',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 1.h),
-                  const Text(
-                    '73 Newport Road, Carnbo',
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                  SizedBox(width: 1.h),
-                  Image.asset(
-                    'assets/appbar/Vector1.png',
-                    height: 9,
-                    width: 9,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                Get.to(() => FavList());
-              },
-              child: SvgPicture.asset('assets/appbar/heart.svg')),
-          const SizedBox(width: 10),
-          GestureDetector(
-              onTap: () {
-                Get.to(() => const NotificationScreen());
-              },
-              child: SvgPicture.asset('assets/appbar/Notification.svg')),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -141,23 +80,31 @@ class ProfileScreen extends StatelessWidget {
                           future: fetchUserData(),
                           builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: const CircleAvatar(
+                                  radius: 35,
+                                  backgroundColor: Colors.white,
+                                  // backgroundImage: AssetImage('assets/pngs/user_profile.png'),
+                                ),
+                              );
                             } else if (snapshot.hasError) {
                               return Text("Error: ${snapshot.error}");
                             } else if (snapshot.hasData) {
-                              String? profilePicUrl = snapshot.data?['profilePic'];
+                              profilePicUrl = snapshot.data?['profilePic'];
                               return profilePicUrl != null
                                   ? CircleAvatar(
                                     radius: 35,
                                     backgroundColor: Colors.black,
-                                    backgroundImage: NetworkImage(profilePicUrl),
-                                  ) : CircleAvatar(
+                                    backgroundImage: NetworkImage(profilePicUrl!),
+                                  ) : const CircleAvatar(
                                 radius: 35,
                                 backgroundColor: Colors.white,
                                 backgroundImage: AssetImage('assets/pngs/user_profile.png'),
                               );
                             } else {
-                              return Text("No user data available");
+                              return const Text("No user data available");
                             }
                           },
                         ),
@@ -252,35 +199,33 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        FutureBuilder<DocumentSnapshot>(
-                          future: getUserDetails(auth.currentUser!.uid),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Text("User not found");
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              Map<String, dynamic> data =
-                                  snapshot.data!.data() as Map<String, dynamic>;
-                              return Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 15.0),
-                                    child: Text(
-                                        data['User Name'],
-                                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        children: [
+                          FutureBuilder<DocumentSnapshot>(
+                            future: getUserDetails(auth.currentUser!.uid),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text("User not found");
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                 data =
+                                    snapshot.data!.data() as Map<String, dynamic>;
+                                return Center(
+                                  child: Text(
+                                      data?['User Name'],
                                   ),
-                                ],
-                              );
-                            }
-                            return const Text("Loading...");
-                          },
-                        ),
-                      ],
+                                );
+                              }
+                              return const Text("Loading...");
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -317,7 +262,7 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/userr.svg',
                         title: 'Edit Profile',
                         onTap: () {
-                          Get.to(() => EditProfileScreen());
+                          Get.to(() => const EditProfileScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Ticket 22.svg',
@@ -374,8 +319,9 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/Settings.svg',
                         title: 'Settings',
                         onTap: () {
-                          // Get.to(() => const SettingScreen());
-                          Get.to(() => MapSample());
+                          Get.to(() => const SettingScreen());
+                          // Get.to(() =>  VideoListScreen());
+                          // Get.to(() => MapSample());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/privacy.svg',
@@ -538,9 +484,11 @@ class BottomSheetLogoutDialog extends StatelessWidget {
   }
 }
 
-void _signOut() {
+void _signOut() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
   FirebaseAuth.instance.signOut().then((value) {
-    Get.to(() => LoginWithEmailScreen());
+    prefs.setBool('isLogin', false);
+    Get.offAll(() => LoginWithEmailScreen());
     Utils().ToastMessage('Sign Out');
   }).onError((error, stackTrace) {
     Utils().ToastMessage(error.toString());

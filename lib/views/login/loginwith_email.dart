@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,14 +31,14 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final loginFormKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
   AuthenticationController authenticationController =
-      Get.put(AuthenticationController());
+  Get.put(AuthenticationController());
 
   void Login() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     auth
         .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
+        email: emailController.text, password: passwordController.text)
         .then((value) {
       prefs.setBool('isLogin', true);
       Get.to(() => HomePage());
@@ -70,14 +71,14 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                   height: screenHeight * 0.31,
                   child: Stack(
                     children: [
-                      Image.asset('assets/pngs/htmimage.png'),
+                      Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
                       Positioned(
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: Image.asset(
-                          'assets/pngs/htmlogo.png',
+                        bottom: 80,
+                        right: 120,
+                        child: SvgPicture.asset(
+                          'assets/svgs/splash-logo.svg',
+                          width: 60,
+                          height: 60,
                         ),
                       ),
                       Positioned(
@@ -85,10 +86,10 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                         top: 50,
                         child: InkWell(
                             onTap: () {
-                              // Get.back();
+                              Get.back();
                             },
-                            child: Image.asset(
-                              'assets/pngs/back_btn.png',
+                            child: SvgPicture.asset(
+                              'assets/svgs/back_btn.svg',
                             )),
                       ),
                     ],
@@ -124,7 +125,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                           CustomButtonWithIcon(
                               ontap: () {
                                 Get.to(
-                                    () => const LoginWithPhoneNumberScreen());
+                                        () => const LoginWithPhoneNumberScreen());
                               },
                               title: 'Phone Number',
                               svg: "assets/svgs/social/Call.svg"),
@@ -220,7 +221,7 @@ class AuthenticationController extends GetxController {
 
       try {
         final UserCredential userCredential =
-            await auth.signInWithPopup(authProvider);
+        await auth.signInWithPopup(authProvider);
 
         user = userCredential.user;
       } catch (e) {
@@ -230,11 +231,11 @@ class AuthenticationController extends GetxController {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
+      await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -243,7 +244,7 @@ class AuthenticationController extends GetxController {
 
         try {
           final UserCredential userCredential =
-              await auth.signInWithCredential(credential);
+          await auth.signInWithCredential(credential);
           Get.to(() => const HomePage());
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
@@ -281,7 +282,7 @@ Future<UserCredential> signInWithFacebook() async {
 
   // Create a credential from the access token
   final OAuthCredential facebookAuthCredential =
-      FacebookAuthProvider.credential(loginResult.accessToken!.token);
+  FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
   // Once signed in, return the UserCredential
   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);

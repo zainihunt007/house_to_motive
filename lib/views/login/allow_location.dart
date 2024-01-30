@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:house_to_motive/views/login/loginwith_email.dart';
+import 'package:house_to_motive/views/screens/explore_screen.dart';
 import 'package:house_to_motive/widgets/loginbutton.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AllowLocationScreen extends StatelessWidget {
-  const AllowLocationScreen({super.key});
+   AllowLocationScreen({super.key});
+  final placeApiController = Get.put(PlacesApi());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.all(2.0.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,7 +64,8 @@ class AllowLocationScreen extends StatelessWidget {
               CustomButton(
                 title: 'Enable Location',
                 ontap: () {
-                  Get.to(() =>  LoginWithEmailScreen());
+                  placeApiController.determinePosition();
+                    Get.to(() =>  LoginWithEmailScreen());
                 },
               ),
             ],

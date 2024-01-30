@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../mrg/screens/Favourites/newFav.dart';
+import '../../widgets/appbar_location.dart';
 import 'notification_screen.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -14,72 +15,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color(0xff025B8F),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Image.asset('assets/pngs/htmlogo.png'),
-        ),
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/appbar/Vector@2x.png',
-                  height: 9,
-                  width: 9,
-                ),
-                SizedBox(width: 1.h),
-                const Text(
-                  'My Location',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 1.h),
-                  const Text(
-                    '73 Newport Road, Carnbo',
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                  SizedBox(width: 1.h),
-                  Image.asset(
-                    'assets/appbar/Vector1.png',
-                    height: 9,
-                    width: 9,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-              onTap: (){
-                Get.to(() => FavList());
-              },
-              child: SvgPicture.asset('assets/appbar/heart.svg')),
-          const SizedBox(width: 10),
-          GestureDetector(
-              onTap: (){
-                Get.to(() => NotificationScreen());
-              },
-              child: SvgPicture.asset('assets/appbar/Notification.svg')),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -183,3 +119,72 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+// AppBar(
+// centerTitle: true,
+// backgroundColor: const Color(0xff025B8F),
+// leading: Padding(
+// padding: const EdgeInsets.only(left: 4),
+// child: Image.asset('assets/pngs/htmlogo.png'),
+// ),
+// title: Column(
+// children: [
+// Row(
+// mainAxisAlignment: MainAxisAlignment.center,
+// children: [
+// Image.asset(
+// 'assets/appbar/Vector@2x.png',
+// height: 9,
+// width: 9,
+// ),
+// SizedBox(width: 1.h),
+// const Text(
+// 'My Location',
+// style: TextStyle(
+// fontSize: 12,
+// fontWeight: FontWeight.w600,
+// color: Colors.white),
+// ),
+// ],
+// ),
+// Padding(
+// padding: const EdgeInsets.only(left: 8.0),
+// child: Row(
+// mainAxisAlignment: MainAxisAlignment.center,
+// children: [
+// SizedBox(width: 1.h),
+// const Text(
+// '73 Newport Road, Carnbo',
+// style: TextStyle(
+// fontSize: 10,
+// fontWeight: FontWeight.w400,
+// color: Colors.white),
+// ),
+// SizedBox(width: 1.h),
+// Image.asset(
+// 'assets/appbar/Vector1.png',
+// height: 9,
+// width: 9,
+// ),
+// ],
+// ),
+// ),
+// ],
+// ),
+// actions: [
+// GestureDetector(
+// onTap: (){
+// Get.to(() => FavList());
+// },
+// child: SvgPicture.asset('assets/appbar/heart.svg')),
+// const SizedBox(width: 10),
+// GestureDetector(
+// onTap: (){
+// Get.to(() => NotificationScreen());
+// },
+// child: SvgPicture.asset('assets/appbar/Notification.svg')),
+// const SizedBox(width: 10),
+// ],
+// ),

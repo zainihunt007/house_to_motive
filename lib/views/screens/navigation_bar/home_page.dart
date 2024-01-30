@@ -1,21 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:house_to_motive/views/screens/navigation_bar/text_style.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../../../mrg/screens/Favourites/newFav.dart';
 import '../explore_screen.dart';
 import '../chat_screen.dart';
 import '../home_screens/home_screen.dart';
-import '../notification_screen.dart';
 import '../profile_screen.dart';
 import '../search.dart';
 import 'color.dart';
-import 'custom_paint.dart';
-import 'model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,7 +15,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+
 class _HomePageState extends State<HomePage> {
+  final placeApiController = Get.put(PlacesApi());
   List<String> selectedSvg = [
     'assets/selected/Home Filled.svg',
     'assets/selected/Explore Filled.svg',
@@ -43,142 +36,94 @@ class _HomePageState extends State<HomePage> {
   int selectBtn = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    placeApiController.determinePosition();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 80,
-                centerTitle: true,
-                backgroundColor: const Color(0xff025B8F),
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Image.asset('assets/pngs/htmlogo.png'),
-                ),
-                title: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/appbar/Vector@2x.png',
-                          height: 9,
-                          width: 9,
-                        ),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'My Location',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 10),
-                          const Text(
-                            '73 Newport Road, Carnbo',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white),
-                          ),
-                          const SizedBox(width: 10),
-                          Image.asset(
-                            'assets/appbar/Vector1.png',
-                            height: 9,
-                            width: 9,
-                          ),
-                        ],
+
+    return Container(
+      color: bgColor,
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                if(currentIndex==0) HomeScreen(),
+                if(currentIndex==1) ExploreScreen(),
+                if(currentIndex==2) SearchScreen(),
+                if(currentIndex==3) ChatScreen(),
+                if(currentIndex==4) ProfileScreen(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ClipPath(
+                    clipper: MyCustomClipper(currentIndex),
+                    child: Container(
+                      height: height*0.09,
+                      width: double.infinity,
+                      color: Colors.white,
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(left: width*0.06, top: height*0.02, right: width*0.06),
+                        shrinkWrap: true,
+                        itemCount: selectedSvg.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                },
+                                child: currentIndex == index
+                                    ? SvgPicture.asset(selectedSvg[index])
+                                    : SvgPicture.asset(unSelectedSvg[index]),
+                              ),
+                              SizedBox(width: index == 3 ? width * 0.09 : index == 2 ? width * 0.09 : width * 0.11),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  ],
+                  ),
                 ),
-                actions: [
-                  GestureDetector(
-                      onTap: (){
-                        Get.to(() => FavList());
-                      },
-                      child: SvgPicture.asset('assets/appbar/heart.svg')),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                      onTap: (){
-                        Get.to(() => NotificationScreen());
-                      },
-                      child: SvgPicture.asset('assets/appbar/Notification.svg')),
-                  const SizedBox(width: 10),
-                ],
-              ),
-        backgroundColor: bgColor,
-        bottomNavigationBar: Stack(
-          children: [
-            if(currentIndex==0) HomeScreen(),
-            if(currentIndex==1) ExploreScreen(),
-            if(currentIndex==2)const SearchScreen(),
-            if(currentIndex==3)const ChatScreen(),
-            if(currentIndex==4) ProfileScreen(),
-            Align(alignment: Alignment.bottomCenter,child:ClipPath(
-              clipper: MyCustomClipper(currentIndex),
-              child: Container(
-                height: height*0.09,
-                width: double.infinity,
-                color: Colors.white,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(left: width*0.06,top: height*0.02,right: width*0.06 ),
-                  shrinkWrap: true,
-                  itemCount: selectedSvg.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-
-                    return Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              currentIndex = index;
-                            });
-                          },
-                          child:currentIndex==index? SvgPicture.asset(selectedSvg[index]):SvgPicture.asset(unSelectedSvg[index]),
-                        ),SizedBox(width:index==3?width *0.09:index==2?width *0.09:width *0.11,)
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),),
-
-
-            Positioned(bottom: height*0.08,
-                left: currentIndex == 0
-                    ? width*0.09
-                    : currentIndex == 1
-                    ? width*0.29
-                    : currentIndex == 2
-                    ? width*0.49
-                    : currentIndex == 3
-                    ? width*0.69
-                    : currentIndex == 4
-                    ? width*0.89
-                    : 0,
-                child: Container(
-                  height: 10,
-                  width: 10,
-                  decoration: BoxDecoration(
+                Positioned(
+                  bottom: height * 0.08,
+                  left: currentIndex == 0
+                      ? width*0.09
+                      : currentIndex == 1
+                      ? width*0.29
+                      : currentIndex == 2
+                      ? width*0.49
+                      : currentIndex == 3
+                      ? width*0.69
+                      : currentIndex == 4
+                      ? width*0.89
+                      : 0,
+                  child: Container(
+                    height: 10,
+                    width: 10,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: const Color(0xff025B8F)),
-                )),
-          ],
-        ),
+                      color: const Color(0xff025B8F),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
 class MyCustomClipper extends CustomClipper<Path> {
   int? currentIndex;
   MyCustomClipper(this.currentIndex);

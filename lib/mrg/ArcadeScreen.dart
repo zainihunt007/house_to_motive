@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:house_to_motive/controller/event_controller.dart';
 import 'package:house_to_motive/mrg/ticketDetails.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'Sanzio_Restaurant.dart';
 
 class ArcadeScreen extends StatefulWidget {
@@ -87,60 +88,60 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                         SizedBox(
                           height: size.height / 28,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: size.width / 3.5,
-                                height: size.height / 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xffFF0092),
-                                      Color(0xff216DFD)
-                                    ],
-                                  ),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    // Button pressed action
-                                  },
-                                  child: const Center(
-                                    child: Text(
-                                      'Open Map',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: size.width / 2.2,
-                              ),
-                              Container(
-                                width: size.width / 5,
-                                height: size.height / 20,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: const Color(0XFF21C663)),
-                                child: InkWell(
-                                  onTap: () {
-                                    // Button pressed action
-                                  },
-                                  child: const Center(
-                                    child: Text(
-                                      'Open ',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        //   child: Row(
+                        //     children: [
+                        //       Container(
+                        //         width: size.width / 3.5,
+                        //         height: size.height / 20,
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(25),
+                        //           gradient: const LinearGradient(
+                        //             colors: [
+                        //               Color(0xffFF0092),
+                        //               Color(0xff216DFD)
+                        //             ],
+                        //           ),
+                        //         ),
+                        //         child: InkWell(
+                        //           onTap: () {
+                        //             // Button pressed action
+                        //           },
+                        //           child: const Center(
+                        //             child: Text(
+                        //               'Open Map',
+                        //               style: TextStyle(
+                        //                   color: Colors.white, fontSize: 12),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: size.width / 2.2,
+                        //       ),
+                        //       // Container(
+                        //       //   width: size.width / 5,
+                        //       //   height: size.height / 20,
+                        //       //   decoration: BoxDecoration(
+                        //       //       borderRadius: BorderRadius.circular(25),
+                        //       //       color: const Color(0XFF21C663)),
+                        //       //   child: InkWell(
+                        //       //     onTap: () {
+                        //       //       // Button pressed action
+                        //       //     },
+                        //       //     child: const Center(
+                        //       //       child: Text(
+                        //       //         'Open ',
+                        //       //         style: TextStyle(
+                        //       //             color: Colors.white, fontSize: 12),
+                        //       //       ),
+                        //       //     ),
+                        //       //   ),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
@@ -155,20 +156,23 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            widget.eventName,
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Text(
+                              widget.eventName,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                          const Text(
-                            "\$9.99",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0XFF025B8F)),
-                          )
+                          // const SizedBox(width: 5),
+                          // const Text(
+                          //   "£9.99",
+                          //   style: TextStyle(
+                          //       fontSize: 20,
+                          //       fontWeight: FontWeight.bold,
+                          //       color: Color(0XFF025B8F)),
+                          // )
                         ],
                       ),
                       SizedBox(
@@ -193,69 +197,72 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                         children: [
                           Image.asset("assets/stopwatch.png"),
                           Text(
-                              "  Open: ${widget.startTime} - ${widget.endTime}",
-                              style: const TextStyle(
-                                  fontSize: 14, color: Color(0xff707B81))),
-                          SizedBox(
-                            width: size.width / 40,
+                            "  Open: ${widget.startTime} - ${widget.endTime}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff707B81),
+                            ),
                           ),
-                          Image.asset("assets/Star 2.png"),
-                          const Text(" 91 (5.0)",
-                              style: TextStyle(
-                                  fontSize: 14, color: Color(0xff707B81))),
+                          // SizedBox(
+                          //   width: size.width / 40,
+                          // ),
+                          // Image.asset("assets/Star 2.png"),
+                          // const Text(" 91 (5.0)",
+                          //     style: TextStyle(
+                          //         fontSize: 14, color: Color(0xff707B81),),),
                         ],
                       ),
+                      // SizedBox(
+                      //   height: size.height / 40,
+                      // ),
+                      // ListTile(
+                      //   leading: const CircleAvatar(
+                      //     radius: 25,
+                      //     backgroundImage: AssetImage("assets/model2.jpg"),
+                      //   ),
+                      //   title: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       SizedBox(height: size.height / 90),
+                      //       const Text(
+                      //         "Jame",
+                      //         style:
+                      //             TextStyle(color: Colors.black, fontSize: 12),
+                      //       ),
+                      //       SizedBox(height: size.height / 80),
+                      //       const Text(
+                      //         "Organizer",
+                      //         style: TextStyle(
+                      //             color: Color(0xff8A8B8F), fontSize: 12),
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   trailing: Container(
+                      //     width: MediaQuery.of(context).size.width * 0.2,
+                      //     height: 35,
+                      //     decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         color: Colors.grey.shade200),
+                      //     child: ShaderMask(
+                      //       shaderCallback: (Rect bounds) {
+                      //         return const LinearGradient(
+                      //           colors: [Color(0xffFF0092), Color(0xff216DFD)],
+                      //         ).createShader(bounds);
+                      //       },
+                      //       child: const Center(
+                      //         child: Text(
+                      //           "Follow",
+                      //           style: TextStyle(
+                      //               fontSize: 12,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
-                        height: size.height / 40,
-                      ),
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage("assets/model2.jpg"),
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: size.height / 90),
-                            const Text(
-                              "Jame",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                            ),
-                            SizedBox(height: size.height / 80),
-                            const Text(
-                              "Organizer",
-                              style: TextStyle(
-                                  color: Color(0xff8A8B8F), fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        trailing: Container(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          height: 35,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.shade200),
-                          child: ShaderMask(
-                            shaderCallback: (Rect bounds) {
-                              return const LinearGradient(
-                                colors: [Color(0xffFF0092), Color(0xff216DFD)],
-                              ).createShader(bounds);
-                            },
-                            child: const Center(
-                              child: Text(
-                                "Follow",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.height / 40,
+                        height: 2.h,
                       ),
                       //
                       const Align(
@@ -291,13 +298,13 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                   SizedBox(
                                     height: size.height / 55,
                                   ),
-                                  const Text("Regular",
+                                  const Text("Child",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 12)),
                                   SizedBox(
                                     height: size.height / 400,
                                   ),
-                                  const Text("\$9.99",
+                                  const Text("£9.99",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -331,13 +338,13 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                   SizedBox(
                                     height: size.height / 55,
                                   ),
-                                  const Text("VIP",
+                                  const Text("Adult",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 12)),
                                   SizedBox(
                                     height: size.height / 400,
                                   ),
-                                  const Text("\$19.00",
+                                  const Text("£19.00",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -351,10 +358,7 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const ticketDetails()));
+                              Get.to(() => const ticketDetails());
                             },
                             child: Container(
                               height: size.height / 14,
@@ -371,13 +375,13 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                   SizedBox(
                                     height: size.height / 55,
                                   ),
-                                  const Text("Table",
+                                  const Text("Family",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 12)),
                                   SizedBox(
                                     height: size.height / 400,
                                   ),
-                                  const Text("\$29.00",
+                                  const Text("£29.00",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -450,186 +454,186 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: size.height / 40,
-                      ),
+                      // SizedBox(
+                      //   height: size.height / 40,
+                      // ),
 
-                      Container(
-                        height: size.height / 11,
-                        color: Colors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 100,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 40,
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          AssetImage("assets/model2.jpg"),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 20,
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          AssetImage("assets/model1.jpg"),
-                                    ),
-                                  ),
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        AssetImage("assets/model2.jpg"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return const LinearGradient(
-                                  colors: [
-                                    Color(0xffFF0092),
-                                    Color(0xff216DFD)
-                                  ],
-                                ).createShader(bounds);
-                              },
-                              child: const Text(
-                                "780 Attending",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width / 6,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey.shade200),
-                              child: ShaderMask(
-                                shaderCallback: (Rect bounds) {
-                                  return const LinearGradient(
-                                    colors: [
-                                      Color(0xffFF0092),
-                                      Color(0xff216DFD)
-                                    ],
-                                  ).createShader(bounds);
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    "Invite",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.height / 40,
-                      ),
-                      Container(
-                        height: size.height / 11,
-                        color: Colors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 100,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 40,
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          AssetImage("assets/model1.jpg"),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 20,
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          AssetImage("assets/model2.jpg"),
-                                    ),
-                                  ),
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        AssetImage("assets/model2.jpg"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return const LinearGradient(
-                                  colors: [
-                                    Color(0xffFF0092),
-                                    Color(0xff216DFD)
-                                  ],
-                                ).createShader(bounds);
-                              },
-                              child: const Text(
-                                "748 Followers",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width / 6,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey.shade200),
-                              child: ShaderMask(
-                                shaderCallback: (Rect bounds) {
-                                  return const LinearGradient(
-                                    colors: [
-                                      Color(0xffFF0092),
-                                      Color(0xff216DFD)
-                                    ],
-                                  ).createShader(bounds);
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    "Follow",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
+                      // Container(
+                      //   height: size.height / 11,
+                      //   color: Colors.white,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       const SizedBox(
+                      //         width: 100,
+                      //         child: Stack(
+                      //           children: [
+                      //             Positioned(
+                      //               left: 40,
+                      //               child: CircleAvatar(
+                      //                 radius: 20,
+                      //                 backgroundImage:
+                      //                     AssetImage("assets/model2.jpg"),
+                      //               ),
+                      //             ),
+                      //             Positioned(
+                      //               left: 20,
+                      //               child: CircleAvatar(
+                      //                 radius: 20,
+                      //                 backgroundImage:
+                      //                     AssetImage("assets/model1.jpg"),
+                      //               ),
+                      //             ),
+                      //             CircleAvatar(
+                      //               radius: 20,
+                      //               backgroundImage:
+                      //                   AssetImage("assets/model2.jpg"),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //       ShaderMask(
+                      //         shaderCallback: (Rect bounds) {
+                      //           return const LinearGradient(
+                      //             colors: [
+                      //               Color(0xffFF0092),
+                      //               Color(0xff216DFD)
+                      //             ],
+                      //           ).createShader(bounds);
+                      //         },
+                      //         child: const Text(
+                      //           "780 Attending",
+                      //           style: TextStyle(
+                      //               fontSize: 15,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white),
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: size.width / 6,
+                      //       ),
+                      //       Container(
+                      //         width: MediaQuery.of(context).size.width * 0.2,
+                      //         height: 35,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             color: Colors.grey.shade200),
+                      //         child: ShaderMask(
+                      //           shaderCallback: (Rect bounds) {
+                      //             return const LinearGradient(
+                      //               colors: [
+                      //                 Color(0xffFF0092),
+                      //                 Color(0xff216DFD)
+                      //               ],
+                      //             ).createShader(bounds);
+                      //           },
+                      //           child: const Center(
+                      //             child: Text(
+                      //               "Invite",
+                      //               style: TextStyle(
+                      //                   fontSize: 12,
+                      //                   fontWeight: FontWeight.w700,
+                      //                   color: Colors.white),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: size.height / 40,
+                      // ),
+                      // Container(
+                      //   height: size.height / 11,
+                      //   color: Colors.white,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       const SizedBox(
+                      //         width: 100,
+                      //         child: Stack(
+                      //           children: [
+                      //             Positioned(
+                      //               left: 40,
+                      //               child: CircleAvatar(
+                      //                 radius: 20,
+                      //                 backgroundImage:
+                      //                     AssetImage("assets/model1.jpg"),
+                      //               ),
+                      //             ),
+                      //             Positioned(
+                      //               left: 20,
+                      //               child: CircleAvatar(
+                      //                 radius: 20,
+                      //                 backgroundImage:
+                      //                     AssetImage("assets/model2.jpg"),
+                      //               ),
+                      //             ),
+                      //             CircleAvatar(
+                      //               radius: 20,
+                      //               backgroundImage:
+                      //                   AssetImage("assets/model2.jpg"),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //       ShaderMask(
+                      //         shaderCallback: (Rect bounds) {
+                      //           return const LinearGradient(
+                      //             colors: [
+                      //               Color(0xffFF0092),
+                      //               Color(0xff216DFD)
+                      //             ],
+                      //           ).createShader(bounds);
+                      //         },
+                      //         child: const Text(
+                      //           "748 Followers",
+                      //           style: TextStyle(
+                      //               fontSize: 15,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white),
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: size.width / 6,
+                      //       ),
+                      //       Container(
+                      //         width: MediaQuery.of(context).size.width * 0.2,
+                      //         height: 35,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             color: Colors.grey.shade200),
+                      //         child: ShaderMask(
+                      //           shaderCallback: (Rect bounds) {
+                      //             return const LinearGradient(
+                      //               colors: [
+                      //                 Color(0xffFF0092),
+                      //                 Color(0xff216DFD)
+                      //               ],
+                      //             ).createShader(bounds);
+                      //           },
+                      //           child: const Center(
+                      //             child: Text(
+                      //               "Follow",
+                      //               style: TextStyle(
+                      //                   fontSize: 12,
+                      //                   fontWeight: FontWeight.w700,
+                      //                   color: Colors.white),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: size.height / 40,
+                  height: 1.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -671,7 +675,7 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                         MaterialPageRoute(
                             builder: (_) => const ticketDetails()));
                   },
-                  child: const Text("Book Your Ticket - \$9.99",
+                  child: const Text("Book Your Ticket - £9.99",
                       style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(

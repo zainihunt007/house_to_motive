@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:house_to_motive/views/screens/video_screen.dart';
 import 'package:http/http.dart' as http;
 
 //
@@ -139,34 +142,8 @@ import 'package:http/http.dart' as http;
 //   }
 // }
 
-
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Firebase Video Locations',
-//       home: MapScreen(),
-//     );
-//   }
-// }
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapSample extends StatefulWidget {
   @override
@@ -180,6 +157,7 @@ class _MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     _fetchAndMarkLocations();
+    _determinePosition();
   }
 
   Future<BitmapDescriptor> getBitmapDescriptorFromUrl(String url) async {
@@ -231,42 +209,143 @@ class _MapSampleState extends State<MapSample> {
 
   Set<Marker> _markers = {};
 
+  // Future<void> _fetchAndMarkLocations() async {
+  //   var videoCollection = FirebaseFirestore.instance.collection('videos');
+  //   var querySnapshot = await videoCollection.get();
+  //
+  //   for (var doc in querySnapshot.docs) {
+  //     String address = doc['location'];
+  //     String imageURL = doc['thumbnailUrl']; // Assuming 'thumbnailUrl' is a field in your document
+  //     List<Location> locations = await locationFromAddress(address);
+  //
+  //     if (locations.isNotEmpty) {
+  //       Location location = locations.first;
+  //       BitmapDescriptor customIcon = await getBitmapDescriptorFromUrl(imageURL);
+  //
+  //       _markers.add(
+  //         Marker(
+  //           markerId: MarkerId(doc.id),
+  //           position: LatLng(location.latitude, location.longitude),
+  //           icon: customIcon,
+  //         ),
+  //       );
+  //     }
+  //   }
+  //
+  //   setState(() {});
+  // }
+
   Future<void> _fetchAndMarkLocations() async {
     var videoCollection = FirebaseFirestore.instance.collection('videos');
     var querySnapshot = await videoCollection.get();
 
+    List<String> videoUrls = []; // List to store video URLs
+
     for (var doc in querySnapshot.docs) {
       String address = doc['location'];
-      String imageURL = doc['thumbnailUrl']; // Assuming 'thumbnailUrl' is a field in your document
+      String imageURL = doc['thumbnailUrl'];
+      String videoURL = doc['videoUrl'];
       List<Location> locations = await locationFromAddress(address);
 
-      if (locations.isNotEmpty) {
-        Location location = locations.first;
-        BitmapDescriptor customIcon = await getBitmapDescriptorFromUrl(imageURL);
+      BitmapDescriptor customIcon = await getBitmapDescriptorFromUrl(imageURL);
+      Location location = locations.first;
 
-        _markers.add(
-          Marker(
-            markerId: MarkerId(doc.id),
-            position: LatLng(location.latitude, location.longitude),
-            icon: customIcon,
-          ),
-        );
-      }
+      _markers.add(
+        Marker(
+          markerId: MarkerId(doc.id),
+          position: LatLng(location.latitude, location.longitude),
+          icon: customIcon,
+          onTap: () {
+            // Open VideoScreen when marker is tapped
+            Get.to(() => VideoScreen(videoUrls: videoUrls, initialIndex: videoUrls.indexOf(videoURL)));
+          },
+        ),
+      );
+
+      // Add the video URL to the list
+      videoUrls.add(videoURL);
     }
 
     setState(() {});
   }
 
+  GoogleMapController? _mapController;
+  LatLng _currentPosition = LatLng(0.0, 0.0);
+  final double _zoomLevel = 17.0; // Higher value for closer zoom
+  String _address = "";
+
+
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When permissions are granted, get the current position.
+    Position position = await Geolocator.getCurrentPosition();
+    _currentPosition = LatLng(position.latitude, position.longitude);
+    _getAddressFromLatLng(position);
+
+    _mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: _currentPosition,
+          zoom: _zoomLevel, // Set the zoom level here
+        ),
+      ),
+    );
+  }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+      setState(() {
+        _address = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    print(_address.toString());
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Locations on Map'),
+        title: Text(_address),
       ),
       body: Stack(
-        children: <Widget>[
+        children: [
           GoogleMap(
+            onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: LatLng(30.3753, 69.3451),
               zoom: 2,
@@ -278,10 +357,3 @@ class _MapSampleState extends State<MapSample> {
     );
   }
 }
-
-// class VideoLocation {
-//   final LatLng location;
-//   final String imageURL;
-//
-//   VideoLocation({required this.location, required this.imageURL});
-// }

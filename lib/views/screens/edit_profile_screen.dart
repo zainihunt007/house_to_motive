@@ -127,7 +127,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
              Stack(
               children: [
-
                 FutureBuilder(
                   future: fetchUserData(),
                   builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {

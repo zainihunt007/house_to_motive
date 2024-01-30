@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/views/screens/profile_screen.dart';
 import 'package:path/path.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -46,7 +47,7 @@ class UploadYourViedoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formkey = GlobalKey<FormState>();
+    // final formkey = GlobalKey<FormState>();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final VideoController videoController = Get.put(VideoController());
@@ -200,7 +201,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                                     );
                                   } else {
                                     return Image.asset(
-                                        'assets/pngs/upload_icon.png');
+                                        'assets/pngs/Rectangle 19345.png',fit: BoxFit.fill,);
                                   }
                                 }),
                               ),
@@ -278,8 +279,9 @@ class UploadYourViedoScreen extends StatelessWidget {
                   focusNode: fieldFocusNode,
                   decoration: InputDecoration(
                     hintText: 'Location',
+                    border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    isDense: true,// Adjust this for hint text padding
+                    isDense: true,
                     hintStyle: const TextStyle(
                       fontFamily: 'ProximaNova',
                       fontSize: 12,
@@ -540,8 +542,8 @@ class UploadYourViedoScreen extends StatelessWidget {
                       onTap: () {
                         // Get.to(() => VideoScreen());
                         videoController.uploadVideo().then((value) {
-                          videoController.fieldTextEditingController.clear();
-                          Get.snackbar('Status', 'video uploaded');
+                          // videoController.fieldTextEditingController.clear();
+                          // Get.snackbar('Status', 'video uploaded');
                         });
                       },
                       child: Container(
@@ -652,8 +654,16 @@ class VideoController extends GetxController {
   // }
 
   Future<void> uploadVideo() async {
+    if (fieldTextEditingController.text.isEmpty) {
+      // Show an error or handle the case where the location field is empty
+      Get.snackbar('Error', 'Location field is empty. Please select a location.');
+      print('Location field is empty. Please select a location.');
+      return;
+    }
+
     if (videoFile.value == null || thumbnailUrl.value == null) {
       // Handle the case where no file or thumbnail is selected
+      print('Video file or thumbnail is missing. Please select both.');
       return;
     }
 
@@ -667,7 +677,7 @@ class VideoController extends GetxController {
 
       // Upload the video to Firebase Storage
       Reference videoStorageRef =
-          FirebaseStorage.instance.ref().child('user_videos/$userId/$fileName');
+      FirebaseStorage.instance.ref().child('user_videos/$userId/$fileName');
       UploadTask videoUploadTask = videoStorageRef.putFile(videoFile.value!);
 
       // Listen for changes in upload progress
@@ -688,7 +698,9 @@ class VideoController extends GetxController {
         'videoUrl': videoDownloadUrl,
         'thumbnailUrl': thumbnailUrl.value,
         'timestamp': FieldValue.serverTimestamp(), // Optional: Add timestamp
-        'location' : fieldTextEditingController.text,
+        'location': fieldTextEditingController.text,
+        'profileUrl' : profilePicUrl.toString(),
+        // 'username' : data!['User Name'],
       });
     } on FirebaseException catch (e) {
       // Handle any errors

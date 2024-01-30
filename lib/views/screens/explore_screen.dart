@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' as ui;
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../mrg/screens/Favourites/newFav.dart';
-import 'notification_screen.dart';
+import 'package:house_to_motive/views/screens/video_screen.dart';
+import '../../widgets/appbar_location.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -26,6 +27,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   void initState() {
     super.initState();
     _fetchAndMarkLocations();
+    placeApiController.determinePosition();
   }
 
   Future<BitmapDescriptor> getBitmapDescriptorFromUrl(String url) async {
@@ -46,8 +48,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
     // Define the rounded rectangle
     final RRect clipRect = RRect.fromRectAndRadius(
-      Rect.fromLTWH(0, 0, 100.0, 150.0),
-      Radius.circular(20.0),
+      const Rect.fromLTWH(0, 0, 100.0, 150.0),
+      const Radius.circular(20.0),
     );
 
     // Clip the canvas
@@ -81,99 +83,45 @@ class _ExploreScreenState extends State<ExploreScreen> {
     var videoCollection = FirebaseFirestore.instance.collection('videos');
     var querySnapshot = await videoCollection.get();
 
+    List<String> videoUrls = []; // List to store video URLs
+
     for (var doc in querySnapshot.docs) {
       String address = doc['location'];
-      String imageURL = doc['thumbnailUrl']; // Assuming 'thumbnailUrl' is a field in your document
+      String imageURL = doc['thumbnailUrl'];
+      String videoURL = doc['videoUrl'];
       List<Location> locations = await locationFromAddress(address);
 
-      if (locations.isNotEmpty) {
-        Location location = locations.first;
-        BitmapDescriptor customIcon = await getBitmapDescriptorFromUrl(imageURL);
+      BitmapDescriptor customIcon = await getBitmapDescriptorFromUrl(imageURL);
+      Location location = locations.first;
 
-        _markers.add(
-          Marker(
-            markerId: MarkerId(doc.id),
-            position: LatLng(location.latitude, location.longitude),
-            icon: customIcon,
-          ),
-        );
-      }
+      _markers.add(
+        Marker(
+          markerId: MarkerId(doc.id),
+          position: LatLng(location.latitude, location.longitude),
+          icon: customIcon,
+          onTap: () {
+            // Open VideoScreen when marker is tapped
+            Get.to(() => VideoScreen(videoUrls: videoUrls, initialIndex: videoUrls.indexOf(videoURL)));
+          },
+        ),
+      );
+
+      // Add the video URL to the list
+      videoUrls.add(videoURL);
     }
 
     setState(() {});
   }
+  final placeApiController = Get.put(PlacesApi());
+
   @override
   Widget build(BuildContext context) {
-    final placeApiController = Get.put(PlacesApi());
+    if (kDebugMode) {
+      print(placeApiController.address);
+    }
     // Implement your home screen UI here
     return Scaffold(
-      appBar: AppBar(
-        // toolbarHeight: 80,
-        centerTitle: true,
-        backgroundColor: const Color(0xff025B8F),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Image.asset('assets/pngs/htmlogo.png'),
-        ),
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/appbar/Vector@2x.png',
-                  height: 9,
-                  width: 9,
-                ),
-                const SizedBox(width: 10),
-                const Text(
-                  'My Location',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 10),
-                  const Text(
-                    '73 Newport Road, Carnbo',
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(width: 10),
-                  Image.asset(
-                    'assets/appbar/Vector1.png',
-                    height: 9,
-                    width: 9,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                Get.to(() => FavList());
-              },
-              child: SvgPicture.asset('assets/appbar/heart.svg')),
-          const SizedBox(width: 10),
-          GestureDetector(
-              onTap: () {
-                Get.to(() => const NotificationScreen());
-              },
-              child: SvgPicture.asset('assets/appbar/Notification.svg')),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -333,10 +281,14 @@ class PlacesApi extends GetxController{
           ));
         }
       } else {
-        print('Failed to load locations: ${response.body}');
+        if (kDebugMode) {
+          print('Failed to load locations: ${response.body}');
+        }
       }
     } catch (e) {
-      print('Error occurred while fetching places: $e');
+      if (kDebugMode) {
+        print('Error occurred while fetching places: $e');
+      }
     }
   }
 
@@ -355,12 +307,76 @@ class PlacesApi extends GetxController{
         }
         return [];
       } else {
-        print('Failed to load suggestions: ${response.body}');
+        if (kDebugMode) {
+          print('Failed to load suggestions: ${response.body}');
+        }
         return [];
       }
     } catch (e) {
-      print('Error occurred while fetching suggestions: $e');
+      if (kDebugMode) {
+        print('Error occurred while fetching suggestions: $e');
+      }
       return [];
+    }
+  }
+
+  // GoogleMapController? _mapController;
+  LatLng _currentPosition = const LatLng(0.0, 0.0);
+  final double _zoomLevel = 17.0; // Higher value for closer zoom
+  String address = "";
+
+
+  Future<void> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When permissions are granted, get the current position.
+    Position position = await Geolocator.getCurrentPosition();
+    _currentPosition = LatLng(position.latitude, position.longitude);
+    _getAddressFromLatLng(position);
+
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: _currentPosition,
+          zoom: _zoomLevel, // Set the zoom level here
+        ),
+      ),
+    );
+  }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+
+        address = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 }

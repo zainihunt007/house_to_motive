@@ -54,7 +54,7 @@ class FavRestaurants extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '\$${foodnearby[index].price}',
+                                      '£${foodnearby[index].price}',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,

@@ -33,7 +33,7 @@ class EventsNearmeScreen extends StatelessWidget {
                 const Spacer(),
                 InkWell(
                     onTap: (){
-                      Get.to(() => VideoScreen());
+                      // Get.to(() => VideoScreen());
                     },
                     child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],
@@ -242,7 +242,7 @@ class EventsNearmeScreen extends StatelessWidget {
                 const Spacer(),
                 InkWell(
                     onTap: (){
-                      Get.to(() => VideoScreen());
+                      // Get.to(() => VideoScreen());
                     },
                     child: SvgPicture.asset('assets/svgs/home/Group 1171274839.svg')),
               ],

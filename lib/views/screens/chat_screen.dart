@@ -3,9 +3,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/views/screens/chat_ui.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../mrg/screens/Favourites/newFav.dart';
-import 'chat_ui.dart';
+import '../../widgets/appbar_location.dart';
 import 'home_screens/home_model.dart';
 import 'notification_screen.dart';
 
@@ -16,72 +17,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color(0xff025B8F),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Image.asset('assets/pngs/htmlogo.png'),
-        ),
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/appbar/Vector@2x.png',
-                  height: 9,
-                  width: 9,
-                ),
-                const SizedBox(width: 10),
-                const Text(
-                  'My Location',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 10),
-                  const Text(
-                    '73 Newport Road, Carnbo',
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(width: 10),
-                  Image.asset(
-                    'assets/appbar/Vector1.png',
-                    height: 9,
-                    width: 9,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-              onTap: (){
-                Get.to(() => FavList());
-              },
-              child: SvgPicture.asset('assets/appbar/heart.svg')),
-          const SizedBox(width: 10),
-          GestureDetector(
-              onTap: (){
-                Get.to(() => NotificationScreen());
-              },
-              child: SvgPicture.asset('assets/appbar/Notification.svg')),
-          const SizedBox(width: 10),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -165,39 +101,146 @@ class ChatScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 2.h),
-                Slidable(
-                  key: const ValueKey(0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(() => ChatPage());
+                      },
+                      child: Slidable(
+                      // Specify a key if the Slidable is dismissible.
+                      // key: const ValueKey(6),
 
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        extentRatio: 0.13,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              Get.bottomSheet(
+                                  const BottomSheetDeletDialog());
+                            },
+                            child: Container(
+                              height: 60,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: const Color(0xffFFE7E5),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset('assets/svgs/Trash.svg'),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage('assets/images/3.jpg'),
+                            ),
+                            title: Text(
+                              'Ariana Sime',
+                              style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff161616),
+                              ),
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Image.asset('assets/pngs/export.png'),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Hey bro, do you want...',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff575757),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: const Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text('5:35 PM'),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: Color(0xff025B8F),
+                                  child: Center(
+                                    child: Text(
+                                      '8',
+                                      style:
+                                      TextStyle(color: Colors.white, fontSize: 10),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
+                        ],
+                      ),
+                    ),);
+                  },),
+                SizedBox(height: 2.5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text(
+                        'Yesterday',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: const Color(0xff025B8F),
                         ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(() =>  const ChatPage());
-                        },
-                        child: ListTile(
+                      ),
+                    ),
+                  ],
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                  return Slidable(
+                    // Specify a key if the Slidable is dismissible.
+                    // key: const ValueKey(6),
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      extentRatio: 0.13,
+                      children: [
+                        GestureDetector(
+                          onTap: (){
+                            Get.bottomSheet(
+                                const BottomSheetDeletDialog());
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xffFFE7E5),
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset('assets/svgs/Trash.svg'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
                           leading: const CircleAvatar(
                             radius: 30,
                             backgroundImage: AssetImage('assets/images/3.jpg'),
@@ -242,490 +285,11 @@ class ChatScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(1),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 2.5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text(
-                        'Yesterday',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: const Color(0xff025B8F),
-                        ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(2),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(3),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(4),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                               BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(5),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Slidable(
-                  // Specify a key if the Slidable is dismissible.
-                  key: const ValueKey(6),
-
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.13,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Get.bottomSheet(
-                              BottomSheetDeletDialog());
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xffFFE7E5),
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/3.jpg'),
-                        ),
-                        title: Text(
-                          'Ariana Sime',
-                          style: GoogleFonts.nunito(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff161616),
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Image.asset('assets/pngs/export.png'),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Hey bro, do you want...',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff575757),
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('5:35 PM'),
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Color(0xff025B8F),
-                              child: Center(
-                                child: Text(
-                                  '8',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 1.5.h),
+                  );
+                },),
+                SizedBox(height: 10.5.h),
               ],
             ),
           ),
@@ -736,6 +300,8 @@ class ChatScreen extends StatelessWidget {
 }
 
 class BottomSheetDeletDialog extends StatelessWidget {
+  const BottomSheetDeletDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -836,31 +402,31 @@ class BottomSheetDeletDialog extends StatelessWidget {
 }
 
 
-class DataModel {
-  final String imageUrl;
-  final String title;
-  final String subtitle;
-  final int number;
-
-  DataModel({
-    required this.imageUrl,
-    required this.title,
-    required this.subtitle,
-    required this.number,
-  });
-}
-
-  final List<DataModel> data = [
-    DataModel(
-      imageUrl: 'https://example.com/image1.jpg',
-      title: 'Item 1',
-      subtitle: 'Description 1',
-      number: 42,
-    ),
-    DataModel(
-      imageUrl: 'https://example.com/image2.jpg',
-      title: 'Item 2',
-      subtitle: 'Description 2',
-      number: 17,
-    ),
-  ];
+// class DataModel {
+//   final String imageUrl;
+//   final String title;
+//   final String subtitle;
+//   final int number;
+//
+//   DataModel({
+//     required this.imageUrl,
+//     required this.title,
+//     required this.subtitle,
+//     required this.number,
+//   });
+// }
+//
+//   final List<DataModel> data = [
+//     DataModel(
+//       imageUrl: 'https://example.com/image1.jpg',
+//       title: 'Item 1',
+//       subtitle: 'Description 1',
+//       number: 42,
+//     ),
+//     DataModel(
+//       imageUrl: 'https://example.com/image2.jpg',
+//       title: 'Item 2',
+//       subtitle: 'Description 2',
+//       number: 17,
+//     ),
+//   ];

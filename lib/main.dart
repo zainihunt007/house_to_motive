@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               primaryColor: primaryColor,
               // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff025B8F),),
-              scaffoldBackgroundColor: const Color(0xFFE3F1FF),
+              scaffoldBackgroundColor: const Color(0xFFF6F9FF),
               useMaterial3: true,
             ),
             home: const SplashScreen(),

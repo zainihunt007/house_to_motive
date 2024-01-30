@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:house_to_motive/views/screens/explore_screen.dart';
 import 'package:house_to_motive/views/screens/navigation_bar/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../intro_screens/intro_screen1.dart';
@@ -12,12 +14,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final placeApiController = Get.put(PlacesApi());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // placeApiController.determinePosition();
     Future.delayed(
-      const Duration(seconds: 4), // Adjust the duration as needed
+      const Duration(seconds: 5), // Adjust the duration as needed
       () {
         nextScreen();
       },
@@ -38,10 +42,17 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width / 2,
-          'assets/pngs/htmlogo.png',
+        child: Stack(
+          children: [
+            Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
+            Positioned(
+              bottom: 60,
+              right: 110,
+              child: SvgPicture.asset(
+                'assets/svgs/splash-logo.svg',
+              ),
+            ),
+          ],
         ),
       ),
     );
