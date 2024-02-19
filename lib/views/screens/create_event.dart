@@ -7,15 +7,15 @@ import '../../controller/event_controller.dart';
 import 'create_event2.dart';
 
 class CreateEventScreen extends StatelessWidget {
-  const CreateEventScreen({super.key});
+   CreateEventScreen({super.key});
 
+  final ButtonController controller = Get.put(ButtonController());
 
   @override
   Widget build(BuildContext context) {
-    final ButtonController controller = Get.put(ButtonController());
-    final TicketController ticketController = Get.put(TicketController());
     final screenWidth = MediaQuery.of(context).size.width;
-    return Obx(() =>  Scaffold(
+    return Obx(
+      () => Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
@@ -38,11 +38,11 @@ class CreateEventScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Ticket Details',
@@ -202,6 +202,44 @@ class CreateEventScreen extends StatelessWidget {
                         )),
                   ],
                 ),
+                SizedBox(
+                  height: 4.h,
+                ),
+                // Text(
+                //   'Add Ticket price',
+                //   style: GoogleFonts.inter(
+                //     fontSize: 17,
+                //     fontWeight: FontWeight.w600,
+                //     color: const Color(0xff025B8F),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 2.h,
+                // ),
+                // TextFormField(
+                //   controller: ticketController.eventPriceController,
+                //   keyboardType: TextInputType.phone,
+                //   decoration: InputDecoration(
+                //     hintText: 'Enter price',
+                //     hintStyle: const TextStyle(
+                //       fontFamily: 'ProximaNova',
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w400,
+                //       color: Color(0xff090808),
+                //     ),
+                //     isCollapsed: true,
+                //     contentPadding:
+                //         EdgeInsets.symmetric(horizontal: 2.h, vertical: 1.5.h),
+                //     enabledBorder: OutlineInputBorder(
+                //       borderSide: const BorderSide(color: Colors.black12),
+                //       borderRadius: BorderRadius.circular(20),
+                //     ),
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(20),
+                //     ),
+                //   ),
+                // ),
+                isSelected.value ? PaidContainer() : FreeContainer(),
                 const Spacer(),
                 Row(
                   children: [
@@ -262,8 +300,161 @@ class CreateEventScreen extends StatelessWidget {
   }
 }
 
-class ButtonController extends GetxController {
+class FreeContainer extends StatelessWidget {
+  const FreeContainer({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      // Customization for the Paid Container
+      height: 44.h, // Adjust the height as needed
+      width: double.infinity,
+      // color: Colors.blue, // Customize the color
+
+    );
+  }
+}
+
+class PaidContainer extends StatelessWidget {
+  PaidContainer({super.key});
+  final TicketController ticketController = Get.put(TicketController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 5.h),
+        Container(
+          height: 8.h,
+          width: 17.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: const Color(0xffE45900)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              const Text(
+                "Child",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+               Expanded(
+                child: TextField(
+                  controller: ticketController.childPriceController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: '\$price',
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.white,fontSize: 10),
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(bottom: 8), // Adjust the padding as needed
+                  ),
+                  textAlign: TextAlign.center,
+                  // cursorHeight: 15,
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5.h),
+        Container(
+          height: 8.h,
+          width: 17.h,
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [
+                Color(0XFF4ADE80),
+                Color(0XFF256F40),
+              ]),
+              borderRadius: BorderRadius.circular(8.0),
+              color: const Color(0xffE45900)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              const Text("Adult",
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
+              SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+               Expanded(
+                child: TextField(
+                  controller: ticketController.adultPriceController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: '\$price',
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.white,fontSize: 10),
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    // contentPadding: EdgeInsets.only(bottom: 8), // Adjust the padding as needed
+                  ),
+                  textAlign: TextAlign.center,
+                  // cursorHeight: 15,
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5.h),
+        Container(
+          height: 8.h,
+          width: 17.h,
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                  colors: [Color(0XFFFBD22F), Color(0XFFC89F00)]),
+              borderRadius: BorderRadius.circular(8.0),
+              color: const Color(0xffE45900)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              const Text("Family",
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
+              SizedBox(
+                height: 5,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Expanded(
+                child: TextField(
+                  controller: ticketController.familyPriceController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: '\$price',
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.white,fontSize: 10),
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    // contentPadding: EdgeInsets.only(bottom: 8), // Adjust the padding as needed
+                  ),
+                  textAlign: TextAlign.center,
+                  // cursorHeight: 15,
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5.h),
+        // Text('Child'),
+        // Text('Family'),
+      ],
+    );
+  }
+}
+
+class ButtonController extends GetxController {
   var count = 0.obs;
 
   void increment() {

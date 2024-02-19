@@ -78,20 +78,20 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const ArcadeScreen(
-                                          description: '',
-                                          photoURL: '',
-                                          startTime: '',
-                                          endTime: '',
-                                          eventName: '',
-                                          location: '',
-                                          date: '',
-                                        ),
-                                      ),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (_) => const ArcadeScreen(
+                                    //       description: '',
+                                    //       photoURL: '',
+                                    //       startTime: '',
+                                    //       endTime: '',
+                                    //       eventName: '',
+                                    //       location: '',
+                                    //       date: '',
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
                                   child: const Center(
                                     child: Text(
@@ -155,7 +155,7 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                               fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          "\$43.99",
+                          "£43.99",
                           style: GoogleFonts.inter(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -169,8 +169,8 @@ class _SanzioRestaurantState extends State<SanzioRestaurant> {
                     ),
                     Row(
                       children: [
-                        Image.asset(
-                          "assets/Location.png",
+                        SvgPicture.asset(
+                          "assets/Location.svg",
                         ),
                         Text(
                           "  540 Manchester Road London SE81 6UN",

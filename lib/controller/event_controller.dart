@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,10 @@ class TicketController extends GetxController {
       FirebaseFirestore.instance.collection('tickets');
   final eventNameController = TextEditingController();
   final eventDescriptionController = TextEditingController();
-  final locationController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController childPriceController = TextEditingController();
+  final TextEditingController adultPriceController = TextEditingController();
+  final TextEditingController familyPriceController = TextEditingController();
 
 
 
@@ -112,17 +116,30 @@ class TicketController extends GetxController {
     }
   }
 
+  Future<Map<String, dynamic>?> getCurrentUserDetails() async {
+    // Assuming you have a way to get the current user's ID
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (userSnapshot.exists) {
+      return userSnapshot.data() as Map<String, dynamic>?;
+    }
+    return null;
+  }
+
   Future uploadImageToFirebase(
       {isPaid,
-      date,
-      startTime,
-      endTime,
-      location,
-      eventName,
-      description,
-      private,
-      commentDisable,
-        isEventFavourite
+        date,
+        startTime,
+        endTime,
+        location,
+        eventName,
+        description,
+        private,
+        commentDisable,
+        isEventFavourite,
+        childPriceController,
+        adultPriceController,
+        familyPriceController
       }) async {
     if (selectedImage.value == null) return;
 
@@ -138,19 +155,24 @@ class TicketController extends GetxController {
     print('Download URL: $imageUrl');
 
     if (imageUrl.isNotEmpty) {
+      Map<String, dynamic>? userDetails = await getCurrentUserDetails();
       addTicket(
-          isPaid: isPaid,
-          date: date,
-          startTime: startTime,
-          endTime: endTime,
-          location: location,
-          eventName: eventName,
-          description: description,
-          photoURL: imageUrl,
-          private: private,
-          commentDisable: commentDisable,
-          isEventFavourite: isEventFavourite,
-
+        isPaid: isPaid,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        locationController: locationController.text,
+        childPriceController: childPriceController.text,
+        eventName: eventName,
+        description: description,
+        photoURL: imageUrl,
+        private: private,
+        commentDisable: commentDisable,
+        isEventFavourite: isEventFavourite,
+        familyPriceController: familyPriceController.text,
+        adultPriceController: adultPriceController.text,
+        userName: userDetails?['User Name'],
+        userProfilePic: userDetails?['profilePic'],
       );
     }
   }
@@ -160,13 +182,18 @@ class TicketController extends GetxController {
     required Rx<DateTime> date,
     required TimeOfDay startTime,
     required TimeOfDay endTime,
-    required String location,
+    required String locationController,
     required String eventName,
     required String description,
     required String photoURL,
     required bool private,
     required bool commentDisable,
     required isEventFavourite,
+    required String childPriceController,
+    required String adultPriceController,
+    required String familyPriceController,
+    required String userName,
+    required String userProfilePic,
   }) {
     String id = ticketsCollection.doc().id;
     bool isPaid = isSelected.value;
@@ -177,14 +204,18 @@ class TicketController extends GetxController {
       date: date.value,
       startTime: startTime,
       endTime: endTime,
-      location: location,
+      location: locationController,
       eventName: eventName,
       description: description,
       photoURL: photoURL,
       private: private,
       commentDisable: commentDisable,
-        isEventFavourite: isEventFavourite == false.obs,
-
+      isEventFavourite: isEventFavourite == false.obs,
+      adultPrice: adultPriceController,
+      childPrice: childPriceController,
+      familyPrice: familyPriceController,
+      userName: userName,
+      userProfilePic: userProfilePic,
     );
 
     ticketsCollection
@@ -192,7 +223,12 @@ class TicketController extends GetxController {
         .set(newTicket.toMap())
         .then(
           (value) => print('Ticket added to Firestore'),
-        )
+    )
         .catchError((error) => print('Failed to add ticket: $error'));
   }
+
+
+
+
 }
+

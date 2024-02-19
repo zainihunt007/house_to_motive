@@ -8,18 +8,44 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../controller/event_controller.dart';
 import 'home_screens/home_model.dart';
 
-class CreateEvent3Screen extends StatefulWidget {
+class CreateEvent3Screen extends StatelessWidget {
   CreateEvent3Screen({super.key});
+  final TicketController ticketController = Get.put(TicketController());
 
-  @override
-  State<CreateEvent3Screen> createState() => _CreateEvent3ScreenState();
-}
+  void uploadEvent(){
+    if(ticketController.eventNameController.text.isEmpty){
+      Get.snackbar('Status', 'please enter a Event name');
+    }else if(ticketController.locationController.text.isEmpty){
+      Get.snackbar('Status', 'please enter a location');
+    }else if(ticketController.eventDescriptionController.text.isEmpty){
+      Get.snackbar('Status', 'please enter a Event Description');
+    }else{
+      ticketController
+          .uploadImageToFirebase(
+        isPaid: isSelected.value,
+        date: ticketController.getSelectedDay(),
+        startTime: ticketController.selectedTime.value,
+        endTime: ticketController.selectedTimeEnd.value,
+        location: ticketController.locationController.text,
+        eventName: ticketController.eventNameController.text,
+        description: ticketController.eventDescriptionController.text,
+        commentDisable: ticketController.isCommentDisable.value,
+        private: ticketController.isPrivate.value,
+        isEventFavourite: ticketController.isEventFavourite.value,
+        // price: ticketController.eventPriceController,
+        adultPriceController: ticketController.adultPriceController,
+        childPriceController: ticketController.childPriceController,
+        familyPriceController: ticketController.familyPriceController,
+      ).then((value) => {
+        Get.offAll(() => const HomePage()),
+        Get.snackbar('Status', 'Event updated'),
+      });
+    }
+  }
 
-class _CreateEvent3ScreenState extends State<CreateEvent3Screen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final TicketController ticketController = Get.put(TicketController());
     return Obx(() =>  Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -228,22 +254,27 @@ class _CreateEvent3ScreenState extends State<CreateEvent3Screen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () async {
-                          ticketController
-                              .uploadImageToFirebase(
-                            isPaid: isSelected.value,
-                            date: ticketController.getSelectedDay(),
-                            startTime: ticketController.selectedTime.value,
-                            endTime: ticketController.selectedTimeEnd.value,
-                            location: ticketController.locationController.text,
-                            eventName: ticketController.eventNameController.text,
-                            description: ticketController.eventDescriptionController.text,
-                            commentDisable: ticketController.isCommentDisable.value,
-                            private: ticketController.isPrivate.value,
-                            isEventFavourite: ticketController.isEventFavourite.value,
-                          ).then((value) => {
-                            Get.offAll(() => const HomePage()),
-                            Get.snackbar('Status', 'Event updated'),
-                          });
+                          // ticketController
+                          //     .uploadImageToFirebase(
+                          //   isPaid: isSelected.value,
+                          //   date: ticketController.getSelectedDay(),
+                          //   startTime: ticketController.selectedTime.value,
+                          //   endTime: ticketController.selectedTimeEnd.value,
+                          //   location: ticketController.locationController.text,
+                          //   eventName: ticketController.eventNameController.text,
+                          //   description: ticketController.eventDescriptionController.text,
+                          //   commentDisable: ticketController.isCommentDisable.value,
+                          //   private: ticketController.isPrivate.value,
+                          //   isEventFavourite: ticketController.isEventFavourite.value,
+                          //   // price: ticketController.eventPriceController,
+                          //   adultPriceController: ticketController.adultPriceController,
+                          //   childPriceController: ticketController.childPriceController,
+                          //   familyPriceController: ticketController.familyPriceController,
+                          // ).then((value) => {
+                          //   Get.offAll(() => const HomePage()),
+                          //   Get.snackbar('Status', 'Event updated'),
+                          // });
+                          uploadEvent();
                         },
                         child: Container(
                           height: 5.5.h,
@@ -344,3 +375,4 @@ class BottomSheetEventDialog extends StatelessWidget {
     );
   }
 }
+

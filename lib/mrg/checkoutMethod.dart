@@ -204,7 +204,7 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
                           ).createShader(bounds);
                         },
                         child: const Text(
-                          "\$29.97",
+                          "£29.97",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,

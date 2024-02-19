@@ -26,8 +26,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchAndMarkLocations();
-    placeApiController.determinePosition();
+    _initMap();
+  }
+
+  Future<void> _initMap() async {
+    try {
+      await placeApiController.determinePosition();
+      await _fetchAndMarkLocations();
+    } catch (e) {
+      print("Error initializing map: $e");
+    }
   }
 
   Future<BitmapDescriptor> getBitmapDescriptorFromUrl(String url) async {
@@ -116,9 +124,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print(placeApiController.address);
-    }
+    // if (kDebugMode) {
+    //   print(placeApiController.address);
+    // }
     // Implement your home screen UI here
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -324,6 +332,7 @@ class PlacesApi extends GetxController{
   LatLng _currentPosition = const LatLng(0.0, 0.0);
   final double _zoomLevel = 17.0; // Higher value for closer zoom
   String address = "";
+
 
 
   Future<void> determinePosition() async {

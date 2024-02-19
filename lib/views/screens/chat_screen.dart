@@ -5,11 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_to_motive/views/screens/chat_ui.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../mrg/screens/Favourites/newFav.dart';
 import '../../widgets/appbar_location.dart';
 import 'home_screens/home_model.dart';
-import 'notification_screen.dart';
-
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
@@ -17,7 +14,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -109,7 +106,7 @@ class ChatScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: (){
-                        Get.to(() => ChatPage());
+                        Get.to(() => const ChatPage());
                       },
                       child: Slidable(
                       // Specify a key if the Slidable is dismissible.

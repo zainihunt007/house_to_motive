@@ -5,7 +5,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_to_motive/widgets/custom_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../widgets/loginbutton.dart';
 
 class ContactUSScreen extends StatelessWidget {

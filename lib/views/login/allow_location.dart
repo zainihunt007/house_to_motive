@@ -64,7 +64,7 @@ class AllowLocationScreen extends StatelessWidget {
               CustomButton(
                 title: 'Enable Location',
                 ontap: () {
-                  placeApiController.determinePosition();
+                  // placeApiController.determinePosition();
                     Get.to(() =>  LoginWithEmailScreen());
                 },
               ),

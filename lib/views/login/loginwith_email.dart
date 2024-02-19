@@ -18,18 +18,17 @@ import '../createan_account/signup_screen.dart';
 import '../screens/navigation_bar/home_page.dart';
 import 'loginwith_phonenumber.dart';
 
-class LoginWithEmailScreen extends StatefulWidget {
+class LoginWithEmailScreen extends StatelessWidget {
   LoginWithEmailScreen({super.key});
 
-  @override
-  State<LoginWithEmailScreen> createState() => _LoginWithEmailScreenState();
-}
-
-class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
   final loginFormKey = GlobalKey<FormState>();
+
   FirebaseAuth auth = FirebaseAuth.instance;
+
   AuthenticationController authenticationController =
   Get.put(AuthenticationController());
 

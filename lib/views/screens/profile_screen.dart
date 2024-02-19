@@ -286,7 +286,7 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/carbon_intent-request-create.svg',
                         title: 'Create Event',
                         onTap: () {
-                          Get.to(() => const CreateEventScreen());
+                          Get.to(() =>  CreateEventScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Play Circle.svg',
@@ -319,9 +319,9 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/Settings.svg',
                         title: 'Settings',
                         onTap: () {
-                          Get.to(() => const SettingScreen());
+                          // Get.to(() =>  SettingScreen());
                           // Get.to(() =>  VideoListScreen());
-                          // Get.to(() => MapSample());
+                          Get.to(() => const SettingScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/privacy.svg',

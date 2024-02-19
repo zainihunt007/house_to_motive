@@ -185,52 +185,142 @@ class HomeScreen2 extends StatelessWidget {
           ),
         ),
         SizedBox(height: screenHeight * 0.02),
+        // SizedBox(
+        //   height: 31.25.h,
+        //   // height: 250,
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(left: 12),
+        //     child: ListView.builder(
+        //       scrollDirection: Axis.horizontal,
+        //       itemCount: latestVideoUrls.length,
+        //       itemBuilder: (context, index) {
+        //         // VideoUrls vdourls = videoUrls[index];
+        //         return GestureDetector(
+        //           onTap: () {
+        //             // Get.to(
+        //             //   () => VideoPlayerScreen(
+        //             //       videoUrl: latestVideoUrls[index].videoUrl,
+        //             //       image: latestVideoUrls[index].image),
+        //             // );
+        //
+        //             // Get.to(() => VideoScreen ());
+        //           },
+        //           child: Container(
+        //             width: 48.w, // Adjust width as needed
+        //             // height: 50.h,
+        //             margin: const EdgeInsets.symmetric(
+        //                 horizontal: 4.0), // Adjust for spacing
+        //             decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(8),
+        //               color: Colors.grey,
+        //               image: DecorationImage(
+        //                 fit: BoxFit.fill,
+        //                 image: NetworkImage(latestVideoUrls[index].image),
+        //               ),
+        //             ),
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //               children: [
+        //                 Container(),
+        //                 Container(),
+        //                 Image.asset(
+        //                   'assets/assets2/Video_images/platbtn.png',
+        //                   height: 22,
+        //                   width: 22,
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         );
+        //       },
+        //     ),
+        //   ),
+        // ),
         SizedBox(
           height: 31.25.h,
-          // height: 250,
+            // height: 250,
           child: Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: latestVideoUrls.length,
-              itemBuilder: (context, index) {
-                // VideoUrls vdourls = videoUrls[index];
-                return GestureDetector(
-                  onTap: () {
-                    // Get.to(
-                    //   () => VideoPlayerScreen(
-                    //       videoUrl: latestVideoUrls[index].videoUrl,
-                    //       image: latestVideoUrls[index].image),
-                    // );
-
-                    // Get.to(() => VideoScreen ());
-                  },
-                  child: Container(
-                    width: 48.w, // Adjust width as needed
-                    // height: 50.h,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 4.0), // Adjust for spacing
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(latestVideoUrls[index].image),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(),
-                        Container(),
-                        Image.asset(
-                          'assets/assets2/Video_images/platbtn.png',
-                          height: 22,
-                          width: 22,
+            padding: const EdgeInsets.only(
+              left: 12,
+            ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('videos')
+                  .where('timestamp', isGreaterThanOrEqualTo: DateTime.now().toUtc().subtract(Duration(days: 1))) // Filter videos from the last 24 hours
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Show shimmer effect while waiting for data
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10, // Number of shimmer items
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: 48.w,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    },
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+
+                final documents = snapshot.data!.docs;
+                List<String> videoThumbnailUrls = [];
+                List<String> videoUrls = [];
+
+                for (var doc in documents) {
+                  videoThumbnailUrls.add(doc['thumbnailUrl']);
+                  videoUrls.add(doc['videoUrl']);
+                }
+
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: videoThumbnailUrls.length,
+                  itemBuilder: (context, index) {
+                    // Show actual data
+                    return GestureDetector(
+                      onTap: () {
+                        // Open VideoScreen with the selected video index
+                        Get.to(() => VideoScreen(
+                            videoUrls: videoUrls, initialIndex: index));
+                      },
+                      child: Container(
+                        width: 48.w,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(videoThumbnailUrls[index]),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(),
+                            Container(),
+                            Image.asset(
+                              'assets/assets2/Video_images/platbtn.png',
+                              height: 22,
+                              width: 22,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -382,7 +472,7 @@ class HomeScreen2 extends StatelessWidget {
                     // Get.to(() => VideoScreen());
                   },
                   child: SvgPicture.asset(
-                      'assets/svgs/home/Group 1171274839.svg')),
+                      'assets/svgs/home/Group 1171274839.svg'),),
             ],
           ),
         ),
@@ -622,7 +712,12 @@ class HomeScreen2 extends StatelessWidget {
                     String startTime = doc['startTime'];
                     String endTime = doc['endTime'];
                     String location = doc['location'];
+                    String familyPrice = doc['familyPrice'];
+                    String childPrice = doc['childPrice'];
+                    String adultPrice = doc['adultPrice'];
                     Timestamp date = doc['date'];
+                    String organizerName = doc['userName'];
+                    String organizerProfilePic = doc['userProfilePic'] ?? "";
                     bool isPrivate = doc['private'] ?? false;
                     String userId = FirebaseAuth.instance.currentUser!
                         .uid; // Assuming you're using Firebase Authentication
@@ -656,6 +751,11 @@ class HomeScreen2 extends StatelessWidget {
                               eventName: eventName,
                               location: location,
                               date: date,
+                              familyPrice: familyPrice,
+                              adultPrice: adultPrice,
+                              childPrice: childPrice,
+                              oragnizerName: organizerName,
+                              OrganizerProfilePic: organizerProfilePic,
                             ),
                           );
                         },
@@ -686,8 +786,10 @@ class HomeScreen2 extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                eventName.length > 20
-                                                    ? eventName.substring(0, 20) + '..'
+                                                eventName.length > 35
+                                                    ? eventName.substring(
+                                                            0, 35) +
+                                                        '..'
                                                     : eventName,
                                                 style: GoogleFonts.inter(
                                                   fontWeight: FontWeight.w700,
@@ -696,25 +798,25 @@ class HomeScreen2 extends StatelessWidget {
                                                 ),
                                               ),
                                               SizedBox(height: 0.3.h),
-                                              Row(
-                                                children: [
-                                                  GradientText(
-                                                    text: "+200 Going",
-                                                    gradient:
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color(0xffFF0092),
-                                                        Color(0xff216DFD),
-                                                      ],
-                                                    ),
-                                                    style: GoogleFonts.inter(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 10,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              // Row(
+                                              //   children: [
+                                              //     GradientText(
+                                              //       text: "+200 Going",
+                                              //       gradient:
+                                              //           const LinearGradient(
+                                              //         colors: [
+                                              //           Color(0xffFF0092),
+                                              //           Color(0xff216DFD),
+                                              //         ],
+                                              //       ),
+                                              //       style: GoogleFonts.inter(
+                                              //         fontWeight:
+                                              //             FontWeight.w400,
+                                              //         fontSize: 10,
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                               SizedBox(height: 0.3.h),
                                               Row(
                                                 children: [
@@ -722,7 +824,11 @@ class HomeScreen2 extends StatelessWidget {
                                                       'assets/svgs/home/map-pin.svg'),
                                                   const SizedBox(width: 3),
                                                   Text(
-                                                    'Description',
+                                                    location.length > 30
+                                                        ? location.substring(
+                                                                0, 30) +
+                                                            '..'
+                                                        : location,
                                                     style: GoogleFonts.inter(
                                                       fontWeight:
                                                           FontWeight.w400,
@@ -735,87 +841,87 @@ class HomeScreen2 extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(),
-                                              const Spacer(),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                      'assets/pngs/Vector.png'),
-                                                  const SizedBox(width: 3),
-                                                  Text(
-                                                    'Trending',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10,
-                                                      color: const Color(
-                                                          0xff025B8F),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Image.asset(
-                                                      'assets/pngs/material-symbols_upcoming-outline.png'),
-                                                  const SizedBox(width: 3),
-                                                  Text(
-                                                    'Trending',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10,
-                                                      color: const Color(
-                                                          0xff025B8F),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                      'assets/pngs/majesticons_music.png'),
-                                                  const SizedBox(width: 3),
-                                                  Text(
-                                                    'Hip-hop',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10,
-                                                      color: const Color(
-                                                          0xff025B8F),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Image.asset(
-                                                      'assets/pngs/majesticons_music-line.png'),
-                                                  const SizedBox(width: 3),
-                                                  Text(
-                                                    'Hot',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10,
-                                                      color: const Color(
-                                                          0xff025B8F),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 1.h),
-                                            ],
-                                          ),
+                                          // Column(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.spaceBetween,
+                                          //   crossAxisAlignment:
+                                          //       CrossAxisAlignment.start,
+                                          //   children: [
+                                          //     Container(),
+                                          //     const Spacer(),
+                                          //     // Row(
+                                          //     //   children: [
+                                          //     //     Image.asset(
+                                          //     //         'assets/pngs/Vector.png'),
+                                          //     //     const SizedBox(width: 3),
+                                          //     //     Text(
+                                          //     //       'Trending',
+                                          //     //       style: GoogleFonts.inter(
+                                          //     //         fontSize: 10,
+                                          //     //         color: const Color(
+                                          //     //             0xff025B8F),
+                                          //     //         fontWeight:
+                                          //     //             FontWeight.w400,
+                                          //     //       ),
+                                          //     //     ),
+                                          //     //     const SizedBox(width: 10),
+                                          //     //     Image.asset(
+                                          //     //         'assets/pngs/material-symbols_upcoming-outline.png'),
+                                          //     //     const SizedBox(width: 3),
+                                          //     //     Text(
+                                          //     //       'Trending',
+                                          //     //       style: GoogleFonts.inter(
+                                          //     //         fontSize: 10,
+                                          //     //         color: const Color(
+                                          //     //             0xff025B8F),
+                                          //     //         fontWeight:
+                                          //     //             FontWeight.w400,
+                                          //     //       ),
+                                          //     //     ),
+                                          //     //   ],
+                                          //     // ),
+                                          //     // SizedBox(height: 1.h),
+                                          //     // Row(
+                                          //     //   children: [
+                                          //     //     Image.asset(
+                                          //     //         'assets/pngs/majesticons_music.png'),
+                                          //     //     const SizedBox(width: 3),
+                                          //     //     Text(
+                                          //     //       'Hip-hop',
+                                          //     //       style: GoogleFonts.inter(
+                                          //     //         fontSize: 10,
+                                          //     //         color: const Color(
+                                          //     //             0xff025B8F),
+                                          //     //         fontWeight:
+                                          //     //             FontWeight.w400,
+                                          //     //       ),
+                                          //     //     ),
+                                          //     //     const SizedBox(width: 10),
+                                          //     //     Image.asset(
+                                          //     //         'assets/pngs/majesticons_music-line.png'),
+                                          //     //     const SizedBox(width: 3),
+                                          //     //     Text(
+                                          //     //       'Hot',
+                                          //     //       style: GoogleFonts.inter(
+                                          //     //         fontSize: 10,
+                                          //     //         color: const Color(
+                                          //     //             0xff025B8F),
+                                          //     //         fontWeight:
+                                          //     //             FontWeight.w400,
+                                          //     //       ),
+                                          //     //     ),
+                                          //     //   ],
+                                          //     // ),
+                                          //     // SizedBox(height: 1.h),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  height: screenHeight * 0.25,
+                                  height: screenHeight * 0.27,
                                   width: Get.width / 1,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
@@ -848,7 +954,7 @@ class HomeScreen2 extends StatelessWidget {
                                           },
                                           child: CircleAvatar(
                                             backgroundColor:
-                                                const Color(0xff80FFFFFF),
+                                                const Color(0xff80ffffff),
                                             radius: 16,
                                             child: Icon(
                                               size: 2.5.h,

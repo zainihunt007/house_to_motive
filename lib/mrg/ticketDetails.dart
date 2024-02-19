@@ -162,7 +162,7 @@ class ticketDetails extends StatelessWidget {
                       ).createShader(bounds);
                     },
                     child: const Text(
-                      "\$9.99",
+                      "£9.99",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,

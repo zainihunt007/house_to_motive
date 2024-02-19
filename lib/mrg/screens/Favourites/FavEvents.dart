@@ -102,6 +102,9 @@ class _FavEventsState extends State<FavEvents> {
                                   eventName: eventName,
                                   location: location,
                                   date: date,
+                                  familyPrice: '',
+                                  childPrice: '',
+                                  adultPrice: '',
                                 ),
                               );
                             },

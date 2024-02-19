@@ -11,46 +11,55 @@ import '../../widgets/custom_field.dart';
 import '../../widgets/custom_socialbutton.dart';
 import '../../widgets/loginbutton.dart';
 
+class UserModel {
+  late String userName;
+  late String email;
+  late String profilePic;
+
+  UserModel({
+    required this.userName,
+    required this.email,
+    required this.profilePic,
+  });
+}
+
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();
-  final userName = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future signUp(String Username,
-      String email, String profilePic) async {
-    auth
-        .createUserWithEmailAndPassword(
-            email: emailController.text.toString(),
-            password: passwordController.text.toString())
-        .then((value) {
-      addUserDetails(Username,email,profilePic);
-      Get.to(() => LoginWithEmailScreen());
-      Utils().ToastMessage('Registerd successfully');
-    }).onError((error, stackTrace) {
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signUp() async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      UserModel newUser = UserModel(
+        userName: userNameController.text.trim(),
+        email: userCredential.user!.email!,
+        profilePic: '', // You can set the profile picture here
+      );
+
+      await addUserDetails(newUser);
+      Get.offAll(() => LoginWithEmailScreen());
+      Utils().ToastMessage('Registered successfully');
+    } catch (error) {
       Utils().ToastMessage(error.toString());
-    });
+    }
   }
 
-  Future addUserDetails(
-      String Username,
-      String email,
-      String profilePic,
-      ) async {
-    // Set a default profile picture URL
-    // String defaultProfilePicUrl = 'https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg'; // Replace 'DEFAULT_URL_HERE' with the actual default URL
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(auth.currentUser!.uid)
-        .set({
-      'User Name': Username,
-      'Email': email,
-      'profilePic': profilePic,
+  Future<void> addUserDetails(UserModel user) async {
+    await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
+      'User Name': user.userName,
+      'Email': user.email,
+      'profilePic': user.profilePic,
     });
   }
-
 }
 
 class SignupScreen extends StatefulWidget {
@@ -156,7 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           : (alphaExp.hasMatch(value)
                           ? null
                           : 'Only Alphabets are allowed in a username'),
-                      controller: controller.userName,
+                      controller: controller.userNameController,
                       decoration: const InputDecoration(
                         hintText: 'User Name',
                         hintStyle: TextStyle(
@@ -189,7 +198,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     title: "Continue",
                     ontap: () {
                       if (signupFormKey.currentState!.validate()) {
-                        controller.signUp(controller.userName.text,controller.emailController.text,'');
+                        controller.signUp();
                       }
                       // Get.to(() => const SignupWithPhoneNumberScreen());
                     },

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -461,6 +462,8 @@ class FavListController extends GetxController {
     isSelectedEvents.value = false;
     isSelectedRestaurants.value = true;
   }
+
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 }
 
 class FavList extends StatefulWidget {
@@ -654,7 +657,7 @@ class _FavListState extends State<FavList> {
               height: 10,
             ),
             flag == 1
-                ? Expanded(child: FavVideos())
+                ? Expanded(child: FavVideos(userId: controller.userId,))
                 : flag == 2
                     ? Expanded(child: FavEvents())
                     : flag == 3
@@ -663,7 +666,7 @@ class _FavListState extends State<FavList> {
                         : Expanded(
                             child: Container(
                             color: Colors.white,
-                            child: FavVideos(),
+                            child: FavVideos(userId: controller.userId,),
                           ))
           ],
         ),

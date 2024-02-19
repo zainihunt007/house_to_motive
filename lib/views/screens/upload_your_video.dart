@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/views/screens/navigation_bar/home_page.dart';
 import 'package:house_to_motive/views/screens/profile_screen.dart';
 import 'package:path/path.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -543,8 +544,9 @@ class UploadYourViedoScreen extends StatelessWidget {
                         // Get.to(() => VideoScreen());
                         videoController.uploadVideo().then((value) {
                           // videoController.fieldTextEditingController.clear();
-                          // Get.snackbar('Status', 'video uploaded');
+                          Get.snackbar('Status', 'video uploaded');
                         });
+                        Get.off(() => const HomePage());
                       },
                       child: Container(
                         height: 5.5.h,

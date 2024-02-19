@@ -13,14 +13,9 @@ import '../../controller/event_controller.dart';
 import 'explore_screen.dart';
 
 
-class CreateEvent2Screen extends StatefulWidget {
+class CreateEvent2Screen extends StatelessWidget {
   CreateEvent2Screen({super.key});
 
-  @override
-  State<CreateEvent2Screen> createState() => _CreateEvent2ScreenState();
-}
-
-class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -219,8 +214,7 @@ class _CreateEvent2ScreenState extends State<CreateEvent2Screen> {
                   },
                   onSelected: (String selection) {
                     placeApiController.searchPlaces(selection);
-                    placeApiController.eventLocationController.text = selection;
-
+                    ticketController.locationController.text = selection;
                   },
                   fieldViewBuilder: (BuildContext context, eventLocationController,  fieldFocusNode,  onFieldSubmitted) {
                     return Row(

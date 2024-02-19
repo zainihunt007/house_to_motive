@@ -21,15 +21,15 @@ List loc = [
   '17 Mill Road CHESTER CH14 9BY',
 ];
 List price = [
-  '\$27.90',
-  '\$39.90',
-  '\$39.90'
+  '£27.90',
+  '£39.90',
+  '£39.90'
 ];
 List disc = [
 
-  'off \$2.07',
-  'off \$5.07',
-  'off \$5.07'
+  'off £2.07',
+  'off £5.07',
+  'off £5.07'
 ];
 List member = [
   3,2,2
