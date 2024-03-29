@@ -1,52 +1,135 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:house_to_motive/views/screens/create_event.dart';
 import 'package:house_to_motive/views/screens/navigation_bar/home_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../controller/event_controller.dart';
+import '../../push_notification/home_screen.dart';
 import 'home_screens/home_model.dart';
+import 'package:http/http.dart' as http;
 
-class CreateEvent3Screen extends StatelessWidget {
+class CreateEvent3Screen extends StatefulWidget {
   CreateEvent3Screen({super.key});
+
+  @override
+  State<CreateEvent3Screen> createState() => _CreateEvent3ScreenState();
+}
+
+class _CreateEvent3ScreenState extends State<CreateEvent3Screen> {
   final TicketController ticketController = Get.put(TicketController());
 
-  void uploadEvent(){
-    if(ticketController.eventNameController.text.isEmpty){
+  final NotificationServices notificationServices = NotificationServices();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<String> _deviceTokens = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getAllDeviceTokens();
+  }
+
+  Future<void> getAllDeviceTokens() async {
+    List<String> deviceTokens = [];
+
+    try {
+      CollectionReference users = _firestore.collection('users');
+
+      QuerySnapshot querySnapshot = await users.get();
+
+      for (var doc in querySnapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        if (data.containsKey('Device Token') &&
+            data['Device Token'] is String) {
+          deviceTokens.add(data['Device Token']);
+        }
+      }
+      log('length: ${deviceTokens.length}');
+      log('device Token: ${deviceTokens}');
+    } catch (e) {
+      print("Error retrieving device tokens: $e");
+    }
+
+    setState(() {
+      _deviceTokens = deviceTokens;
+    });
+  }
+
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //
+  // Future<List<String>> getAllDeviceTokens() async {
+  //   List<String> deviceTokens = [];
+  //
+  //   try {
+  //     CollectionReference users = _firestore.collection('users');
+  //
+  //     QuerySnapshot querySnapshot = await users.get();
+  //
+  //     for (var doc in querySnapshot.docs) {
+  //       var data = doc.data() as Map<String, dynamic>;
+  //       if (data.containsKey('Device Token') &&
+  //           data['Device Token'] is String) {
+  //         deviceTokens.add(data['Device Token']);
+  //       }
+  //     }
+  //     log('length: ${deviceTokens.length}');
+  //     log('device Token: ${deviceTokens}');
+  //   } catch (e) {
+  //     print("Error retrieving device tokens: $e");
+  //   }
+  //
+  //   return deviceTokens;
+  // }
+
+  void uploadEvent() {
+    if (ticketController.eventNameController.text.isEmpty) {
       Get.snackbar('Status', 'please enter a Event name');
-    }else if(ticketController.locationController.text.isEmpty){
-      Get.snackbar('Status', 'please enter a location');
-    }else if(ticketController.eventDescriptionController.text.isEmpty){
+    }
+    // else if(ticketController.locationController.text.isEmpty){
+    //   Get.snackbar('Status', 'please enter a location');
+    // }
+    else if (ticketController.eventDescriptionController.text.isEmpty) {
       Get.snackbar('Status', 'please enter a Event Description');
-    }else{
+    } else {
       ticketController
           .uploadImageToFirebase(
-        isPaid: isSelected.value,
-        date: ticketController.getSelectedDay(),
-        startTime: ticketController.selectedTime.value,
-        endTime: ticketController.selectedTimeEnd.value,
-        location: ticketController.locationController.text,
-        eventName: ticketController.eventNameController.text,
-        description: ticketController.eventDescriptionController.text,
-        commentDisable: ticketController.isCommentDisable.value,
-        private: ticketController.isPrivate.value,
-        isEventFavourite: ticketController.isEventFavourite.value,
-        // price: ticketController.eventPriceController,
-        adultPriceController: ticketController.adultPriceController,
-        childPriceController: ticketController.childPriceController,
-        familyPriceController: ticketController.familyPriceController,
-      ).then((value) => {
-        Get.offAll(() => const HomePage()),
-        Get.snackbar('Status', 'Event updated'),
-      });
+            isPaid: isSelected.value,
+            date: ticketController.getSelectedDay(),
+            startTime: ticketController.selectedTime.value,
+            endTime: ticketController.selectedTimeEnd.value,
+            location: ticketController.locationController.text,
+            eventName: ticketController.eventNameController.text,
+            description: ticketController.eventDescriptionController.text,
+            commentDisable: ticketController.isCommentDisable.value,
+            private: ticketController.isPrivate.value,
+            isEventFavourite: ticketController.isEventFavourite.value,
+            // price: ticketController.eventPriceController,
+            adultPriceController: ticketController.adultPriceController,
+            childPriceController: ticketController.childPriceController,
+            familyPriceController: ticketController.familyPriceController,
+            uid: FirebaseAuth.instance.currentUser?.uid,
+          )
+          .then((value) => {
+                notificationServices.sendNotification(
+                    _deviceTokens,
+                    'Home to motive',
+                    'Event: ${ticketController.eventNameController.text}'),
+                Get.offAll(() => const HomePage()),
+                Get.snackbar('Status', 'Event updated'),
+              });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Obx(() =>  Scaffold(
+    return Obx(
+      () => Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
@@ -201,7 +284,8 @@ class CreateEvent3Screen extends StatelessWidget {
                       ),
                       child: ticketController.selectedImage.value == null
                           ? Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -275,6 +359,8 @@ class CreateEvent3Screen extends StatelessWidget {
                           //   Get.snackbar('Status', 'Event updated'),
                           // });
                           uploadEvent();
+                          // getAllDeviceTokens();
+                          // print('d token: $_deviceTokens');
                         },
                         child: Container(
                           height: 5.5.h,
@@ -375,4 +461,3 @@ class BottomSheetEventDialog extends StatelessWidget {
     );
   }
 }
-

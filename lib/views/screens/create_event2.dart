@@ -12,7 +12,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../controller/event_controller.dart';
 import 'explore_screen.dart';
 
-
 class CreateEvent2Screen extends StatelessWidget {
   CreateEvent2Screen({super.key});
 
@@ -78,7 +77,10 @@ class CreateEvent2Screen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          ticketController.getSelectedDay().toString().split(" ")[0],
+                          ticketController
+                              .getSelectedDay()
+                              .toString()
+                              .split(" ")[0],
                           style: const TextStyle(
                             fontFamily: 'ProximaNova',
                             fontSize: 14,
@@ -140,7 +142,8 @@ class CreateEvent2Screen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                ticketController.selectedTime.value.format(context),
+                                ticketController.selectedTime.value
+                                    .format(context),
                                 style: const TextStyle(
                                   fontFamily: 'ProximaNova',
                                   fontSize: 14,
@@ -174,7 +177,8 @@ class CreateEvent2Screen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                ticketController.selectedTimeEnd.value.format(context),
+                                ticketController.selectedTimeEnd.value
+                                    .format(context),
                                 style: const TextStyle(
                                   fontFamily: 'ProximaNova',
                                   fontSize: 14,
@@ -210,13 +214,17 @@ class CreateEvent2Screen extends StatelessWidget {
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
-                    return placeApiController.getSuggestions(textEditingValue.text);
+                    return placeApiController
+                        .getSuggestions(textEditingValue.text);
                   },
                   onSelected: (String selection) {
                     placeApiController.searchPlaces(selection);
                     ticketController.locationController.text = selection;
                   },
-                  fieldViewBuilder: (BuildContext context, eventLocationController,  fieldFocusNode,  onFieldSubmitted) {
+                  fieldViewBuilder: (BuildContext context,
+                      eventLocationController,
+                      fieldFocusNode,
+                      onFieldSubmitted) {
                     return Row(
                       children: [
                         Expanded(

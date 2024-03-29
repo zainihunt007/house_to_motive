@@ -15,6 +15,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../controller/event_controller.dart';
 import '../../mrg/screens/Calender/MyCalander.dart';
 import '../../mrg/screens/Ticket.dart';
 import '../../widgets/appbar_location.dart';
@@ -27,8 +28,15 @@ import 'followers_screen.dart';
 String? profilePicUrl;
 Map<String, dynamic>? data;
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  TicketController ticketController = Get.put(TicketController());
 
   void _shareContent() {
     Share.share('house_to_motive');
@@ -37,6 +45,7 @@ class ProfileScreen extends StatelessWidget {
   Future<DocumentSnapshot> getUserDetails(String userId) async {
     return FirebaseFirestore.instance.collection('users').doc(userId).get();
   }
+
   Future<Map<String, dynamic>?> fetchUserData() async {
     try {
       var userDocument = await FirebaseFirestore.instance
@@ -51,12 +60,25 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+    ticketController.fetchFollowingList(currentUserUid);
+    ticketController.fetchFollowersList(currentUserUid);
+  }
+
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
+    // final followingLength =
+    //     ticketController.followingList.value.length.toString();
+    // final followersLength =
+    //     ticketController.followersList.value.length.toString();
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -75,11 +97,12 @@ class ProfileScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-
                         FutureBuilder(
                           future: fetchUserData(),
-                          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return Shimmer.fromColors(
                                 baseColor: Colors.grey.shade300,
                                 highlightColor: Colors.grey.shade100,
@@ -95,14 +118,19 @@ class ProfileScreen extends StatelessWidget {
                               profilePicUrl = snapshot.data?['profilePic'];
                               return profilePicUrl != null
                                   ? CircleAvatar(
-                                    radius: 35,
-                                    backgroundColor: Colors.black,
-                                    backgroundImage: NetworkImage(profilePicUrl!),
-                                  ) : const CircleAvatar(
-                                radius: 35,
-                                backgroundColor: Colors.white,
-                                backgroundImage: AssetImage('assets/pngs/user_profile.png'),
-                              );
+                                      radius: 35,
+                                      backgroundColor: Colors.black,
+                                      backgroundImage: NetworkImage(profilePicUrl!
+                                              .isNotEmpty
+                                          ? profilePicUrl!
+                                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 35,
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: AssetImage(
+                                          'assets/pngs/user_profile.png'),
+                                    );
                             } else {
                               return const Text("No user data available");
                             }
@@ -114,7 +142,7 @@ class ProfileScreen extends StatelessWidget {
                         // ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(() => const FllowersScreen());
+                            Get.to(() => FollowersScreen());
                           },
                           child: SizedBox(
                             height: 80,
@@ -130,12 +158,15 @@ class ProfileScreen extends StatelessWidget {
                                     color: const Color(0xff7390A1),
                                   ),
                                 ),
-                                Text(
-                                  '745',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff025B8F),
+                                Obx(
+                                  () => Text(
+                                    ticketController.followersList.length
+                                        .toString(),
+                                    style: GoogleFonts.inter(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff025B8F),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -160,12 +191,16 @@ class ProfileScreen extends StatelessWidget {
                                     color: const Color(0xff7390A1),
                                   ),
                                 ),
-                                Text(
-                                  '839',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff025B8F),
+                                Obx(
+                                  () => Text(
+                                    ticketController.followingList.length
+                                        .toString(),
+                                    // followingLength,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff025B8F),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -213,11 +248,15 @@ class ProfileScreen extends StatelessWidget {
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
-                                 data =
-                                    snapshot.data!.data() as Map<String, dynamic>;
-                                return Center(
-                                  child: Text(
+                                data = snapshot.data!.data()
+                                    as Map<String, dynamic>;
+                                return SizedBox(
+                                  width: 80,
+                                  child: Center(
+                                    child: Text(
                                       data?['User Name'],
+                                      // 'hsdvs vsdf',
+                                    ),
                                   ),
                                 );
                               }
@@ -286,7 +325,7 @@ class ProfileScreen extends StatelessWidget {
                         svg: 'assets/svgs/carbon_intent-request-create.svg',
                         title: 'Create Event',
                         onTap: () {
-                          Get.to(() =>  CreateEventScreen());
+                          Get.to(() => CreateEventScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Play Circle.svg',

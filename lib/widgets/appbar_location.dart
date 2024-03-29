@@ -11,7 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final placeApiController = Get.put(PlacesApi());
-
+    print('address: ${placeApiController.address}');
     return AppBar(
       centerTitle: true,
       backgroundColor: const Color(0xff025B8F),

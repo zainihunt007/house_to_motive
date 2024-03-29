@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -6,11 +10,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../mrg/screens/Favourites/newFav.dart';
+import '../../push_notification/home_screen.dart';
 import '../../widgets/appbar_location.dart';
+import 'package:http/http.dart' as http;
 import 'notification_screen.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  SearchScreen({super.key});
+
+  final NotificationServices notificationServices = NotificationServices();
+
+  // Future<void> getAllToken() async {
+  //   try {
+  //     QuerySnapshot<Map<String, dynamic>> snapshot =
+  //         await FirebaseFirestore.instance.collection('users').get();
+  //     List<String> deviceTokens = [];
+  //
+  //     snapshot.docs.forEach((doc) {
+  //       // Assuming 'Device Token' is the field name for device token
+  //       String deviceToken = doc.data()['Device Token'];
+  //       if (deviceToken != null && deviceToken.isNotEmpty) {
+  //         deviceTokens.add(deviceToken);
+  //       }
+  //       print('length: ${deviceTokens.length}');
+  //     });
+  //
+  //     // Now you have all the device tokens in the deviceTokens list
+  //     print(deviceTokens);
+  //   } catch (error) {
+  //     print("Error retrieving device tokens: $error");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +124,34 @@ class SearchScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          notificationServices.getDeviceToken().then((value) async {
+            // print('value: ${value.toString()}');
+            var data = {
+              'to': value.toString(),
+              'notification': {
+                'title': 'Createex',
+                'body': 'Join Createex Company',
+                "sound": "jetsons_doorbell.mp3"
+              },
+              'android': {
+                'notification': {
+                  'notification_count': 23,
+                },
+              },
+              'data': {'type': 'msj', 'id': 'Asif Taj'}
+            };
+            await http.post(
+              Uri.parse('https://fcm.googleapis.com/fcm/send'),
+              body: jsonEncode(data),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization':
+                    'key=AAAAooDJnwI:APA91bGZUWgfEnGV379tFwGlbIgll_6-hY0UuoHarXHOYgnm7-qc1F9TFBmHcAPR3UAgFiG-rrkw-pZQj9m5eABroNKul3sczIPoUVgYAH4uNH6PQEPL8B-SRuRnreIBIxZQYtElXfFS'
+              },
+            );
+          });
+        },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 80.0),
           child: Container(
@@ -119,8 +176,6 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 // AppBar(
 // centerTitle: true,

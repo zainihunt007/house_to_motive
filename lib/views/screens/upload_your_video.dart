@@ -13,11 +13,10 @@ import 'package:house_to_motive/views/screens/profile_screen.dart';
 import 'package:path/path.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
 import 'explore_screen.dart';
 
 class UploadYourViedoScreen extends StatelessWidget {
-   UploadYourViedoScreen({super.key});
+  UploadYourViedoScreen({super.key});
 
   // Future<File?> pickVideo() async {
   //   FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -51,7 +50,8 @@ class UploadYourViedoScreen extends StatelessWidget {
     // final formkey = GlobalKey<FormState>();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final VideoController videoController = Get.put(VideoController());
+    final VideoControllerUpload videoController =
+        Get.put(VideoControllerUpload());
     final placeApiController = Get.put(PlacesApi());
     RxBool light0 = true.obs;
     return Scaffold(
@@ -111,10 +111,10 @@ class UploadYourViedoScreen extends StatelessWidget {
                                   child: Container(
                                     height: 2.5.h,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12)),
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.black12),
+                                    ),
                                     child: const Center(
                                       child: Row(
                                         children: [
@@ -202,7 +202,9 @@ class UploadYourViedoScreen extends StatelessWidget {
                                     );
                                   } else {
                                     return Image.asset(
-                                        'assets/pngs/Rectangle 19345.png',fit: BoxFit.fill,);
+                                      'assets/pngs/Rectangle 19345.png',
+                                      fit: BoxFit.fill,
+                                    );
                                   }
                                 }),
                               ),
@@ -223,7 +225,8 @@ class UploadYourViedoScreen extends StatelessWidget {
                             child: InkWell(
                               onTap: () {
                                 videoController.pickVideo();
-                                videoController.fieldTextEditingController.clear();
+                                videoController.fieldTextEditingController
+                                    .clear();
                               },
                               child: const Center(
                                   child: Text(
@@ -272,16 +275,19 @@ class UploadYourViedoScreen extends StatelessWidget {
               onSelected: (String selection) {
                 placeApiController.searchPlaces(selection);
                 videoController.fieldTextEditingController.text = selection;
-
               },
-              fieldViewBuilder: (BuildContext context, fieldTextEditingController,  fieldFocusNode,  onFieldSubmitted) {
+              fieldViewBuilder: (BuildContext context,
+                  fieldTextEditingController,
+                  fieldFocusNode,
+                  onFieldSubmitted) {
                 return TextFormField(
                   controller: fieldTextEditingController,
                   focusNode: fieldFocusNode,
                   decoration: InputDecoration(
                     hintText: 'Location',
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                     isDense: true,
                     hintStyle: const TextStyle(
                       fontFamily: 'ProximaNova',
@@ -290,7 +296,9 @@ class UploadYourViedoScreen extends StatelessWidget {
                       color: Color(0xff424B5A),
                     ),
                     prefixIcon: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 29), // Adjust padding for icon positioning
+                      padding: const EdgeInsets.symmetric(
+                          horizontal:
+                              29), // Adjust padding for icon positioning
                       child: SvgPicture.asset(
                         'assets/svgs/Locationn.svg',
                         height: 10, // Adjust the size as needed
@@ -298,7 +306,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                       ),
                     ),
                     suffixIcon: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 37), // Adjust padding for icon positioning
+                      padding: const EdgeInsets.symmetric(horizontal: 37),
                       child: SvgPicture.asset(
                         'assets/svgs/Left Arrow Icon.svg',
                         height: 10, // Adjust the size as needed
@@ -541,12 +549,7 @@ class UploadYourViedoScreen extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // Get.to(() => VideoScreen());
-                        videoController.uploadVideo().then((value) {
-                          // videoController.fieldTextEditingController.clear();
-                          Get.snackbar('Status', 'video uploaded');
-                        });
-                        Get.off(() => const HomePage());
+                        videoController.uploadVideo();
                       },
                       child: Container(
                         height: 5.5.h,
@@ -585,12 +588,13 @@ class UploadYourViedoScreen extends StatelessWidget {
   }
 }
 
-class VideoController extends GetxController {
+class VideoControllerUpload extends GetxController {
   var videoFile = Rxn<File>();
   var isUploading = false.obs;
   var thumbnailUrl = Rxn<String>();
   var uploadProgress = 0.0.obs;
-  final TextEditingController fieldTextEditingController = TextEditingController();
+  final TextEditingController fieldTextEditingController =
+      TextEditingController();
   // var thumbnail = Rxn<Image>();
 
   Future<void> pickVideo() async {
@@ -658,7 +662,8 @@ class VideoController extends GetxController {
   Future<void> uploadVideo() async {
     if (fieldTextEditingController.text.isEmpty) {
       // Show an error or handle the case where the location field is empty
-      Get.snackbar('Error', 'Location field is empty. Please select a location.');
+      Get.snackbar(
+          'Error', 'Location field is empty. Please select a location.');
       print('Location field is empty. Please select a location.');
       return;
     }
@@ -679,7 +684,7 @@ class VideoController extends GetxController {
 
       // Upload the video to Firebase Storage
       Reference videoStorageRef =
-      FirebaseStorage.instance.ref().child('user_videos/$userId/$fileName');
+          FirebaseStorage.instance.ref().child('user_videos/$userId/$fileName');
       UploadTask videoUploadTask = videoStorageRef.putFile(videoFile.value!);
 
       // Listen for changes in upload progress
@@ -701,8 +706,11 @@ class VideoController extends GetxController {
         'thumbnailUrl': thumbnailUrl.value,
         'timestamp': FieldValue.serverTimestamp(), // Optional: Add timestamp
         'location': fieldTextEditingController.text,
-        'profileUrl' : profilePicUrl.toString(),
+        'profileUrl': profilePicUrl.toString().isNotEmpty ? profilePicUrl : '',
         // 'username' : data!['User Name'],
+      }).then((value) {
+        Get.snackbar('Status', 'video uploaded');
+        Get.off(() => const HomePage());
       });
     } on FirebaseException catch (e) {
       // Handle any errors
@@ -732,8 +740,6 @@ class VideoController extends GetxController {
 // ),
 // trailing: SvgPicture.asset('assets/svgs/Left Arrow Icon.svg'),
 // ),
-
-
 
 // TextFormField(
 // decoration: InputDecoration(

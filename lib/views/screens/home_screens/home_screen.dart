@@ -10,7 +10,6 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final placeApiController = Get.put(PlacesApi());
 
-
   // List<String> tags = [
   //   'All',
   //   'Concert',
@@ -63,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                                   ? const Text(
                                       '🎉  Things to Do',
                                       style: TextStyle(
-                                        fontFamily: 'arial',
+                                          fontFamily: 'arial',
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12,
                                           color: Colors.white),
@@ -71,10 +70,11 @@ class HomeScreen extends StatelessWidget {
                                   : const Text(
                                       '🎉 Things to Do',
                                       style: TextStyle(
-                                          fontFamily: 'arial',
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          color: Color(0xff025B8F)),
+                                        fontFamily: 'arial',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: Color(0xff025B8F),
+                                      ),
                                     ),
                             ),
                           ),
@@ -102,21 +102,21 @@ class HomeScreen extends StatelessWidget {
                             child: Center(
                               child: !isSelected.value
                                   ? const Text(
-                                '🗓️  Events Near Me',
-                                style: TextStyle(
-                                    fontFamily: 'arial',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: Colors.white),
-                              )
+                                      '🗓️  Events Near Me',
+                                      style: TextStyle(
+                                          fontFamily: 'arial',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                    )
                                   : const Text(
-                                '🗓️  Events Near Me',
-                                style: TextStyle(
-                                    fontFamily: 'arial',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: Color(0xff025B8F)),
-                              ),
+                                      '🗓️  Events Near Me',
+                                      style: TextStyle(
+                                          fontFamily: 'arial',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Color(0xff025B8F)),
+                                    ),
                             ),
                           ),
                         ),
@@ -124,9 +124,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                isSelected.value
-                    ?  HomeScreen2()
-                    : const EventsNearmeScreen(),
+                isSelected.value ? HomeScreen2() : const EventsNearmeScreen(),
               ],
             ),
           ),
@@ -173,7 +171,7 @@ class HomeScreen extends StatelessWidget {
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
-         UploadYourViedoScreen(),
+        UploadYourViedoScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;

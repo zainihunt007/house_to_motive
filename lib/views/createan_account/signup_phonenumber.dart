@@ -17,21 +17,24 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 12.0,right: 12.0),
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
         child: Column(
           children: [
             SizedBox(
               height: screenHeight * 0.31,
               child: Stack(
                 children: [
-                  Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
-                  Positioned(
-                    bottom: 80,
-                    right: 120,
-                    child: SvgPicture.asset(
-                      'assets/svgs/splash-logo.svg',
-                      width: 60,
-                      height: 60,
+                  Opacity(
+                    opacity: 0.1,
+                    child: Image.asset(
+                      'assets/pngs/htmimage1.png',
+                    ),
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/svgs/splash-logo.png',
+                      width: 144,
+                      height: 144,
                     ),
                   ),
                   Positioned(
@@ -65,23 +68,24 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                 fontFamily: 'ProximaNova',
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff424B5A),),
+                color: Color(0xff424B5A),
+              ),
             ),
             SizedBox(height: screenHeight * 0.03),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.068,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffD9D9D9),),
+                  border: Border.all(
+                    color: Color(0xffD9D9D9),
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8, left: 8),
                   child: InternationalPhoneNumberInput(
-                    onInputChanged: (PhoneNumber number) {
-                    },
-                    onInputValidated: (bool value) {
-                    },
+                    onInputChanged: (PhoneNumber number) {},
+                    onInputValidated: (bool value) {},
                     selectorConfig: const SelectorConfig(
                       selectorType: PhoneInputSelectorType.DIALOG,
                     ),
@@ -100,7 +104,8 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                         fontFamily: 'ProximaNova',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff7390A1),),
+                        color: Color(0xff7390A1),
+                      ),
                       // border: OutlineInputBorder(
                       //   borderSide: BorderSide(),
                       // ),
@@ -124,7 +129,8 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                     fontFamily: 'ProximaNova',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff424B5A),),
+                    color: Color(0xff424B5A),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -136,7 +142,8 @@ class SignupWithPhoneNumberScreen extends StatelessWidget {
                       fontFamily: 'ProximaNova',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff025B8F),),
+                      color: Color(0xff025B8F),
+                    ),
                   ),
                 ),
               ],

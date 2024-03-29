@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
         nextScreen();
       },
     );
+    placeApiController.determinePosition();
   }
 
   nextScreen() async {
@@ -34,7 +35,10 @@ class _SplashScreenState extends State<SplashScreen> {
         preferences.getBool('isLogin') == null) {
       Get.offAll(() => const IntroScreenOne());
     } else {
-      Get.offAll(() => const HomePage());
+      Get.offAll(
+        () => const HomePage(),
+        transition: Transition.downToUp,
+      );
     }
   }
 
@@ -44,7 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Stack(
           children: [
-            Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
+            Opacity(
+              opacity: 0.1,
+              child: Image.asset(
+                'assets/pngs/htmimage1.png',
+              ),
+            ),
             Positioned(
               bottom: 60,
               right: 110,

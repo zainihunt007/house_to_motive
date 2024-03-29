@@ -13,8 +13,6 @@ import 'package:house_to_motive/views/screens/video_screen.dart';
 import '../../widgets/appbar_location.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class ExploreScreen extends StatefulWidget {
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
@@ -43,7 +41,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
     final Uint8List bytes = response.bodyBytes;
 
     // Decode the image to a codec
-    final ui.Codec codec = await ui.instantiateImageCodec(bytes, targetWidth: 100, targetHeight: 150);
+    final ui.Codec codec = await ui.instantiateImageCodec(bytes,
+        targetWidth: 100, targetHeight: 150);
     final ui.FrameInfo fi = await codec.getNextFrame();
 
     // Get the image from the frame info
@@ -77,13 +76,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
   */
 
     // End drawing and get the final image
-    final ui.Image finalImage = await pictureRecorder.endRecording().toImage(100, 150);
-    final ByteData? byteData = await finalImage.toByteData(format: ui.ImageByteFormat.png);
+    final ui.Image finalImage =
+        await pictureRecorder.endRecording().toImage(100, 150);
+    final ByteData? byteData =
+        await finalImage.toByteData(format: ui.ImageByteFormat.png);
     final Uint8List finalBytes = byteData!.buffer.asUint8List();
 
     return BitmapDescriptor.fromBytes(finalBytes);
   }
-
 
   Set<Marker> _markers = {};
 
@@ -109,7 +109,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
           icon: customIcon,
           onTap: () {
             // Open VideoScreen when marker is tapped
-            Get.to(() => VideoScreen(videoUrls: videoUrls, initialIndex: videoUrls.indexOf(videoURL)));
+            Get.to(() => VideoScreen(
+                videoUrls: videoUrls,
+                initialIndex: videoUrls.indexOf(videoURL)));
           },
         ),
       );
@@ -120,6 +122,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
     setState(() {});
   }
+
   final placeApiController = Get.put(PlacesApi());
 
   @override
@@ -158,12 +161,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       if (textEditingValue.text == '') {
                         return const Iterable<String>.empty();
                       }
-                      return placeApiController.getSuggestions(textEditingValue.text);
+                      return placeApiController
+                          .getSuggestions(textEditingValue.text);
                     },
                     onSelected: (String selection) {
                       placeApiController.searchPlaces(selection);
                     },
-                    fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController, FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) {
+                    fieldViewBuilder: (BuildContext context,
+                        TextEditingController fieldTextEditingController,
+                        FocusNode fieldFocusNode,
+                        VoidCallback onFieldSubmitted) {
                       return Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: TextFormField(
@@ -178,7 +185,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               color: Color(0xff424B5A),
                             ),
                             isDense: true,
-                            contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(10, 10, 10, 0),
                             fillColor: Colors.white,
                             filled: true,
                             prefixIcon: Padding(
@@ -258,19 +266,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 }
 
-class PlacesApi extends GetxController{
+class PlacesApi extends GetxController {
   final TextEditingController eventLocationController = TextEditingController();
   late GoogleMapController mapController;
   final LatLng target = const LatLng(30.3753, 69.3451);
   final double defaultZoom = 4.0;
   // Zoom level when a location is searched
-  final double searchZoom = 15.0;// Example location
-  final key = 'AIzaSyDotkOgJK6nWqbYMLFOuQQs8VNpyIOAmGw'; // Replace with your Google API Key
+  final double searchZoom = 15.0; // Example location
+  final key =
+      'AIzaSyDotkOgJK6nWqbYMLFOuQQs8VNpyIOAmGw'; // Replace with your Google API Key
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
 
 // Other code...
 
@@ -285,7 +293,9 @@ class PlacesApi extends GetxController{
         if (result['candidates'] != null && result['candidates'].length > 0) {
           final location = result['candidates'][0]['geometry']['location'];
           mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(location['lat'], location['lng']), zoom: searchZoom),
+            CameraPosition(
+                target: LatLng(location['lat'], location['lng']),
+                zoom: searchZoom),
           ));
         }
       } else {
@@ -302,16 +312,16 @@ class PlacesApi extends GetxController{
 
   Future<List<String>> getSuggestions(String query) async {
     final String encodedQuery = Uri.encodeComponent(query);
-    final String url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$encodedQuery&key=$key';
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$encodedQuery&key=$key';
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
         if (result['predictions'] != null) {
-          return List<String>.from(
-              result['predictions'].map((prediction) => prediction['description'])
-          );
+          return List<String>.from(result['predictions']
+              .map((prediction) => prediction['description']));
         }
         return [];
       } else {
@@ -332,8 +342,6 @@ class PlacesApi extends GetxController{
   LatLng _currentPosition = const LatLng(0.0, 0.0);
   final double _zoomLevel = 17.0; // Higher value for closer zoom
   String address = "";
-
-
 
   Future<void> determinePosition() async {
     bool serviceEnabled;
@@ -372,6 +380,7 @@ class PlacesApi extends GetxController{
       ),
     );
   }
+
   Future<void> _getAddressFromLatLng(Position position) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -381,7 +390,8 @@ class PlacesApi extends GetxController{
 
       Placemark place = placemarks[0];
 
-        address = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
+      address =
+          "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
     } catch (e) {
       if (kDebugMode) {
         print(e);

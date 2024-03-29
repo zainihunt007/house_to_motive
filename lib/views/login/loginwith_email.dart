@@ -1,6 +1,9 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -22,7 +25,6 @@ class LoginWithEmailScreen extends StatelessWidget {
   LoginWithEmailScreen({super.key});
 
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
 
   final loginFormKey = GlobalKey<FormState>();
@@ -30,23 +32,59 @@ class LoginWithEmailScreen extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   AuthenticationController authenticationController =
-  Get.put(AuthenticationController());
+      Get.put(AuthenticationController());
 
   void Login() async {
+    // final _firebaseMessaging = FirebaseMessaging.instance;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     auth
         .signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text)
-        .then((value) {
+            email: emailController.text, password: passwordController.text)
+        .then((value) async {
+      // final fCMToken = await _firebaseMessaging.getToken();
+      updateDeviceToken();
       prefs.setBool('isLogin', true);
-      Get.to(() => HomePage());
+      Get.to(
+        () => const HomePage(),
+        transition: Transition.downToUp,
+      );
       Utils().ToastMessage('Login Successfully');
     }).onError((error, stackTrace) {
       debugPrint(error.toString());
       Utils().ToastMessage(error.toString());
     });
   }
+
+  Future<void> updateDeviceToken() async {
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update({'Device Token': deviceToken});
+  }
+
+  // Future<void> getAllToken() async {
+  //   FirebaseFirestore.instance.collection('users').doc().get();
+  //
+  //   try {
+  //     QuerySnapshot<Map<String, dynamic>> snapshot =
+  //         await FirebaseFirestore.instance.collection('users').get();
+  //     List<String> deviceTokens = [];
+  //
+  //     snapshot.docs.forEach((doc) {
+  //       String deviceToken = doc.data()['Device Token'];
+  //
+  //       if (deviceToken != null || deviceToken.isNotEmpty) {
+  //         deviceTokens.add(deviceToken);
+  //         print('device token: ${deviceTokens.length}');
+  //       }
+  //     });
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -70,14 +108,17 @@ class LoginWithEmailScreen extends StatelessWidget {
                   height: screenHeight * 0.31,
                   child: Stack(
                     children: [
-                      Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
-                      Positioned(
-                        bottom: 80,
-                        right: 120,
-                        child: SvgPicture.asset(
-                          'assets/svgs/splash-logo.svg',
-                          width: 60,
-                          height: 60,
+                      Opacity(
+                        opacity: 0.1,
+                        child: Image.asset(
+                          'assets/pngs/htmimage1.png',
+                        ),
+                      ),
+                      Center(
+                        child: Image.asset(
+                          'assets/svgs/splash-logo.png',
+                          width: 144,
+                          height: 144,
                         ),
                       ),
                       Positioned(
@@ -124,7 +165,7 @@ class LoginWithEmailScreen extends StatelessWidget {
                           CustomButtonWithIcon(
                               ontap: () {
                                 Get.to(
-                                        () => const LoginWithPhoneNumberScreen());
+                                    () => const LoginWithPhoneNumberScreen());
                               },
                               title: 'Phone Number',
                               svg: "assets/svgs/social/Call.svg"),
@@ -220,7 +261,7 @@ class AuthenticationController extends GetxController {
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithPopup(authProvider);
+            await auth.signInWithPopup(authProvider);
 
         user = userCredential.user;
       } catch (e) {
@@ -230,11 +271,11 @@ class AuthenticationController extends GetxController {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       final GoogleSignInAccount? googleSignInAccount =
-      await googleSignIn.signIn();
+          await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -243,7 +284,7 @@ class AuthenticationController extends GetxController {
 
         try {
           final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
+              await auth.signInWithCredential(credential);
           Get.to(() => const HomePage());
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
@@ -281,7 +322,7 @@ Future<UserCredential> signInWithFacebook() async {
 
   // Create a credential from the access token
   final OAuthCredential facebookAuthCredential =
-  FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
   // Once signed in, return the UserCredential
   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);

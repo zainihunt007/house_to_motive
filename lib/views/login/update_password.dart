@@ -6,7 +6,6 @@ import 'package:house_to_motive/views/createan_account/signup_screen.dart';
 import '../../widgets/custom_field.dart';
 import '../../widgets/loginbutton.dart';
 
-
 class UpdatePasswordScreen extends StatelessWidget {
   const UpdatePasswordScreen({super.key});
 
@@ -22,14 +21,17 @@ class UpdatePasswordScreen extends StatelessWidget {
               height: screenHeight * 0.31,
               child: Stack(
                 children: [
-                  Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
-                  Positioned(
-                    bottom: 80,
-                    right: 120,
-                    child: SvgPicture.asset(
-                      'assets/svgs/splash-logo.svg',
-                      width: 60,
-                      height: 60,
+                  Opacity(
+                    opacity: 0.1,
+                    child: Image.asset(
+                      'assets/pngs/htmimage1.png',
+                    ),
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/svgs/splash-logo.png',
+                      width: 144,
+                      height: 144,
                     ),
                   ),
                   Positioned(
@@ -47,7 +49,7 @@ class UpdatePasswordScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 12.0,right: 12.0),
+              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
               child: Column(
                 children: [
                   const Text(
@@ -67,17 +69,20 @@ class UpdatePasswordScreen extends StatelessWidget {
                       fontFamily: 'ProximaNova',
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff424B5A),),
+                      color: Color(0xff424B5A),
+                    ),
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   const CustomPasswordField(title: 'Enter password'),
                   SizedBox(height: screenHeight * 0.01),
-                  const CustomPasswordField(title: 'Confirm password',),
+                  const CustomPasswordField(
+                    title: 'Confirm password',
+                  ),
                   SizedBox(height: screenHeight * 0.03),
                   CustomButton(
                     title: "Update Password",
                     ontap: () {
-                      Get.to(()=> SignupScreen());
+                      Get.to(() => SignupScreen());
                     },
                   ),
                 ],

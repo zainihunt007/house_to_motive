@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +10,6 @@ import 'package:house_to_motive/views/screens/profile_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
-
 
 class VideoScreen extends StatefulWidget {
   // final videoUrl;
@@ -66,32 +64,48 @@ class _VideoScreenState extends State<VideoScreen> {
 
                 List<DocumentSnapshot> videoDocs = snapshot.data!.docs;
 
-                List<String> videoLocations = videoDocs.map((doc) => doc['location'] as String).toList();
-                List<String> userProfilePic = videoDocs.map((doc) => doc['profileUrl'] as String).toList();
+                // List<String> videoLocations =
+                //     videoDocs.map((doc) => doc['location'] as String).toList();
+                // List<String> userProfilePic = videoDocs
+                //     .map((doc) => doc['profileUrl'] as String)
+                //     .toList();
+
+                List<String?> videoLocations =
+                    videoDocs.map((doc) => doc['location'] as String?).toList();
+                List<String?> userProfilePic = videoDocs
+                    .map((doc) => doc['profileUrl'] as String?)
+                    .toList();
 
                 return PageView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: widget.videoUrls.length,
                   controller: PageController(initialPage: widget.initialIndex),
                   itemBuilder: (context, index) {
+                    log('profile image: ${userProfilePic[index].toString()}');
                     var videoDoc = videoDocs[index];
                     log('Length of videos: ${videoDocs.length}');
 
-                    videoLikecontroller.checkInitialLikeStatus(videoDoc.id); // Ensure this is correctly implemented
+                    videoLikecontroller.checkInitialLikeStatus(
+                        videoDoc.id); // Ensure this is correctly implemented
 
                     return StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('comments')
-                          .where('videoId', isEqualTo: videoDoc.id).snapshots(),
+                      stream: FirebaseFirestore.instance
+                          .collection('comments')
+                          .where('videoId', isEqualTo: videoDoc.id)
+                          .snapshots(),
                       builder: (context, commentsSnapshot) {
-                        int commentsCount = commentsSnapshot.data?.docs.length ?? 0;
+                        int commentsCount =
+                            commentsSnapshot.data?.docs.length ?? 0;
 
                         return Stack(
                           children: [
-                            VideoPlayerScreen(videoUrl: widget.videoUrls[index]),
+                            VideoPlayerScreen(
+                                videoUrl: widget.videoUrls[index]),
                             Obx(
-                                  () => SafeArea(
+                              () => SafeArea(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Row(
                                       children: [],
@@ -100,37 +114,37 @@ class _VideoScreenState extends State<VideoScreen> {
                                       padding: const EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 height: 30,
                                                 width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
+                                                        .size
+                                                        .width /
                                                     4,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(6),
-                                                  color:
-                                                  Colors.black.withOpacity(0.5),
+                                                      BorderRadius.circular(6),
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
                                                 ),
                                                 child: Center(
                                                   child: Padding(
                                                     padding:
-                                                    const EdgeInsets.all(2),
+                                                        const EdgeInsets.all(2),
                                                     child: AutoSizeText(
                                                       maxLines: 1,
                                                       'Lorem Lipsam',
-// username[index],
                                                       style: GoogleFonts.inter(
                                                           fontSize: 13,
                                                           fontWeight:
-                                                          FontWeight.w600,
+                                                              FontWeight.w600,
                                                           color: Colors.white),
                                                     ),
                                                   ),
@@ -169,15 +183,32 @@ class _VideoScreenState extends State<VideoScreen> {
                                                   Image.asset(
                                                       'assets/pngs/Location.png'),
                                                   const SizedBox(width: 10),
+                                                  // Text(
+                                                  //   videoLocations[index]
+                                                  //               .length <
+                                                  //           30
+                                                  //       ? videoLocations[index]
+                                                  //       : '${videoLocations[index].substring(0, 30)}...',
+                                                  //   style: GoogleFonts.inter(
+                                                  //     fontSize: 12,
+                                                  //     fontWeight:
+                                                  //         FontWeight.w400,
+                                                  //     color: Colors.white60,
+                                                  //   ),
+                                                  // ),
                                                   Text(
-                                                    videoLocations[index].length <
-                                                        30
-                                                        ? videoLocations[index]
-                                                        : '${videoLocations[index]
-                                                        .substring(0, 30)}...',
+                                                    (videoLocations[index]
+                                                                    ?.length ??
+                                                                0) <
+                                                            30
+                                                        ? videoLocations[
+                                                                index] ??
+                                                            ''
+                                                        : '${videoLocations[index]?.substring(0, 30) ?? ''}...',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       color: Colors.white60,
                                                     ),
                                                   ),
@@ -185,8 +216,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                               ),
                                               SizedBox(
                                                   height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
+                                                          .size
+                                                          .height *
                                                       0.02),
                                             ],
                                           ),
@@ -197,20 +228,35 @@ class _VideoScreenState extends State<VideoScreen> {
                                                   CircleAvatar(
                                                     radius: 30,
                                                     backgroundColor:
-                                                    Colors.transparent,
+                                                        Colors.transparent,
                                                     child: CircleAvatar(
                                                       radius: 20,
-                                                      backgroundColor: Colors.black,
-                                                      backgroundImage: NetworkImage(
-                                                          userProfilePic[index]),
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      backgroundImage:
+                                                          //     NetworkImage(
+                                                          //   userProfilePic[index] ==
+                                                          //               null ||
+                                                          //           userProfilePic[
+                                                          //                   index]
+                                                          //               .isEmpty
+                                                          //       ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                                                          //       : userProfilePic[
+                                                          //           index], // Use the profile picture URL if it's not null or empty
+                                                          // ),
+                                                          NetworkImage(
+                                                        userProfilePic[index] ??
+                                                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                                                      ),
                                                     ),
                                                   ),
-                                                  const Positioned(
+                                                  Positioned(
                                                     top: 40,
                                                     right: 10,
                                                     child: CircleAvatar(
                                                       radius: 6,
-                                                      backgroundColor: Colors.white,
+                                                      backgroundColor:
+                                                          Colors.white,
                                                       backgroundImage: AssetImage(
                                                           'assets/pngs/Subscribe button.png'),
                                                     ),
@@ -224,23 +270,26 @@ class _VideoScreenState extends State<VideoScreen> {
                                                 child: Column(
                                                   children: [
                                                     InkWell(
-                                                        onTap: () =>
-                                                            videoLikecontroller
-                                                                .toggleLikeDislike(
-                                                                videoDoc.id),
-                                                        child: SvgPicture.asset(
-                                                          'assets/svgs/Like icon.svg',
-                                                          color: videoLikecontroller
+                                                      onTap: () =>
+                                                          videoLikecontroller
+                                                              .toggleLikeDislike(
+                                                                  videoDoc.id),
+                                                      child: videoLikecontroller
                                                               .userLiked.value
-                                                              ? Colors.red
-                                                              : Colors.white,
-                                                        )),
+                                                          ? SvgPicture.asset(
+                                                              'assets/liked.svg')
+                                                          : SvgPicture.asset(
+                                                              'assets/svgs/Like icon.svg',
+                                                            ),
+                                                    ),
                                                     Text(
-                                                      videoLikecontroller.likesCount
+                                                      videoLikecontroller
+                                                          .likesCount
                                                           .toString(),
                                                       style: GoogleFonts.inter(
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.white60,
                                                       ),
                                                     ),
@@ -255,7 +304,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
-                                                        openBottomSheet(context,videoDoc.id);
+                                                        openBottomSheet(context,
+                                                            videoDoc.id);
                                                       },
                                                       child: SvgPicture.asset(
                                                           'assets/svgs/comments.svg'),
@@ -264,7 +314,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                                       commentsCount.toString(),
                                                       style: GoogleFonts.inter(
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.white60,
                                                       ),
                                                     )
@@ -288,7 +339,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                                       '256',
                                                       style: GoogleFonts.inter(
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.white60,
                                                       ),
                                                     )
@@ -312,7 +364,6 @@ class _VideoScreenState extends State<VideoScreen> {
                 );
               },
             ),
-
           ),
           SafeArea(
             child: Padding(
@@ -435,15 +486,16 @@ class VideoController extends GetxController {
   var likesCount = 0.obs;
   var userLiked = false.obs;
 
-
   Future<void> toggleLikeDislike(String videoId) async {
     var user = FirebaseAuth.instance.currentUser;
     if (user == null || user.email == null) return;
 
-    var userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    var userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
-      var videoRef = FirebaseFirestore.instance.collection('videos').doc(videoId);
+      var videoRef =
+          FirebaseFirestore.instance.collection('videos').doc(videoId);
       var videoSnapshot = await transaction.get(videoRef);
       if (!videoSnapshot.exists) return;
 
@@ -451,20 +503,21 @@ class VideoController extends GetxController {
       if (likes.contains(user.email)) {
         likes.remove(user.email);
         // Remove videoId from user's likedVideos list
-        List<dynamic> userLikedVideos = (await transaction.get(userDocRef)).data()?['likedVideos'] ?? [];
+        List<dynamic> userLikedVideos =
+            (await transaction.get(userDocRef)).data()?['likedVideos'] ?? [];
         userLikedVideos.remove(videoId);
         transaction.update(userDocRef, {'likedVideos': userLikedVideos});
       } else {
         likes.add(user.email);
         // Add videoId to user's likedVideos list
-        List<dynamic> userLikedVideos = (await transaction.get(userDocRef)).data()?['likedVideos'] ?? [];
+        List<dynamic> userLikedVideos =
+            (await transaction.get(userDocRef)).data()?['likedVideos'] ?? [];
         userLikedVideos.add(videoId);
         transaction.update(userDocRef, {'likedVideos': userLikedVideos});
       }
       transaction.update(videoRef, {'likes': likes});
     });
   }
-
 
   // void getLikesCount(String videoId) async {
   //   var videoRef = FirebaseFirestore.instance.collection('videos').doc(videoId);
@@ -535,7 +588,7 @@ class VideoController extends GetxController {
 void openBottomSheet(BuildContext context, String videoDocId) {
   final TextEditingController commentController = TextEditingController();
   final CollectionReference commentsCollection =
-  FirebaseFirestore.instance.collection('comments');
+      FirebaseFirestore.instance.collection('comments');
 
   Get.bottomSheet(
     SingleChildScrollView(
@@ -547,10 +600,13 @@ void openBottomSheet(BuildContext context, String videoDocId) {
                 .snapshots(),
             builder: (context, snapshot) {
               // Calculate the number of comments dynamically
-              String commentCount = snapshot.hasData ? '${snapshot.data!.docs.length} comments' : 'Loading comments...';
+              String commentCount = snapshot.hasData
+                  ? '${snapshot.data!.docs.length} comments'
+                  : 'Loading comments...';
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -565,14 +621,14 @@ void openBottomSheet(BuildContext context, String videoDocId) {
                       onTap: () {
                         Get.back();
                       },
-                      child: Icon(Icons.close, color: Colors.black, size: 16.px),
+                      child:
+                          Icon(Icons.close, color: Colors.black, size: 16.px),
                     ),
                   ],
                 ),
               );
             },
           ),
-
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('comments')
@@ -601,7 +657,11 @@ void openBottomSheet(BuildContext context, String videoDocId) {
                           SizedBox(width: 2.h),
                           CircleAvatar(
                             radius: 20,
-                            backgroundImage: NetworkImage(comment['profilePic'].toString().isEmpty ?"https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg" : comment['profilePic'].toString()),
+                            backgroundImage: NetworkImage(comment['profilePic']
+                                    .toString()
+                                    .isEmpty
+                                ? "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg"
+                                : comment['profilePic'].toString()),
                           ),
                           SizedBox(width: 2.h),
                           Expanded(
@@ -609,7 +669,8 @@ void openBottomSheet(BuildContext context, String videoDocId) {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  comment['userName'], // Ideally, fetch the user's name using the userId from the comment
+                                  comment[
+                                      'userName'], // Ideally, fetch the user's name using the userId from the comment
                                   style: GoogleFonts.inter(
                                     fontSize: 14.px,
                                     fontWeight: FontWeight.w400,
@@ -636,15 +697,17 @@ void openBottomSheet(BuildContext context, String videoDocId) {
               );
             },
           ),
-
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.black, // Placeholder for user's avatar
-                  backgroundImage: NetworkImage(profilePicUrl.toString().isEmpty ? "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg" : profilePicUrl.toString()),
+                  backgroundColor:
+                      Colors.black, // Placeholder for user's avatar
+                  backgroundImage: NetworkImage(profilePicUrl.toString().isEmpty
+                      ? "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg"
+                      : profilePicUrl.toString()),
                 ),
                 SizedBox(width: 2.h),
                 Expanded(
@@ -655,23 +718,28 @@ void openBottomSheet(BuildContext context, String videoDocId) {
                       decoration: InputDecoration(
                         hintText: "Add comment",
                         isDense: true,
-                        prefixIcon: IconButton(onPressed: () async {
-                          if (commentController.text.isNotEmpty) {
-                            await commentsCollection.add({
-                              'userName' : data?['User Name'],
-                              'profilePic' : profilePicUrl.toString(),
-                              'videoId': videoDocId,
-                              'text': commentController.text,
-                            });
-                            commentController.clear(); // Clear the input field
-                          }
-                        }, icon: const Icon(Icons.send),),
+                        prefixIcon: IconButton(
+                          onPressed: () async {
+                            if (commentController.text.isNotEmpty) {
+                              await commentsCollection.add({
+                                'userName': data?['User Name'],
+                                'profilePic': profilePicUrl.toString(),
+                                'videoId': videoDocId,
+                                'text': commentController.text,
+                              });
+                              commentController
+                                  .clear(); // Clear the input field
+                            }
+                          },
+                          icon: const Icon(Icons.send),
+                        ),
                         hintStyle: GoogleFonts.inter(
                           fontSize: 15.px,
                           fontWeight: FontWeight.w400,
                           color: const Color(0xff8A8B8F),
                         ),
-                        border: const OutlineInputBorder(borderSide: BorderSide.none),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                         fillColor: const Color(0xffF1F1F3),
                         filled: true,
                       ),
@@ -694,7 +762,6 @@ void openBottomSheet(BuildContext context, String videoDocId) {
     ),
   );
 }
-
 
 // void openBottomSheet(BuildContext context, String videoDocId) {
 //   // Debug print to ensure function is called
@@ -747,6 +814,4 @@ void openBottomSheet(BuildContext context, String videoDocId) {
 //   );
 // }
 
-
 // openBottomSheet(context,videoDoc.id);
-

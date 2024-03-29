@@ -31,14 +31,17 @@ class ForgotPasswordScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     // Image.asset('assets/pngs/htmimage.png'),
-                    Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
-                    Positioned(
-                      bottom: 80,
-                      right: 120,
-                      child: SvgPicture.asset(
-                        'assets/svgs/splash-logo.svg',
-                        width: 60,
-                        height: 60,
+                    Opacity(
+                      opacity: 0.1,
+                      child: Image.asset(
+                        'assets/pngs/htmimage1.png',
+                      ),
+                    ),
+                    Center(
+                      child: Image.asset(
+                        'assets/svgs/splash-logo.png',
+                        width: 144,
+                        height: 144,
                       ),
                     ),
                     Positioned(
@@ -56,7 +59,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 12.0,right: 12.0),
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                 child: Column(
                   children: [
                     const Text(
@@ -76,15 +79,20 @@ class ForgotPasswordScreen extends StatelessWidget {
                         fontFamily: 'ProximaNova',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff424B5A),),
+                        color: Color(0xff424B5A),
+                      ),
                     ),
                     SizedBox(height: screenHeight * 0.02),
-                    CustomEmailField(title: 'Email',textEditingController: emailController),
+                    CustomEmailField(
+                        title: 'Email', textEditingController: emailController),
                     SizedBox(height: screenHeight * 0.03),
                     CustomButton(
                       title: 'Reset Password',
                       ontap: () {
-                        auth.sendPasswordResetEmail(email: emailController.text.toString()).then((value) {
+                        auth
+                            .sendPasswordResetEmail(
+                                email: emailController.text.toString())
+                            .then((value) {
                           Get.to(() => LoginWithEmailScreen());
                           Utils().ToastMessage('please check your email');
                         }).onError((error, stackTrace) {
@@ -102,7 +110,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                             fontFamily: 'ProximaNova',
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff424B5A),),
+                            color: Color(0xff424B5A),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -114,7 +123,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                               fontFamily: 'ProximaNova',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff025B8F),),
+                              color: Color(0xff025B8F),
+                            ),
                           ),
                         ),
                       ],

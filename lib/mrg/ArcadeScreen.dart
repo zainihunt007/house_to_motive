@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -20,20 +24,22 @@ class ArcadeScreen extends StatefulWidget {
   final childPrice;
   final oragnizerName;
   final OrganizerProfilePic;
+  final ticketUid;
   const ArcadeScreen({
     Key? key,
-     this.description,
-     this.photoURL,
-     this.startTime,
-     this.endTime,
-     this.eventName,
-     this.location,
-     this.date,
+    this.description,
+    this.photoURL,
+    this.startTime,
+    this.endTime,
+    this.eventName,
+    this.location,
+    this.date,
     this.familyPrice,
     this.adultPrice,
     this.childPrice,
     this.oragnizerName,
     this.OrganizerProfilePic,
+    this.ticketUid,
   }) : super(key: key);
 
   @override
@@ -41,6 +47,33 @@ class ArcadeScreen extends StatefulWidget {
 }
 
 class _ArcadeScreenState extends State<ArcadeScreen> {
+  bool isFollowing = false; // Initially assuming the user is not following
+
+  @override
+  void initState() {
+    super.initState();
+    // Call a function to check if the current user is following the other user
+    checkFollowingStatus();
+  }
+
+  Future<void> checkFollowingStatus() async {
+    // Fetch the current user's document from Firestore
+    DocumentSnapshot currentUserDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    // Check if the current user is following the other user
+    bool isAlreadyFollowing = currentUserDoc['following'] != null &&
+        currentUserDoc['following'].contains(widget.ticketUid);
+
+    setState(() {
+      isFollowing = isAlreadyFollowing;
+    });
+  }
+
+  // RxBool isFollowing = RxBool(false);
+  String userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     DateTime date = widget.date.toDate();
@@ -49,6 +82,7 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     final Size size = MediaQuery.of(context).size;
     TicketController ticketController = Get.put(TicketController());
+    print('userId: ${widget.ticketUid.toString()}');
     return Scaffold(
       backgroundColor: const Color(0xffF6F9FF),
       body: SingleChildScrollView(
@@ -231,18 +265,21 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                       height: size.height / 40,
                     ),
                     ListTile(
-                      leading:  CircleAvatar(
+                      leading: CircleAvatar(
                         radius: 25,
-                        backgroundImage: NetworkImage(widget.OrganizerProfilePic.toString().isEmpty? "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg" : widget.OrganizerProfilePic.toString()),
+                        backgroundImage: NetworkImage(widget.OrganizerProfilePic
+                                    .toString()
+                                .isEmpty
+                            ? "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg"
+                            : widget.OrganizerProfilePic.toString()),
                       ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: size.height / 90),
-                           Text(
+                          Text(
                             widget.oragnizerName.toString(),
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 12),
+                            style: TextStyle(color: Colors.black, fontSize: 12),
                           ),
                           SizedBox(height: size.height / 80),
                           const Text(
@@ -261,16 +298,34 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                         child: ShaderMask(
                           shaderCallback: (Rect bounds) {
                             return const LinearGradient(
-                              colors: [Color(0xffFF0092), Color(0xff216DFD)],
+                              colors: [
+                                Color(0xffFF0092),
+                                Color(0xff216DFD),
+                              ],
                             ).createShader(bounds);
                           },
-                          child: const Center(
-                            child: Text(
-                              "Follow",
-                              style: TextStyle(
+                          child: GestureDetector(
+                            onTap: () async {
+                              // Toggle follow status and get the updated status
+                              bool updatedFollowStatus =
+                                  await ticketController.toggleFollowUser(
+                                FirebaseAuth.instance.currentUser!.uid,
+                                widget.ticketUid,
+                              );
+
+                              setState(() {
+                                isFollowing = updatedFollowStatus;
+                              });
+                            },
+                            child: Center(
+                              child: Text(
+                                isFollowing ? "Unfollow" : "Follow",
+                                style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white),
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -300,9 +355,11 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const ticketDetails()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const ticketDetails(),
+                              ),
+                            );
                           },
                           child: Container(
                             height: size.height / 14,
@@ -315,9 +372,11 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                 SizedBox(
                                   height: size.height / 55,
                                 ),
-                                const Text("Child",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12)),
+                                const Text(
+                                  "Child",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
                                 SizedBox(
                                   height: size.height / 400,
                                 ),
@@ -485,7 +544,9 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          formattedDate.isEmpty ? "no date" : formattedDate,
+                                          formattedDate.isEmpty
+                                              ? "no date"
+                                              : formattedDate,
                                           style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black),
@@ -517,13 +578,16 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                               color: Colors.black),
                                         ),
                                         SizedBox(height: 1.h),
-                                         Text(
+                                        Text(
                                           widget.location.length > 27
-                                              ? widget.location.substring(0, 27) + '..'
+                                              ? widget.location
+                                                      .substring(0, 27) +
+                                                  '..'
                                               : widget.location,
                                           style: TextStyle(
-                                              fontSize: 8,
-                                              color: Color(0XFF707B81),),
+                                            fontSize: 8,
+                                            color: Color(0XFF707B81),
+                                          ),
                                         ),
                                       ],
                                     ),

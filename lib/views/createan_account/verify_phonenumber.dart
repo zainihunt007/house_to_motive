@@ -20,14 +20,17 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
               height: screenHeight * 0.31,
               child: Stack(
                 children: [
-                  Opacity(opacity: 0.1,child: Image.asset('assets/pngs/htmimage1.png',),),
-                  Positioned(
-                    bottom: 80,
-                    right: 120,
-                    child: SvgPicture.asset(
-                      'assets/svgs/splash-logo.svg',
-                      width: 60,
-                      height: 60,
+                  Opacity(
+                    opacity: 0.1,
+                    child: Image.asset(
+                      'assets/pngs/htmimage1.png',
+                    ),
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/svgs/splash-logo.png',
+                      width: 144,
+                      height: 144,
                     ),
                   ),
                   Positioned(
@@ -61,7 +64,8 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
                 fontFamily: 'ProximaNova',
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff424B5A),),
+                color: Color(0xff424B5A),
+              ),
             ),
             SizedBox(height: screenHeight * 0.01),
             Pinput(
@@ -81,8 +85,7 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
             SizedBox(height: screenHeight * 0.03),
             GestureDetector(
               onTap: () {
-                Get.bottomSheet(
-                    const BottomSheetDeletDialog());
+                Get.bottomSheet(const BottomSheetDeletDialog());
               },
               child: const Text(
                 "Send Again",
@@ -90,7 +93,8 @@ class CreateaccVerifyNumberScreen extends StatelessWidget {
                   fontFamily: 'ProximaNova',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xff025B8F),),
+                  color: Color(0xff025B8F),
+                ),
               ),
             ),
           ],

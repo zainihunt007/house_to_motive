@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Ticket {
@@ -12,31 +11,34 @@ class Ticket {
   final String? location;
   final String? eventName;
   final String? description;
-  String? photoURL;// Nullable URL to uploaded photo/ URL to uploaded photo, you may handle photo upload separately
+  String?
+      photoURL; // Nullable URL to uploaded photo/ URL to uploaded photo, you may handle photo upload separately
   final bool? isEventFavourite;
   final String? childPrice;
   final String? adultPrice;
   final String? familyPrice;
   final String? userProfilePic;
   final String? userName;
+  final String? uid;
   Ticket({
-     this.id,
-     this.isPaid,
-     this.date,
-     this.startTime,
-     this.endTime,
-     this.location,
-     this.eventName,
-     this.description,
-     this.photoURL,
-     this.private,
-     this.commentDisable,
+    this.id,
+    this.isPaid,
+    this.date,
+    this.startTime,
+    this.endTime,
+    this.location,
+    this.eventName,
+    this.description,
+    this.photoURL,
+    this.private,
+    this.commentDisable,
     this.isEventFavourite,
     this.adultPrice,
     this.childPrice,
     this.familyPrice,
     this.userProfilePic,
     this.userName,
+    this.uid,
   });
 
   // Convert Ticket to Map for Firestore
@@ -51,16 +53,15 @@ class Ticket {
       'eventName': eventName,
       'description': description,
       'photoURL': photoURL ?? '',
-      'private' : private,
-      'commentDisable' : commentDisable,
-      'isEventFavourite' : isEventFavourite,
-      'childPrice' : childPrice,
-      'adultPrice' : adultPrice,
-      'familyPrice' : familyPrice,
-      'userName' : userName,
-      'userProfilePic' : userProfilePic,
+      'private': private,
+      'commentDisable': commentDisable,
+      'isEventFavourite': isEventFavourite,
+      'childPrice': childPrice,
+      'adultPrice': adultPrice,
+      'familyPrice': familyPrice,
+      'userName': userName,
+      'userProfilePic': userProfilePic,
+      'uid': uid,
     };
   }
 }
-
-
