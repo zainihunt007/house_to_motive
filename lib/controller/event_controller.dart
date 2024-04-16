@@ -321,22 +321,23 @@ class TicketController extends GetxController {
       if (currentUserUid == userToToggleUid) {
         print("A user cannot follow themselves.");
         Get.snackbar('message', 'A user cannot follow themselves.');
-        return false; // Early exit or handle appropriately
+        return false; // Early exit
       }
 
       final DocumentSnapshot currentUserDoc =
           await _firestore.collection('users').doc(currentUserUid).get();
+      final Map<String, dynamic> currentUserData =
+          currentUserDoc.data() as Map<String, dynamic>;
 
-      // Check if the current user is already following the target user
-      final bool isFollowing = currentUserDoc['following'] != null &&
-          currentUserDoc['following'].contains(userToToggleUid);
+      // Assuming the field exists as an empty array if not found
+      final List<dynamic> followingList = currentUserData['following'] ?? [];
+      final bool isFollowing = followingList.contains(userToToggleUid);
 
       if (isFollowing) {
         // Remove userToToggleUid from the following list of currentUserUid
         await _firestore.collection('users').doc(currentUserUid).update({
           'following': FieldValue.arrayRemove([userToToggleUid])
         });
-
         // Remove currentUserUid from the followers list of userToToggleUid
         await _firestore.collection('users').doc(userToToggleUid).update({
           'followers': FieldValue.arrayRemove([currentUserUid])
@@ -346,7 +347,6 @@ class TicketController extends GetxController {
         await _firestore.collection('users').doc(currentUserUid).update({
           'following': FieldValue.arrayUnion([userToToggleUid])
         });
-
         // Add currentUserUid to the followers list of userToToggleUid
         await _firestore.collection('users').doc(userToToggleUid).update({
           'followers': FieldValue.arrayUnion([currentUserUid])

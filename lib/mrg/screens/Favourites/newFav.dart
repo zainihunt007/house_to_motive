@@ -511,7 +511,7 @@ class _FavListState extends State<FavList> {
           //     child: SvgPicture.asset('assets/appbar/heart.svg')),
           const SizedBox(width: 10),
           GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.to(() => NotificationScreen());
               },
               child: SvgPicture.asset('assets/appbar/Notification.svg')),
@@ -657,17 +657,26 @@ class _FavListState extends State<FavList> {
               height: 10,
             ),
             flag == 1
-                ? Expanded(child: FavVideos(userId: controller.userId,))
+                ? Expanded(
+                    child: FavVideos(
+                    userId: controller.userId,
+                  ))
                 : flag == 2
-                    ? Expanded(child: FavEvents())
+                    ? Expanded(
+                        child: FavEvents(),
+                      )
                     : flag == 3
                         ? Expanded(
-                            child: FavRestaurants())
+                            child: FavRestaurants(),
+                          )
                         : Expanded(
                             child: Container(
-                            color: Colors.white,
-                            child: FavVideos(userId: controller.userId,),
-                          ))
+                              color: Colors.white,
+                              child: FavVideos(
+                                userId: controller.userId,
+                              ),
+                            ),
+                          ),
           ],
         ),
       ),

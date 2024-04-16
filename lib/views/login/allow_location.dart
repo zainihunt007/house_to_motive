@@ -7,7 +7,7 @@ import 'package:house_to_motive/widgets/loginbutton.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AllowLocationScreen extends StatelessWidget {
-   AllowLocationScreen({super.key});
+  AllowLocationScreen({super.key});
   final placeApiController = Get.put(PlacesApi());
 
   @override
@@ -15,7 +15,7 @@ class AllowLocationScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.all(2.0.h),
+          padding: EdgeInsets.all(2.0.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,7 +25,7 @@ class AllowLocationScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Get.to(() =>  LoginWithEmailScreen());
+                      Get.to(() => LoginWithEmailScreen());
                     },
                     child: const Text(
                       'Skip',
@@ -55,17 +55,19 @@ class AllowLocationScreen extends StatelessWidget {
                 'Enable your location for optimize search so we can suggest best match for you',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: 'ProximaNova',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff424B5A),),
+                  fontFamily: 'ProximaNova',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff424B5A),
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 6.4),
               CustomButton(
                 title: 'Enable Location',
                 ontap: () {
-                  // placeApiController.determinePosition();
-                    Get.to(() =>  LoginWithEmailScreen());
+                  placeApiController.determinePosition().then((value) {
+                    Get.to(() => LoginWithEmailScreen());
+                  });
                 },
               ),
             ],

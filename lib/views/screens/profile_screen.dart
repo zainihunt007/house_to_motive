@@ -11,6 +11,7 @@ import 'package:house_to_motive/views/screens/edit_profile_screen.dart';
 import 'package:house_to_motive/views/screens/following_screen.dart';
 import 'package:house_to_motive/views/screens/privacy_policy_screen.dart';
 import 'package:house_to_motive/views/screens/settings_screen.dart';
+import 'package:house_to_motive/views/screens/user_profile_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -256,6 +257,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: Text(
                                       data?['User Name'],
                                       // 'hsdvs vsdf',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -307,7 +312,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         svg: 'assets/svgs/Ticket 22.svg',
                         title: 'My Tickets',
                         onTap: () {
-                          Get.to(() => const ticketScreens());
+                          // Get.to(() => const ticketScreens());
+                          Get.to(() => const UserProfileScreen());
                         }),
                     ProfileWidget(
                         svg: 'assets/svgs/Heart 1.svg',
@@ -527,6 +533,7 @@ void _signOut() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   FirebaseAuth.instance.signOut().then((value) {
     prefs.setBool('isLogin', false);
+    prefs.clear();
     Get.offAll(() => LoginWithEmailScreen());
     Utils().ToastMessage('Sign Out');
   }).onError((error, stackTrace) {

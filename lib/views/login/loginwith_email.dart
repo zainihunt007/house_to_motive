@@ -46,7 +46,7 @@ class LoginWithEmailScreen extends StatelessWidget {
       updateDeviceToken();
       prefs.setBool('isLogin', true);
       Get.to(
-        () => const HomePage(),
+        () => HomePage(),
         transition: Transition.downToUp,
       );
       Utils().ToastMessage('Login Successfully');
@@ -285,7 +285,7 @@ class AuthenticationController extends GetxController {
         try {
           final UserCredential userCredential =
               await auth.signInWithCredential(credential);
-          Get.to(() => const HomePage());
+          Get.to(() => HomePage());
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
           if (e.code == 'account-exists-with-different-credential') {

@@ -710,7 +710,7 @@ class VideoControllerUpload extends GetxController {
         // 'username' : data!['User Name'],
       }).then((value) {
         Get.snackbar('Status', 'video uploaded');
-        Get.off(() => const HomePage());
+        Get.off(() => HomePage());
       });
     } on FirebaseException catch (e) {
       // Handle any errors

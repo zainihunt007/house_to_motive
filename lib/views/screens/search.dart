@@ -7,40 +7,68 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:house_to_motive/views/screens/navigation_bar/home_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../mrg/screens/Favourites/newFav.dart';
 import '../../push_notification/home_screen.dart';
 import '../../widgets/appbar_location.dart';
 import 'package:http/http.dart' as http;
+import 'explore_screen.dart';
 import 'notification_screen.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   SearchScreen({super.key});
 
-  final NotificationServices notificationServices = NotificationServices();
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
 
-  // Future<void> getAllToken() async {
-  //   try {
-  //     QuerySnapshot<Map<String, dynamic>> snapshot =
-  //         await FirebaseFirestore.instance.collection('users').get();
-  //     List<String> deviceTokens = [];
-  //
-  //     snapshot.docs.forEach((doc) {
-  //       // Assuming 'Device Token' is the field name for device token
-  //       String deviceToken = doc.data()['Device Token'];
-  //       if (deviceToken != null && deviceToken.isNotEmpty) {
-  //         deviceTokens.add(deviceToken);
-  //       }
-  //       print('length: ${deviceTokens.length}');
-  //     });
-  //
-  //     // Now you have all the device tokens in the deviceTokens list
-  //     print(deviceTokens);
-  //   } catch (error) {
-  //     print("Error retrieving device tokens: $error");
-  //   }
-  // }
+class _SearchScreenState extends State<SearchScreen> {
+  final NotificationServices notificationServices = NotificationServices();
+  final placeApiController = Get.put(PlacesApi());
+  TextEditingController searchController = TextEditingController();
+
+  // This will hold the filtered list of searches
+  List<String> filteredSearches = [];
+
+  @override
+  void initState() {
+    super.initState();
+    placeApiController.getRecentSearchesFromSharedPreferences();
+    // Listen to changes in the search field and filter the recent searches accordingly
+    searchController.addListener(_filterSearches);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterSearches() {
+    // Use the text from the searchController to filter the recent searches
+    String query = searchController.text.toLowerCase();
+    setState(() {
+      filteredSearches = placeApiController.recentSearches.where((search) {
+        return search.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  void _navigateToExploreScreen(String location) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage(
+          selectedIndex: 1,
+          searchQuery: location,
+          status: true,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +83,7 @@ class SearchScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
+                  controller: searchController,
                   decoration: InputDecoration(
                     hintText: "Search what’s near me",
                     hintStyle: const TextStyle(
@@ -98,25 +127,40 @@ class SearchScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 2.5.h),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading:
-                          SvgPicture.asset('assets/svgs/iconoir_refresh.svg'),
-                      title: Text(
-                        'Lorem ipsum',
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff7390A1),
+              Obx(
+                () => Expanded(
+                  child: ListView.builder(
+                    itemCount: searchController.text.isEmpty
+                        ? placeApiController.recentSearches.length
+                        : filteredSearches.length,
+                    itemBuilder: (context, index) {
+                      String searchQuery = searchController.text.isEmpty
+                          ? placeApiController.recentSearches[index]
+                          : filteredSearches[index];
+                      return ListTile(
+                        onTap: () {
+                          _navigateToExploreScreen(searchQuery);
+                        },
+                        leading:
+                            SvgPicture.asset('assets/svgs/iconoir_refresh.svg'),
+                        title: Text(
+                          searchQuery,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff7390A1),
+                          ),
                         ),
-                      ),
-                      trailing: SvgPicture.asset(
-                          'assets/svgs/radix-icons_cross-2.svg'),
-                    );
-                  },
+                        trailing: GestureDetector(
+                          onTap: () {
+                            placeApiController.removeRecentSearch(index);
+                          },
+                          child: SvgPicture.asset(
+                              'assets/svgs/radix-icons_cross-2.svg'),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -125,32 +169,33 @@ class SearchScreen extends StatelessWidget {
       ),
       floatingActionButton: GestureDetector(
         onTap: () {
-          notificationServices.getDeviceToken().then((value) async {
-            // print('value: ${value.toString()}');
-            var data = {
-              'to': value.toString(),
-              'notification': {
-                'title': 'Createex',
-                'body': 'Join Createex Company',
-                "sound": "jetsons_doorbell.mp3"
-              },
-              'android': {
-                'notification': {
-                  'notification_count': 23,
-                },
-              },
-              'data': {'type': 'msj', 'id': 'Asif Taj'}
-            };
-            await http.post(
-              Uri.parse('https://fcm.googleapis.com/fcm/send'),
-              body: jsonEncode(data),
-              headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Authorization':
-                    'key=AAAAooDJnwI:APA91bGZUWgfEnGV379tFwGlbIgll_6-hY0UuoHarXHOYgnm7-qc1F9TFBmHcAPR3UAgFiG-rrkw-pZQj9m5eABroNKul3sczIPoUVgYAH4uNH6PQEPL8B-SRuRnreIBIxZQYtElXfFS'
-              },
-            );
-          });
+          // notificationServices.getDeviceToken().then((value) async {
+          //   // print('value: ${value.toString()}');
+          //   var data = {
+          //     'to': value.toString(),
+          //     'notification': {
+          //       'title': 'Createex',
+          //       'body': 'Join Createex Company',
+          //       "sound": "jetsons_doorbell.mp3"
+          //     },
+          //     'android': {
+          //       'notification': {
+          //         'notification_count': 23,
+          //       },
+          //     },
+          //     'data': {'type': 'msj', 'id': 'Asif Taj'}
+          //   };
+          //   await http.post(
+          //     Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          //     body: jsonEncode(data),
+          //     headers: {
+          //       'Content-Type': 'application/json; charset=UTF-8',
+          //       'Authorization':
+          //           'key=AAAAooDJnwI:APA91bGZUWgfEnGV379tFwGlbIgll_6-hY0UuoHarXHOYgnm7-qc1F9TFBmHcAPR3UAgFiG-rrkw-pZQj9m5eABroNKul3sczIPoUVgYAH4uNH6PQEPL8B-SRuRnreIBIxZQYtElXfFS'
+          //     },
+          //   );
+          // });
+          placeApiController.determinePosition();
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 80.0),

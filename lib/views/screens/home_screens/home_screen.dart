@@ -6,21 +6,23 @@ import '../upload_your_video.dart';
 import 'events_nearme.dart';
 import 'things_todo.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final placeApiController = Get.put(PlacesApi());
 
-  // List<String> tags = [
-  //   'All',
-  //   'Concert',
-  //   'Sport',
-  //   'Festival',
-  //   'Trade Shows',
-  //   'videos',
-  //   'Music'
-  // ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
-  // List<RxBool> isSelected = List<RxBool>.generate(7, (index) => false.obs);
+  // List<String> tags = [
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:house_to_motive/mrg/paymentMethod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'congratulationsScreen.dart';
 
@@ -115,7 +116,8 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
                         onSelected: (isSelected) {
                           setState(() {
                             // Update the selectedList to have only one true value at a time
-                            selectedList = List<bool>.generate(paymentMethods.length, (index) => false);
+                            selectedList = List<bool>.generate(
+                                paymentMethods.length, (index) => false);
                             selectedList[index] = isSelected;
                           });
                         },
@@ -138,10 +140,12 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const PaymentMethodProcess()),
+                    MaterialPageRoute(
+                        builder: (_) => const PaymentMethodProcess()),
                   );
                 },
-                child: const Text("Add New Card", style: TextStyle(color: Color(0xff025BBF))),
+                child: const Text("Add New Card",
+                    style: TextStyle(color: Color(0xff025BBF))),
               ),
               SizedBox(height: size.height / 30),
               const Align(
@@ -182,7 +186,8 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
                     borderSide: const BorderSide(color: Color(0xffD9D9D9)),
                   ),
                   hintText: "Enter referral / coupon code",
-                  hintStyle: const TextStyle(fontSize: 14, color: Color(0xff7390A1)),
+                  hintStyle:
+                      const TextStyle(fontSize: 14, color: Color(0xff7390A1)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -236,7 +241,8 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
                     onPressed: () {
                       _showBottomSheetSlider(context);
                     },
-                    child: const Text("Pay", style: TextStyle(color: Colors.white)),
+                    child: const Text("Pay",
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
@@ -247,7 +253,9 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
       ),
     );
   }
+
   void _showBottomSheetSlider(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -260,7 +268,78 @@ class _CheckoutMethodState extends State<CheckoutMethod> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Expanded(child: congratulationScreen()),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 16),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height / 40,
+                    ),
+                    Center(child: SvgPicture.asset("assets/congrat.svg")),
+                    SizedBox(
+                      height: size.height / 40,
+                    ),
+                    Text(
+                      "Congratulations!",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: size.height / 40,
+                    ),
+                    Text(
+                      "You have successfully purchased a ticked for NQ64 Arcade, we have sent ticket to your email address.",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black.withOpacity(0.7)),
+                    ),
+                    SizedBox(
+                      height: size.height / 20,
+                    ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(20),
+                    //     ),
+                    //     fixedSize: const Size(180, 50),
+                    //     backgroundColor: const Color(0xff025B8F),
+                    //   ),
+                    //   onPressed: () {
+                    //     Get.back();
+                    //   },
+                    //   child: const Center(
+                    //     child: Text(
+                    //       "Go back to Home",
+                    //       style: TextStyle(color: Colors.white),
+                    //     ),
+                    //   ),
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 50.px,
+                        width: 180.px,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color(0xff025B8F),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Go back to Home",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               // Add your content here
             ],
           ),
@@ -299,7 +378,8 @@ class PaymentMethodCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.3),
               spreadRadius: 1,
             ),
-          ],color: Colors.white,
+          ],
+          color: Colors.white,
           // color: isSelected ? Colors.blue : Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
@@ -318,7 +398,7 @@ class PaymentMethodCard extends StatelessWidget {
               ),
               Text(
                 "  $cardNumber",
-                style: TextStyle(color:  Colors.black , fontSize: 14),
+                style: TextStyle(color: Colors.black, fontSize: 14),
               ),
               Expanded(
                 child: Align(
@@ -340,5 +420,4 @@ class PaymentMethodCard extends StatelessWidget {
       ),
     );
   }
-
 }

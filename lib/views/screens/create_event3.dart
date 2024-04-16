@@ -87,13 +87,11 @@ class _CreateEvent3ScreenState extends State<CreateEvent3Screen> {
   // }
 
   void uploadEvent() {
-    if (ticketController.eventNameController.text.isEmpty) {
+    if (ticketController.locationController.text.isEmpty) {
+      Get.snackbar('Status', 'please enter a location');
+    } else if (ticketController.eventNameController.text.isEmpty) {
       Get.snackbar('Status', 'please enter a Event name');
-    }
-    // else if(ticketController.locationController.text.isEmpty){
-    //   Get.snackbar('Status', 'please enter a location');
-    // }
-    else if (ticketController.eventDescriptionController.text.isEmpty) {
+    } else if (ticketController.eventDescriptionController.text.isEmpty) {
       Get.snackbar('Status', 'please enter a Event Description');
     } else {
       ticketController
@@ -119,8 +117,12 @@ class _CreateEvent3ScreenState extends State<CreateEvent3Screen> {
                     _deviceTokens,
                     'Home to motive',
                     'Event: ${ticketController.eventNameController.text}'),
-                Get.offAll(() => const HomePage()),
-                Get.snackbar('Status', 'Event updated'),
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return BottomSheetEventDialog();
+                  },
+                ),
               });
     }
   }
@@ -440,7 +442,7 @@ class BottomSheetEventDialog extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Get.back();
+                    Get.offAll(() => HomePage());
                   },
                   child: Center(
                     child: Text(

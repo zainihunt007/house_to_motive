@@ -8,18 +8,49 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:house_to_motive/views/screens/video_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/appbar_location.dart';
 import 'package:http/http.dart' as http;
 
 class ExploreScreen extends StatefulWidget {
+  final String? selectedLocation;
+  const ExploreScreen({this.selectedLocation});
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-//   // static const LatLng _pGooglePlex = LatLng(37.4223, -122.0848);
+  Future<void> _searchAndMarkLocation(String location) async {
+    // Assuming PlacesApi has a method to search location by name and return coordinates
+    LatLng coordinates =
+        await placeApiController.searchLocationByName(location);
+    setState(() {
+      _markers.add(
+        Marker(
+          // Unique marker id
+          markerId: MarkerId(location),
+          // Use the coordinates of the location
+          position: coordinates,
+          infoWindow: InfoWindow(title: location),
+          // Customize the marker icon if needed
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    });
+
+    // Optionally, move the camera to the new marker
+    placeApiController.mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: coordinates,
+          zoom: placeApiController.searchZoom, // Defined zoom level
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -30,6 +61,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Future<void> _initMap() async {
     try {
       await placeApiController.determinePosition();
+      if (widget.selectedLocation != null) {
+        await _searchAndMarkLocation(widget.selectedLocation!);
+      }
       await _fetchAndMarkLocations();
     } catch (e) {
       print("Error initializing map: $e");
@@ -166,6 +200,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     },
                     onSelected: (String selection) {
                       placeApiController.searchPlaces(selection);
+                      placeApiController.storeRecentSearch(selection);
                     },
                     fieldViewBuilder: (BuildContext context,
                         TextEditingController fieldTextEditingController,
@@ -264,6 +299,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
       // ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget.selectedLocation;
+  }
 }
 
 class PlacesApi extends GetxController {
@@ -310,6 +352,53 @@ class PlacesApi extends GetxController {
     }
   }
 
+  Future<LatLng> searchLocationByName(String location) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$location&inputtype=textquery&fields=geometry&key=$key';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      if (result['candidates'].isNotEmpty) {
+        final location = result['candidates'][0]['geometry']['location'];
+        final double lat = location['lat'];
+        final double lng = location['lng'];
+        return LatLng(lat, lng);
+      } else {
+        throw Exception('Location not found');
+      }
+    } else {
+      throw Exception('Failed to load location');
+    }
+  }
+
+  RxList<String> recentSearches = <String>[].obs;
+
+  void storeRecentSearch(String query) async {
+    // Add the query to the recent searches list
+    recentSearches.add(query);
+
+    // Store the recent searches list in SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('recentSearches', recentSearches.toList());
+  }
+
+  void removeRecentSearch(int index) async {
+    // Remove the string at the specified index from recent searches list
+    recentSearches.removeAt(index);
+
+    // Store the updated recent searches list in SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('recentSearches', recentSearches.toList());
+  }
+
+  Future<void> getRecentSearchesFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> savedRecentSearches =
+        prefs.getStringList('recentSearches') ?? [];
+    recentSearches.assignAll(savedRecentSearches);
+  }
+
   Future<List<String>> getSuggestions(String query) async {
     final String encodedQuery = Uri.encodeComponent(query);
     final String url =
@@ -343,6 +432,44 @@ class PlacesApi extends GetxController {
   final double _zoomLevel = 17.0; // Higher value for closer zoom
   String address = "";
 
+  // Future<void> determinePosition() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   // Check if location services are enabled.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     return Future.error('Location services are disabled.');
+  //   }
+  //
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //   }
+  //
+  //   if (permission == LocationPermission.deniedForever) {
+  //     return Future.error(
+  //         'Location permissions are permanently denied, we cannot request permissions.');
+  //   }
+  //
+  //   // When permissions are granted, get the current position.
+  //   Position position = await Geolocator.getCurrentPosition();
+  //   _currentPosition = LatLng(position.latitude, position.longitude);
+  //   _getAddressFromLatLng(position);
+  //
+  //   mapController.animateCamera(
+  //     CameraUpdate.newCameraPosition(
+  //       CameraPosition(
+  //         target: _currentPosition,
+  //         zoom: _zoomLevel, // Set the zoom level here
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Future<void> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -350,7 +477,12 @@ class PlacesApi extends GetxController {
     // Check if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+      // Location services are disabled, prompt the user to enable them.
+      bool enableService = await Geolocator.openLocationSettings();
+      if (!enableService) {
+        // The user declined to enable location services.
+        throw 'Location services are disabled.';
+      }
     }
 
     permission = await Geolocator.checkPermission();

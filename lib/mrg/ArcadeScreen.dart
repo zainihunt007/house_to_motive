@@ -226,14 +226,17 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                       children: [
                         SvgPicture.asset("assets/Location.svg"),
                         const SizedBox(width: 9),
-                        Text(
-                          widget.location.length > 40
-                              ? widget.location.substring(0, 40) + '..'
-                              : widget.location,
-                          style: GoogleFonts.inter(
-                            fontSize: 14.px,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff707B81),
+                        Flexible(
+                          // Wrap the Text widget with Flexible
+                          child: Text(
+                            widget.location,
+                            style: GoogleFonts.inter(
+                              fontSize: 14.px,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff707B81),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
                       ],
@@ -244,12 +247,14 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                     Row(
                       children: [
                         SvgPicture.asset("assets/stopwatch.svg"),
-                        Text(
-                          "  Open: ${widget.startTime} - ${widget.endTime}",
-                          style: GoogleFonts.inter(
-                            fontSize: 14.px,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff707B81),
+                        Flexible(
+                          child: Text(
+                            "  Open: ${widget.startTime} - ${widget.endTime}",
+                            style: GoogleFonts.inter(
+                              fontSize: 14.px,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff707B81),
+                            ),
                           ),
                         ),
                         // SizedBox(
@@ -351,126 +356,119 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ticketDetails(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: size.height / 14,
-                            width: size.width / 3,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: const Color(0xffE45900)),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height / 55,
-                                ),
-                                const Text(
-                                  "Child",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                                SizedBox(
-                                  height: size.height / 400,
-                                ),
-                                Text(
-                                  "£${widget.childPrice.toString().isEmpty ? "free" : widget.childPrice}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width / 40,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const ticketDetails()));
-                          },
-                          child: Container(
-                            height: size.height / 14,
-                            width: size.width / 3,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(colors: [
-                                  Color(0XFF4ADE80),
-                                  Color(0XFF256F40)
-                                ]),
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: const Color(0xffE45900)),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height / 55,
+                                  builder: (_) => const ticketDetails(),
                                 ),
-                                const Text("Adult",
+                              );
+                            },
+                            child: Container(
+                              height: size.height / 14,
+                              width: size.width / 3,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: const Color(0xffE45900)),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text(
+                                    "Child",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 12)),
-                                SizedBox(
-                                  height: size.height / 400,
-                                ),
-                                Text(
-                                    "£${widget.adultPrice.toString().isEmpty ? "Free" : widget.adultPrice}",
+                                        color: Colors.white, fontSize: 12),
+                                  ),
+                                  Text(
+                                    "£${widget.childPrice.toString().isEmpty ? "free" : widget.childPrice}",
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
-                                        fontWeight: FontWeight.bold)),
-                              ],
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: size.width / 40,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(() => const ticketDetails());
-                          },
-                          child: Container(
-                            height: size.height / 14,
-                            width: size.width / 3,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(colors: [
-                                  Color(0XFFFBD22F),
-                                  Color(0XFFC89F00)
-                                ]),
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: const Color(0xffE45900)),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height / 55,
-                                ),
-                                const Text("Family",
+                          SizedBox(
+                            width: size.width / 40,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const ticketDetails()));
+                            },
+                            child: Container(
+                              height: size.height / 14,
+                              width: size.width / 3,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(colors: [
+                                    Color(0XFF4ADE80),
+                                    Color(0XFF256F40)
+                                  ]),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: const Color(0xffE45900)),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text("Adult",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12)),
+                                  Text(
+                                      "£${widget.adultPrice.toString().isEmpty ? "Free" : widget.adultPrice}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width / 40,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const ticketDetails());
+                            },
+                            child: Container(
+                              height: size.height / 14,
+                              width: size.width / 3,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(colors: [
+                                    Color(0XFFFBD22F),
+                                    Color(0XFFC89F00)
+                                  ]),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: const Color(0xffE45900)),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text(
+                                    "Family",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 12)),
-                                SizedBox(
-                                  height: size.height / 400,
-                                ),
-                                Text(
+                                        color: Colors.white, fontSize: 12),
+                                  ),
+                                  Text(
                                     "£${widget.familyPrice.toString().isEmpty ? "Free" : widget.familyPrice}",
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
-                                        fontWeight: FontWeight.bold)),
-                              ],
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: size.height / 40,
@@ -579,9 +577,9 @@ class _ArcadeScreenState extends State<ArcadeScreen> {
                                         ),
                                         SizedBox(height: 1.h),
                                         Text(
-                                          widget.location.length > 27
+                                          widget.location.length > 20
                                               ? widget.location
-                                                      .substring(0, 27) +
+                                                      .substring(0, 20) +
                                                   '..'
                                               : widget.location,
                                           style: TextStyle(

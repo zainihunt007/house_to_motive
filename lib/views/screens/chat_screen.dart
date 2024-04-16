@@ -7,6 +7,7 @@ import 'package:house_to_motive/views/screens/chat_ui.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../widgets/appbar_location.dart';
 import 'home_screens/home_model.dart';
+
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
@@ -80,7 +81,9 @@ class ChatScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 2.h,),
+                SizedBox(
+                  height: 2.h,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -105,21 +108,124 @@ class ChatScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.to(() => const ChatPage());
                       },
                       child: Slidable(
+                        // Specify a key if the Slidable is dismissible.
+                        // key: const ValueKey(6),
+
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          extentRatio: 0.13,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Get.bottomSheet(const BottomSheetDeletDialog());
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: const Color(0xffFFE7E5),
+                                ),
+                                child: Center(
+                                  child:
+                                      SvgPicture.asset('assets/svgs/Trash.svg'),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/3.jpg'),
+                              ),
+                              title: Text(
+                                'Ariana Sime',
+                                style: GoogleFonts.nunito(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xff161616),
+                                ),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Image.asset('assets/pngs/export.png'),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Hey bro, do you want...',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff575757),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              trailing: const Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text('5:35 PM'),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: Color(0xff025B8F),
+                                    child: Center(
+                                      child: Text(
+                                        '8',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 10),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 2.5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text(
+                        'Yesterday',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: const Color(0xff025B8F),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Slidable(
                       // Specify a key if the Slidable is dismissible.
                       // key: const ValueKey(6),
-
                       endActionPane: ActionPane(
                         motion: const ScrollMotion(),
                         extentRatio: 0.13,
                         children: [
                           GestureDetector(
-                            onTap: (){
-                              Get.bottomSheet(
-                                  const BottomSheetDeletDialog());
+                            onTap: () {
+                              Get.bottomSheet(const BottomSheetDeletDialog());
                             },
                             child: Container(
                               height: 60,
@@ -129,7 +235,8 @@ class ChatScreen extends StatelessWidget {
                                 color: const Color(0xffFFE7E5),
                               ),
                               child: Center(
-                                child: SvgPicture.asset('assets/svgs/Trash.svg'),
+                                child:
+                                    SvgPicture.asset('assets/svgs/Trash.svg'),
                               ),
                             ),
                           )
@@ -140,7 +247,8 @@ class ChatScreen extends StatelessWidget {
                           ListTile(
                             leading: const CircleAvatar(
                               radius: 30,
-                              backgroundImage: AssetImage('assets/images/3.jpg'),
+                              backgroundImage:
+                                  AssetImage('assets/images/3.jpg'),
                             ),
                             title: Text(
                               'Ariana Sime',
@@ -174,8 +282,8 @@ class ChatScreen extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       '8',
-                                      style:
-                                      TextStyle(color: Colors.white, fontSize: 10),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 10),
                                     ),
                                   ),
                                 )
@@ -184,108 +292,9 @@ class ChatScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),);
-                  },),
-                SizedBox(height: 2.5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text(
-                        'Yesterday',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: const Color(0xff025B8F),
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                  return Slidable(
-                    // Specify a key if the Slidable is dismissible.
-                    // key: const ValueKey(6),
-                    endActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      extentRatio: 0.13,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Get.bottomSheet(
-                                const BottomSheetDeletDialog());
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xffFFE7E5),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset('assets/svgs/Trash.svg'),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/3.jpg'),
-                          ),
-                          title: Text(
-                            'Ariana Sime',
-                            style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xff161616),
-                            ),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              Image.asset('assets/pngs/export.png'),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Hey bro, do you want...',
-                                style: GoogleFonts.nunito(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff575757),
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: const Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('5:35 PM'),
-                              CircleAvatar(
-                                radius: 8,
-                                backgroundColor: Color(0xff025B8F),
-                                child: Center(
-                                  child: Text(
-                                    '8',
-                                    style:
-                                    TextStyle(color: Colors.white, fontSize: 10),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },),
                 SizedBox(height: 10.5.h),
               ],
             ),
@@ -304,7 +313,7 @@ class BottomSheetDeletDialog extends StatelessWidget {
     return Container(
       color: Colors.transparent, // Set the background color to transparent
       child: Container(
-        height: Get.height / 2.6,
+        height: 35.h,
         width: double.infinity,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -314,7 +323,7 @@ class BottomSheetDeletDialog extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.px),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -342,19 +351,19 @@ class BottomSheetDeletDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Get.back();
                     },
                     child: Container(
                       height: 5.5.h,
-                      width: 40.w,
+                      width: 20.h,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xff090808),
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child:  Center(
+                      child: Center(
                         child: Text(
                           'Cancel',
                           style: GoogleFonts.inter(
@@ -367,7 +376,7 @@ class BottomSheetDeletDialog extends StatelessWidget {
                   ),
                   Container(
                     height: 5.5.h,
-                    width: 40.w,
+                    width: 20.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: const Color(0xff025B8F),
@@ -397,7 +406,6 @@ class BottomSheetDeletDialog extends StatelessWidget {
     );
   }
 }
-
 
 // class DataModel {
 //   final String imageUrl;

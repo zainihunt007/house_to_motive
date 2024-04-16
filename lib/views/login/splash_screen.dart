@@ -21,12 +21,12 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     // placeApiController.determinePosition();
     Future.delayed(
-      const Duration(seconds: 5), // Adjust the duration as needed
+      const Duration(seconds: 3), // Adjust the duration as needed
       () {
         nextScreen();
       },
     );
-    placeApiController.determinePosition();
+    // placeApiController.determinePosition();
   }
 
   nextScreen() async {
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.offAll(() => const IntroScreenOne());
     } else {
       Get.offAll(
-        () => const HomePage(),
+        () => HomePage(),
         transition: Transition.downToUp,
       );
     }
@@ -48,17 +48,19 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Stack(
           children: [
-            Opacity(
-              opacity: 0.1,
-              child: Image.asset(
-                'assets/pngs/htmimage1.png',
+            Center(
+              child: Opacity(
+                opacity: 0.1,
+                child: Image.asset(
+                  'assets/pngs/htmimage1.png',
+                ),
               ),
             ),
-            Positioned(
-              bottom: 60,
-              right: 110,
-              child: SvgPicture.asset(
-                'assets/svgs/splash-logo.svg',
+            Center(
+              child: Image.asset(
+                'assets/svgs/splash-logo.png',
+                width: 144,
+                height: 144,
               ),
             ),
           ],

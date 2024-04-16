@@ -9,12 +9,15 @@ import '../search.dart';
 import 'color.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final bool? status;
+  final int? selectedIndex;
+  String? searchQuery;
+  HomePage({Key? key, this.selectedIndex, this.searchQuery, this.status})
+      : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 
 class _HomePageState extends State<HomePage> {
   final placeApiController = Get.put(PlacesApi());
@@ -34,12 +37,16 @@ class _HomePageState extends State<HomePage> {
   ];
   int currentIndex = 0;
   int selectBtn = 0;
+  bool status = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     placeApiController.determinePosition();
+    if (widget.selectedIndex != null) {
+      currentIndex = widget.selectedIndex!;
+    }
   }
 
   @override
@@ -54,24 +61,31 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: Stack(
               children: [
-                if(currentIndex==0) HomeScreen(),
-                if(currentIndex==1) ExploreScreen(),
-                if(currentIndex==2) SearchScreen(),
-                if(currentIndex==3) ChatScreen(),
-                if(currentIndex==4) ProfileScreen(),
+                if (currentIndex == 0) HomeScreen(),
+                if (currentIndex == 1)
+                  ExploreScreen(
+                    selectedLocation: widget.searchQuery,
+                  ),
+                if (currentIndex == 2) SearchScreen(),
+                if (currentIndex == 3) const ChatScreen(),
+                if (currentIndex == 4) ProfileScreen(),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ClipPath(
                     clipper: MyCustomClipper(currentIndex),
                     child: Container(
-                      height: height*0.09,
+                      height: height * 0.09,
                       width: double.infinity,
                       color: Colors.white,
                       child: ListView.builder(
-                        padding: EdgeInsets.only(left: width*0.06, top: height*0.02, right: width*0.06),
+                        padding: EdgeInsets.only(
+                            left: width * 0.06,
+                            top: height * 0.02,
+                            right: width * 0.06),
                         shrinkWrap: true,
                         itemCount: selectedSvg.length,
                         scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return Row(
                             children: [
@@ -79,13 +93,31 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   setState(() {
                                     currentIndex = index;
+                                    if (currentIndex == 0) {
+                                      widget.searchQuery = null;
+                                    } else if (currentIndex == 1) {
+                                      widget.searchQuery = null;
+                                    } else if (currentIndex == 2) {
+                                      widget.searchQuery = null;
+                                    } else if (currentIndex == 3) {
+                                      widget.searchQuery = null;
+                                    } else if (currentIndex == 4) {
+                                      widget.searchQuery = null;
+                                    } else {
+                                      widget.searchQuery = null;
+                                    }
                                   });
                                 },
                                 child: currentIndex == index
                                     ? SvgPicture.asset(selectedSvg[index])
                                     : SvgPicture.asset(unSelectedSvg[index]),
                               ),
-                              SizedBox(width: index == 3 ? width * 0.09 : index == 2 ? width * 0.09 : width * 0.11),
+                              SizedBox(
+                                  width: index == 3
+                                      ? width * 0.09
+                                      : index == 2
+                                          ? width * 0.09
+                                          : width * 0.11),
                             ],
                           );
                         },
@@ -96,16 +128,16 @@ class _HomePageState extends State<HomePage> {
                 Positioned(
                   bottom: height * 0.08,
                   left: currentIndex == 0
-                      ? width*0.09
+                      ? width * 0.09
                       : currentIndex == 1
-                      ? width*0.29
-                      : currentIndex == 2
-                      ? width*0.49
-                      : currentIndex == 3
-                      ? width*0.69
-                      : currentIndex == 4
-                      ? width*0.89
-                      : 0,
+                          ? width * 0.29
+                          : currentIndex == 2
+                              ? width * 0.49
+                              : currentIndex == 3
+                                  ? width * 0.69
+                                  : currentIndex == 4
+                                      ? width * 0.89
+                                      : 0,
                   child: Container(
                     height: 10,
                     width: 10,
@@ -138,7 +170,6 @@ class MyCustomClipper extends CustomClipper<Path> {
       path.lineTo(size.width, 0);
     } else if (currentIndex == 1) {
       path.lineTo(size.width * 0.20, 0);
-
       path.quadraticBezierTo(
           size.width * 0.30, size.height * 0.50, size.width * 0.40, 0);
       path.lineTo(size.width * 0.40, 0);
